@@ -31,26 +31,26 @@ export default function RootLayout() {
         
       />
     </Stack>
-    <Tab>
-        <Tab.Screen
-            name="(tabs)"
-            options={{
-            title: "MorningStar-Coop Society",
-            headerShown: false,
-            }}
-        />
-        <Tab.Screen
-            name="settings"
-            options={{
-            title: "Settings",
-            headerTitleAlign: "center",
-            headerStyle: { backgroundColor: "white" },
-            headerTitleStyle: {
-                fontWeight: "bold",
-                color: "green",
-            },
-            }}
-        />
-    </Tab>
+    // <Tab>
+    //     <Tab.Screen
+    //         name="(tabs)"
+    //         options={{
+    //         title: "MorningStar-Coop Society",
+    //         headerShown: false,
+    //         }}
+    //     />
+    //     <Tab.Screen
+    //         name="settings"
+    //         options={{
+    //         title: "Settings",
+    //         headerTitleAlign: "center",
+    //         headerStyle: { backgroundColor: "white" },
+    //         headerTitleStyle: {
+    //             fontWeight: "bold",
+    //             color: "green",
+    //         },
+    //         }}
+    //     />
+    // </Tab>
   );
 }
