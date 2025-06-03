@@ -11,12 +11,7 @@ import {
 import styles from "../styles/dstyles"; // Adjust the path as necessary
 
 export default function Index() {
-  // function dialog(message: string): void {
-  //   alert(message);
-  // }
-  function dialog(message: number): void {
-    alert(message);
-  }
+ 
   return (
     <>
       {/* <ImageBackground
@@ -39,12 +34,57 @@ export default function Index() {
             // onLoad={() => dialog("Welcome to Egbe Alajeseku")}
             source={require("../assets/images/react-logo.png")}
             // source={{ uri: "https://reactnative.dev/img/tiny_logo.png" }}
-            style={{ width: 100, height: 100, marginBottom: 20 }}
+            style={{ width: 100, height: 100, marginBottom: 20, marginTop: 50 }}
           />
 
           <Text style={styles.text}>Welcome to Billionaire's Club</Text>
-          {/* <View style={{ marginTop:10, borderStyle:"dotted",borderWidth:1,padding:20, justifyContent: "center", alignItems: "center" }}> */}
-          {/* <Image  ></Image> */}
+
+          {/* login Details */}
+
+          <Text style={{ marginTop: 20, marginBottom: 7, fontSize: 20 }}>
+            Enter your login details here
+          </Text>
+
+          {/* oracle */}
+          <TextInput
+            placeholder="Oracle Number"
+            style={[styles.input, { marginBottom: 1, marginTop: 20 }]}
+            maxLength={10}
+            keyboardType="numeric"
+          ></TextInput>
+
+          {/* password */}
+          <TextInput
+            placeholder="Password"
+            style={[styles.input, { marginTop: 5 }]}
+            maxLength={8}
+            secureTextEntry={true}
+            keyboardType="default"
+          ></TextInput>
+
+          {/* button */}
+          <TouchableOpacity
+            style={[styles.border, { borderRadius: 100, marginTop: 20 }]}
+            onPress={() => alert("Welcome to Billionaire's Club")}
+          >
+            <Text
+              style={{
+                color: "green",
+                width: 250,
+                textAlign: "center",
+                fontSize: 18,
+              }}
+            >
+              Login
+            </Text>
+          </TouchableOpacity>
+
+          {/* Link */}
+          <Link href={"/(tabs)/signup"} style={[styles.border, {borderRadius:10}]}>
+            <Text style={[, { color: "red",}]}>  SignUp</Text>
+          </Link>
+
+          {/*  */}
           <Text
             style={{
               padding: 20,
@@ -96,47 +136,8 @@ export default function Index() {
               sunt in culpa qui officia deserunt mollit anim id est laborum.
             </Text>
           </View>
-          <Text style={{ marginTop: 20, marginBottom: 7, fontSize: 20 }}>
-            Enter your login details here
-          </Text>
 
-          {/* oraccle */}
-          <TextInput
-            placeholder="Enter Oracle Number"
-            style={[styles.input, { marginBottom: 1 }]}
-            maxLength={10}
-            keyboardType="numeric"
-          ></TextInput>
-
-          {/* password */}
-          <TextInput
-            placeholder="Password"
-            style={[styles.input, { marginTop: 5 }]}
-            maxLength={8}
-            secureTextEntry={true}
-            keyboardType="default"
-          ></TextInput>
-
-          {/* button */}
-          <TouchableOpacity
-            style={[styles.border, { borderRadius: 100 }]}
-            onPress={() => alert("Welcome to Billionaire's Club")}
-          >
-            <Text
-              style={{
-                color: "green",
-                width: 250,
-                textAlign: "center",
-                fontSize: 18,
-              }}
-            >
-              Login
-            </Text>
-          </TouchableOpacity>
           {/* </View> */}
-          <Link href={"/(tabs)/signup"}>
-            <Text style={{ color: "red" }}>SignUp</Text>
-          </Link>
 
           <View>
             <TouchableOpacity
