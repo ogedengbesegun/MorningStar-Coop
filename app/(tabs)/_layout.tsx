@@ -1,5 +1,9 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+
+
+
 
 export default function RootLayout() {
   return (
@@ -32,20 +36,26 @@ export default function RootLayout() {
         options={{
           title: "Home",
           tabBarIcon: ({ size, color }) => (
-            <Ionicons name="heart" size={size} style={{ color: "white" }} />
+            <Ionicons name="home" size={size} style={{ color: "white" }} />
           ),
           headerTitle: "Home",
         }}
       />
 
       <Tabs.Screen
-        name="signup"
+        name="team"
         options={{
+          title: "Team",
           tabBarIcon: ({ size, color }) => (
-            <Ionicons name="bookmarks" size={size} style={{ color: "white" }} />
+            <Ionicons name="infinite" size={size} style={{ color: "white" }} />
           ),
         }}
       />
+      <Tabs.Screen name="finance" options={{ title: "Finance" ,
+        tabBarIcon: ({ size, color }) => (
+            <MaterialCommunityIcons name="finance" size={size} style={{ color: "white" }} />
+          ),
+      }} />
     </Tabs>
   );
 }

@@ -7,15 +7,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   input: {
-    borderRadius: 50,
-    borderColor: "gray",
     borderBottomColor: "green",
     borderBottomWidth: 2,
     width: "80%",
-    textAlign: "center",
-    // alignItems: "center",
-    backgroundColor: "white",
-    // fontSize: 18,
+    // textAlign: "center",
+    textAlignVertical: "center",
+    fontSize: 18,
+    paddingVertical: 10,
+    margin: "auto",
   },
   text: {
     color: "green",
@@ -26,7 +25,7 @@ const styles = StyleSheet.create({
   border: {
     borderColor: "green",
     borderWidth: 1,
-    padding: 10,
+    padding: 8,
     margin: 10,
   },
 });
