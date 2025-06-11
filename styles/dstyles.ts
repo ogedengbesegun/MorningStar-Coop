@@ -7,14 +7,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   input: {
-    borderBottomColor: "green",
-    borderBottomWidth: 2,
+    // borderBottomColor: "green",
+    // borderBottomWidth: 2,
     width: "80%",
+    position: "relative",
     // textAlign: "center",
+    marginRight: "auto",
+    marginLeft: "auto",
+    padding: 5,
+    backgroundColor: "lightgrey",
     textAlignVertical: "center",
     fontSize: 18,
-    paddingVertical: 10,
-    margin: "auto",
+    marginTop: 5,
   },
   text: {
     color: "green",
@@ -27,6 +31,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 8,
     margin: 10,
+  },
+  smalltext: {
+    color: "green",
+    fontStyle: "italic",
   },
 });
 

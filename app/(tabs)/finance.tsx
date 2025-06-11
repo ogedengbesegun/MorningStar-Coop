@@ -1,5 +1,8 @@
-import React from "react";
+import React,{useState} from "react";
+import { useUser } from "../../context/UserContext";
+
 import {
+  FlatList,
   Button,
   Image,
   ScrollView,
@@ -11,6 +14,8 @@ import {
 // import { FlatList } from "react-native-gesture-handler";
 
 export default function finance() {
+  const { user } = useUser();
+  
   return (
     <ScrollView>
       <View style={[{ padding: 10 }]}>
@@ -95,7 +100,9 @@ export default function finance() {
             marginLeft: 10,
           }}
         >
-          <Text style={{ marginTop: 15, marginRight: 40, marginLeft: 40 }}>
+          <Text style={{marginLeft:30,fontSize:15}}>Oracle: {user?.oracle}</Text>
+       
+          <Text style={{ marginTop: 15, marginRight: 30, marginLeft: 30 }}>
             Balance Brought Down
           </Text>
           <TextInput
@@ -105,7 +112,7 @@ export default function finance() {
           />
 
           {/*  */}
-          <Text style={{ marginTop: 15, marginRight: 40, marginLeft: 40 }}>
+          <Text style={{ marginTop: 15, marginRight: 30, marginLeft: 30 }}>
             Savings
           </Text>
           <TextInput
@@ -114,7 +121,7 @@ export default function finance() {
             style={style.inputStyle}
           />
           {/*  */}
-          <Text style={{ marginTop: 15, marginRight: 40, marginLeft: 40 }}>
+          <Text style={{ marginTop: 15, marginRight: 30, marginLeft: 30 }}>
             Retirement
           </Text>
           <TextInput
@@ -123,7 +130,7 @@ export default function finance() {
             style={style.inputStyle}
           />
           {/*  */}
-          <Text style={{ marginTop: 15, marginRight: 40, marginLeft: 40 }}>
+          <Text style={{ marginTop: 15, marginRight: 30, marginLeft: 30 }}>
             Loan Repayment
           </Text>
           <TextInput

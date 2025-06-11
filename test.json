@@ -1,0 +1,67 @@
+{
+  "2024": [
+    {
+      "jan": [
+        {
+          "oracle": "002",
+          "full_name": "ogedengbe victor",
+          "savings": "20000",
+          "retirement": "500000",
+          "loan_balance": "100000",
+          "loan_interest": "5000",
+          "loan_request": "0"
+        },
+        {
+          "oracle": "003",
+          "full_name": "john doe",
+          "savings": "15000",
+          "retirement": "200000",
+          "loan_balance": "5000",
+          "loan_interest": "2000",
+          "loan_request": "10000"
+        },
+        {
+          "oracle": "004",
+          "full_name": "jane smith",
+          "savings": "25000",
+          "retirement": "300000",
+          "loan_balance": "20000",
+          "loan_interest": "1000",
+          "loan_request": "15000"
+        }
+      ]
+    },
+
+    {
+      "feb": [
+        {
+          "oracle": "002",
+          "full_name": "ogedengbe victor",
+          "savings": "30000",
+          "retirement": "300000",
+          "loan_balance": "1000",
+          "loan_interest": "5000",
+          "loan_request": "20000"
+        },
+        {
+          "oracle": "003",
+          "full_name": "john doe",
+          "savings": "20000",
+          "retirement": "250000",
+          "loan_balance": "10000",
+          "loan_interest": "3000",
+          "loan_request": "15000"
+        },
+        {
+          "oracle": "004",
+          "full_name": "jane smith",
+          "savings": "35000",
+          "retirement": "400000",
+          "loan_balance": "5000",
+          "loan_interest": "2000",
+          "loan_request": "10000"
+        }
+      ]
+    }
+  ]
+}

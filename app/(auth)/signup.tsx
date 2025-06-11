@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import React, { useRef, useState } from "react";
 import {
   ImageBackground,
@@ -8,8 +9,20 @@ import {
   View,
 } from "react-native";
 import styles from "../../styles/dstyles";
+// import myDialog from "./myDialog";
 
 export default function signup() {
+  ////navigation
+  const nav = useNavigation() as any;
+
+  ////////useEffect to navigate back to login page
+
+  // nav.goBack("index");
+
+  /////////////
+  /////to set the button disabled after once click
+  const [submitted, setSubmitted] = useState(false);
+
   ///to set the value of the components
   const [fullname, setFullname] = useState("");
   const [oracleNum, setOracle] = useState("");
@@ -24,25 +37,27 @@ export default function signup() {
 
   return (
     <>
+      <Text
+        style={[
+          styles.text,
+          {
+            color: "green",
+            // backgroundColor: "white",
+            padding: 5,
+            textAlign: "center",
+          },
+        ]}
+      >
+        Morning Star Cooperative Society
+      </Text>
       <ScrollView>
-        <View style={styles.container}>
+        <View style={[styles.container, { backgroundColor: "white" }]}>
+          {/* Imagebackground */}
           <ImageBackground
-            source={require("../../assets/images/favicon.png")}
-            style={{ width: 150, height: 150, marginBottom: 10, marginTop: 20 }}
+            source={require("../../assets/images/d_img/finance_calculator.jpg")}
+            style={{ width: 300, height: 200, marginBottom: 5, marginTop: 15 }}
           />
-          <Text
-            style={[
-              styles.text,
-              {
-                color: "green",
-                // backgroundColor: "white",
-                padding: 5,
-                textAlign: "center",
-              },
-            ]}
-          >
-            Signup to Morning Star Cooperative Society
-          </Text>
+
           <Text style={{ marginTop: 1, marginBottom: 7, fontSize: 20 }}>
             Please enter your details
           </Text>
@@ -55,74 +70,121 @@ export default function signup() {
               borderStyle: "dashed",
               width: 300,
               borderRadius: 7,
+              marginBottom: 15,
             }}
           >
             {/* <Text>signup</Text> */}
+            <Text
+              style={[
+                styles.smalltext,
+                { marginBottom: 0, marginLeft: 30, marginTop: 10 },
+              ]}
+            >
+              Enter Full Name
+            </Text>
             <TextInput
               ref={refname}
               placeholder="Enter Full Name"
-              style={styles.input}
+              style={[
+                styles.input,
+                { marginTop: 0, textTransform: "capitalize" },
+              ]}
               maxLength={50}
               keyboardType="default"
-              value={fullname.toUpperCase()}
+              value={fullname}
               onEndEditing={(e) => setFullname(e.nativeEvent.text.trim())}
               onChangeText={setFullname}
-              onFocus={focusme}
+              // onFocus={focusme}
+              tabIndex={0}
             />
 
+            {/*  */}
+            <Text
+              style={[
+                styles.smalltext,
+                { marginBottom: 0, marginLeft: 30, marginTop: 5 },
+              ]}
+            >
+              Oracle Number
+            </Text>
             <TextInput
               ref={reforacle}
               placeholder="Oracle Number"
-              style={styles.input}
+              style={[styles.input, { marginTop: 0 }]}
               maxLength={8}
               keyboardType="numeric"
               value={oracleNum}
               onChangeText={(text) => setOracle(text.trim())}
+              tabIndex={0}
             />
 
+            {/*  */}
+            <Text
+              style={[
+                styles.smalltext,
+                { marginBottom: 0, marginLeft: 30, marginTop: 5 },
+              ]}
+            >
+              Password
+            </Text>
             <TextInput
               placeholder="Password"
-              style={styles.input}
-              maxLength={8}
+              style={[styles.input, { marginTop: 0 }]}
+              maxLength={15}
               autoCorrect={false}
               secureTextEntry={true}
               keyboardType="default"
               value={pword}
               onChangeText={(text) => setPword(text.trim())}
               ref={refpword}
+              // onFocus={() => alert("15 Maximum characters allowed")}
             />
 
             {/*  */}
+            <Text
+              style={[
+                styles.smalltext,
+                { marginBottom: 0, marginLeft: 30, marginTop: 5 },
+              ]}
+            >
+              Confirm Password
+            </Text>
             <TextInput
               placeholder="Confirm Password"
-              style={styles.input}
-              maxLength={8}
+              style={[styles.input, { marginTop: 0 }]}
+              maxLength={15}
               autoCorrect={false}
               secureTextEntry={true}
               keyboardType="default"
               value={cpword}
               onChangeText={(text) => setCpword(text.trim())}
-              onEndEditing={() => {
-                same();
-              }}
               ref={refcpword}
             />
 
             {/*  */}
             <TouchableOpacity
-              style={[styles.border, { borderRadius: 50, marginTop: 30 }]}
-              onPress={signup}
+              style={[
+                styles.border,
+                {
+                  borderRadius: 50,
+                  marginTop: 30,
+                  backgroundColor: "lightgreen",
+                },
+              ]}
+              onPress={handle_signup}
+              disabled={submitted}
             >
               <Text
                 style={{
-                  color: "green",
-                  width: 150,
+                  fontSize: 20,
+                  color: "darkgreen",
                   textAlign: "center",
                   marginRight: "auto",
                   marginLeft: "auto",
+                  fontWeight: "bold",
                 }}
               >
-                Signup
+                Register Now
               </Text>
             </TouchableOpacity>
             <View
@@ -147,32 +209,20 @@ export default function signup() {
       </ScrollView>
     </>
   );
-  // if the two pasword is same throw a msg
-  function same() {
-    // if (cpword === pword) {
-    //
-    // }
-    if (pword === "" && cpword === "") {
-      alert("Password field Cannot be Empty");
-    } else if (cpword === pword) {
-      alert("Your Password is Confirmed");
-    } else {
-      alert("Check, Password Must be the Same !!!");
-      refpword.current?.clear();
-      refcpword.current?.clear();
-    }
-  }
-
-  //focus
-  function focusme() {
-    refname.current?.focus();
-  }
 
   //   //capitalise
 
-  async function signup(e: any) {
+  async function handle_signup(e: any) {
+    // if (fullname === "" || oracleNum === "" || pword === "") {
+    //   alert(`Sorry, Please Enter your Details`);
+    //   e.preventDefault();
+    // }
+
+    if (submitted) return; // guard against double click
+    setSubmitted(true); // lock the button
+
     try {
-      const signing = await fetch("http://192.168.43.201:8081/api/signup", {
+      const signing = await fetch("http://192.168.43.201:8082/api/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -182,17 +232,38 @@ export default function signup() {
           cpword: cpword,
         }),
       });
-
       const response = await signing.json();
-      if (!response) {
-        e.preventDefault();
+      if (response.success === true) {
+        alert(response.message);
+
+        setTimeout(() => {
+          refname.current?.clear();
+          reforacle.current?.clear();
+          refpword.current?.clear();
+          refcpword.current?.clear();
+          setSubmitted(true);
+
+          // back2login; // navigate back to login page
+
+          ////////
+          nav.goBack("index"); // Navigate to the login page
+          return;
+        }, 2000);
+      } else if (response.success === false) {
+        alert(response.message);
+        // refpword.current?.clear();
+        // refcpword.current?.clear();
+        // nav.replace("signup");
       }
     } catch (error) {
-      alert(`Sorry not sending to server, ${error + fullname +" "+ oracleNum}`);
+      alert(`Sorry not sending to server, Check your Internet`);
       refname.current?.clear();
       reforacle.current?.clear();
       refpword.current?.clear();
       refcpword.current?.clear();
+      nav.replace("signup");
+    } finally {
+      setSubmitted(false); // re-enable if you want retry
     }
   }
 }

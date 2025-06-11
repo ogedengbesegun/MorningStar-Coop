@@ -15,7 +15,15 @@ export default function _layout() {
       <Stack.Screen
         name="signup"
         options={{
-          title: "Sign Up",
+          title: "Create an Account",
+          headerTitleAlign: "center",
+          headerTintColor: "white",
+        }}
+      />
+      <Stack.Screen
+        name="users"
+        options={{
+          title: "New SignUp",
           headerTitleAlign: "center",
           headerTintColor: "white",
         }}

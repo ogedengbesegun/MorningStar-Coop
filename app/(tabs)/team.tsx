@@ -18,7 +18,7 @@ export default function team() {
             source={require("../../assets/images/favicon.png")}
             style={{ width: 150, height: 150, marginBottom: 20, marginTop: 20 }}
           />
-         
+         <Text> Site under construction</Text>
         </View>
       </ScrollView>
     </>
