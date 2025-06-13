@@ -4,7 +4,7 @@ import React, { useRef, useState } from "react";
 import { useUser } from "../../context/UserContext";
 
 import { lastMonth } from "../../utilities/mydate";
-// import { API_URL } from '@env';
+import { API_URL } from '@env';
 // import Constants from 'expo-constants';
 // const API_URL = Constants.expoConfig?.extra?.API_URL;
 //
@@ -360,7 +360,7 @@ export default function loginindex() {
     try {
       // console.log(`${API_URL}/login`);
 
-      const login = await fetch(`http://192.168.43.201:8082/api/login`, {
+      const login = await fetch(`${API_URL}api/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -403,7 +403,7 @@ export default function loginindex() {
   async function changepword() {
     // console.log(newMonth, lastMonth);
     try {
-      const changep = await fetch("http://192.168.43.201:8082/api/change", {
+      const changep = await fetch(`${API_URL}api/change`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

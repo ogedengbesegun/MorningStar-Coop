@@ -3,6 +3,8 @@ import { c_day, c_month, c_year, lastMonth } from "@/utilities/mydate";
 import React, { useEffect, useRef, useState } from "react";
 import { Image, Text, View } from "react-native";
 import { useUser } from "../../context/UserContext";
+import { API_URL } from "@env";
+
 
 export default function indextabs() {
   const refText = useRef<Text>(null);
@@ -60,7 +62,7 @@ export default function indextabs() {
     // Fetch financial data from the API
     try {
       const financialData = await fetch(
-        "http://192.168.43.201:8082/api/msc_monthly_2025",
+        `${API_URL}/api/msc_monthly_2025`,
         {
           method: "POST",
           headers: {

@@ -55,7 +55,7 @@ export default {
       typedRoutes: true,
     },
     extra: {
-      API_URL: process.env.API_URL, // optional
+      API_URL: process.env.API_URL_DEV, // optional
     },
   },
 };

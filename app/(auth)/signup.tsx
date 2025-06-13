@@ -9,7 +9,7 @@ import {
   View,
 } from "react-native";
 import styles from "../../styles/dstyles";
-
+import { API_URL } from "@env";
 
 
 export default function signup() {
@@ -223,7 +223,7 @@ export default function signup() {
     setSubmitted(true); // lock the button
 
     try {
-      const signing = await fetch("http://192.168.43.201:8082/api/signup", {
+      const signing = await fetch(`${API_URL}/api/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
