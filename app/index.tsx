@@ -10,6 +10,7 @@ import {
 } from "react-native-gesture-handler";
 
 export default function index() {
+  //for
   const myNavigation = useNavigation<any>();
 
   //////to auto get user's Oracle Number
@@ -21,12 +22,6 @@ export default function index() {
       myNavigation.replace("(auth)");
     }, 400);
     return () => clearTimeout(timer); // cleanup if component unmounts
-
-    // useEffect(() => {
-    //   // } else {
-
-    //   // }
-    // }, []);
   };
 
   return (
@@ -88,13 +83,12 @@ export default function index() {
           </Text>
           <MaterialIcons
             name="home"
-            size={100}
+            size={60}
             color="white"
-            style={{ backgroundColor: "green", borderRadius: 10 }}
+            style={{ backgroundColor: "green", borderRadius: 10, marginTop: 2 }}
           />
         </View>
       </TapGestureHandler>
-     
     </GestureHandlerRootView>
     // </View>
   );

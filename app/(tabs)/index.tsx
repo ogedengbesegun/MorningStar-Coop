@@ -1,65 +1,27 @@
 import styles from "@/styles/dstyles";
-import React, { useRef, useState } from "react";
+import { c_day, c_month, c_year, lastMonth } from "@/utilities/mydate";
+import React, { useEffect, useRef, useState } from "react";
 import { Image, Text, View } from "react-native";
 import { useUser } from "../../context/UserContext";
 
-export default function index() {
+export default function indextabs() {
   const refText = useRef<Text>(null);
-  const [text, setText] = useState<any | null>(null);
+  const [last_deduct, setLast_deduct] = useState<any | null>(null);
+  const [saving, setSaving] = useState<any | null>(null);
+  const [retirement, setRetirement] = useState<any | null>(null);
+  const [loanBalance, setLoanBalance] = useState<any | null>(null);
+
   const { user } = useUser();
 
-  ////////date
-  const c_date = new Date();
-  //////formatting day
-  const c_day =
-    c_date.getDate() < 10 ? "0" + c_date.getDate() : c_date.getDate();
-  //////formattting month
-  const c_month =
-    c_date.getMonth() + 1 < 10
-      ? "0" + (c_date.getMonth() + 1)
-      : c_date.getMonth() + 1;
-  const c_year = c_date.getFullYear();
-  ///////////
-  const monthNames = [
-    "jan",
-    "feb",
-    "mar",
-    "apr",
-    "may",
-    "jun",
-    "jul",
-    "aug",
-    "sep",
-    "oct",
-    "nov",
-    "dec",
-  ];
-  const newMonth =
-    c_month === "01"
-      ? monthNames[0]
-      : c_month === "02"
-      ? monthNames[1]
-      : c_month === "03"
-      ? monthNames[2]
-      : c_month === "04"
-      ? monthNames[3]
-      : c_month === "05"
-      ? monthNames[4]
-      : c_month === "06"
-      ? monthNames[5]
-      : c_month === "07"
-      ? monthNames[6]
-      : c_month === "08"
-      ? monthNames[7]
-      : c_month === "09"
-      ? monthNames[8]
-      : c_month === "10"
-      ? monthNames[9]
-      : c_month === "11"
-      ? monthNames[10]
-      : c_month === "12"
-      ? monthNames[11]
-      : ""; // Provide a default value to complete the expression
+  // Provide a default value to complete the expression
+  ///////useEffect(() => {
+  useEffect(() => {
+    msc_index_finance();
+
+    // console.log("New Month:", lastMonth);
+    // console.log(user?.oracle, "User Oracle");
+  }),
+    [];
 
   /////////
   return (
@@ -73,34 +35,58 @@ export default function index() {
         style={{ width: 320, height: 250, backgroundColor: "green" }}
       />
       <View style={{ width: 300 }}>
+        <Text style={{ fontSize: 20, color: "grey" }}>{user?.oracle}</Text>
+        <Text style={{ fontSize: 15, color: "green" }}>
+          Oracle Deduction as at: {lastMonth.toLocaleUpperCase()}, {c_year}{" "}
+          {last_deduct}
+        </Text>
         <Text style={{ fontSize: 20, color: "green" }}>
           Balances as at: {c_year}/{c_month}/{c_day}
         </Text>
-        <Text style={{ fontSize: 20, color: "green" }}>{user?.oracle}</Text>
-        <Text>Savings:{}</Text>
-        <Text>Retirement:{}</Text>
-        <Text>Loan Balance:{}</Text>
+        <Text style={{ fontSize: 15, color: "green" }}>Savings: {saving}</Text>
+        <Text style={{ fontSize: 15, color: "green" }}>
+          Retirement: {retirement}
+        </Text>
+        <Text style={{ fontSize: 15, color: "green" }}>
+          Loan Balance: {loanBalance}
+        </Text>
       </View>
     </View>
   );
+
+  ////////
 
   async function msc_index_finance() {
     // Fetch financial data from the API
     try {
       const financialData = await fetch(
-        "http://192.168.43.201:8082/api/msc_finance",
+        "http://192.168.43.201:8082/api/msc_monthly_2025",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            oracle: user?.oracle,
-            month: newMonth,
+            newOracle: user?.oracle, // Ensure user.oracle is defined
+            lastMonth: lastMonth,
           }),
         }
       );
       const response = await financialData.json();
+      if (response.success === true) {
+        ///////
+        setLast_deduct(response?.acct.deduction);
+        setSaving(response?.acct.savings);
+        setRetirement(response?.acct.retirement);
+        setLoanBalance(response?.acct.loan_balance);
+        //////
+      } else {
+        alert("Not Updated yet: " + response.message);
+        setLast_deduct("XXXX");
+        setSaving("XXXX");
+        setRetirement("XXXX");
+        setLoanBalance("XXXX");
+      }
     } catch (error) {
       alert("Error fetching financial data: " + error);
     }

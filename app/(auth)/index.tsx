@@ -3,12 +3,21 @@ import { Link } from "expo-router"; // Ensure you have expo-router installed
 import React, { useRef, useState } from "react";
 import { useUser } from "../../context/UserContext";
 
+import { lastMonth } from "../../utilities/mydate";
+// import { API_URL } from '@env';
+// import Constants from 'expo-constants';
+// const API_URL = Constants.expoConfig?.extra?.API_URL;
+//
+
 // import * as SecureStore from "expo-secure-store";
+// import Constants from "expo-constants";
 import {
   Image,
   KeyboardAvoidingView,
+  Modal,
   Platform,
   ScrollView,
+  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
@@ -16,21 +25,34 @@ import {
 } from "react-native";
 import styles from "../../styles/dstyles"; // Adjust the path as necessary
 
-let freeman = "liberty"; // Variable to store the oracle number
-
 export default function loginindex() {
+  // const { API_URL } = Constants.expoConfig?.extra ?? {};
+  const [visible, setVisible] = React.useState(false);
+
   ///to get value of the compo
   const [oracle, setOracle] = useState("");
   const [pword, setPword] = useState("");
 
-  ///make refrence to the compo
+  ////refrence the new textInput comp
   const refOracle = useRef<TextInput>(null);
   const refPword = useRef<TextInput>(null);
+  /////
+  /////////
+  //to get value for forgot comp
+  const [oraclededuct, setOraclededuct] = useState("");
+  const [pwordn, setPwordn] = useState("");
+
+  ///make refrence to the compo
+  const refOraclededuct = useRef<TextInput>(null);
+  const refPwordn = useRef<TextInput>(null);
+  /////
 
   ///for Navigation btw screens
   const nav = useNavigation<any>(); // Ensure you have the correct type for navigation
   /////////////////////
   const { setUser } = useUser();
+
+  // const server = process.env.SERVER_API as string | null;
 
   return (
     <>
@@ -46,7 +68,7 @@ export default function loginindex() {
         <Text
           style={[
             styles.text,
-            { textAlign: "center", marginTop: 8, backgroundColor: "white" },
+            { textAlign: "center", marginTop: 0, backgroundColor: "white" },
           ]}
         >
           Welcome to Morning-Star Cooperative Society
@@ -167,8 +189,145 @@ export default function loginindex() {
               </TouchableOpacity>
 
               {/* Link */}
-              <Text style={{ textAlign: "center", color: "grey" }}>OR</Text>
+              <View
+                style={{
+                  flex: 1,
+                  flexDirection: "row",
+                  alignItems: "center",
+                  alignSelf: "center",
+                  marginTop: 5,
+                  marginBottom: 5,
+                }}
+              >
+                <Text style={{ textAlign: "center", color: "grey" }}>OR </Text>
+                <TouchableOpacity onPress={() => setVisible(true)}>
+                  <Text style={{ color: "red" }}>forgot password?</Text>
+                </TouchableOpacity>
 
+                <Modal
+                  visible={visible}
+                  transparent
+                  animationType="slide"
+                  onRequestClose={() => setVisible(false)}
+                >
+                  <View style={[styles2.overlay]}>
+                    <View
+                      style={[
+                        styles2.dialog,
+                        { width: 300, alignSelf: "center" },
+                      ]}
+                    >
+                      <Text
+                        style={{
+                          fontSize: 20,
+                          textAlign: "center",
+                          color: "green",
+                          textDecorationLine: "underline",
+                        }}
+                      >
+                        Change your Password Instructions?
+                      </Text>
+                      <Text
+                        style={{
+                          // width: 350,
+                          textAlign: "center",
+                          color: "grey",
+                          marginRight: "auto",
+                          marginLeft: "auto",
+                          fontSize: 16,
+                        }}
+                      >
+                        Enter Oracle Number with last Month Deduction without
+                        space e.g 141516,200000 Oracle Number is e.g 141516 and
+                        last Month Deduction is e.g 200000 Note: No space
+                        fullstop is allowed but put comma as separator.
+                      </Text>
+                      <TextInput
+                        ref={refOraclededuct}
+                        value={oraclededuct}
+                        placeholder="Oracle with last deduction "
+                        keyboardType="numeric"
+                        onChangeText={(text) => setOraclededuct(text.trim())}
+                        style={[
+                          styles.input,
+                          { marginTop: 10, fontSize: 15, width: "100%" },
+                        ]}
+                      ></TextInput>
+                      <TextInput
+                        ref={refPwordn}
+                        value={pwordn}
+                        placeholder="Enter New Password"
+                        secureTextEntry={true}
+                        maxLength={15}
+                        keyboardType="default"
+                        style={[styles.input, { fontSize: 15, width: "100%" }]}
+                        onChangeText={(text) => setPwordn(text.trim())}
+                      ></TextInput>
+                      {/* <View
+                        style={{
+                          flex: 1,
+                          flexDirection: "row",
+                          alignItems: "center",
+                          alignSelf: "center",
+                          marginTop: 10,
+                          gap: 10,
+                          width: 100,
+                          justifyContent: "center",
+                        }}
+                      > */}
+                      <TouchableOpacity
+                        onPress={changepword}
+                        style={[
+                          {
+                            padding: 10,
+                            backgroundColor: "lightgreen",
+                            borderRadius: 10,
+                            marginTop: 15,
+
+                            // marginRight: "auto",
+                            // marginLeft: "auto",
+                          },
+                        ]}
+                      >
+                        <Text
+                          style={{
+                            color: "black",
+                            textAlign: "center",
+                            fontWeight: "600",
+                          }}
+                        >
+                          Change Password
+                        </Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={() => setVisible(false)}
+                        style={[
+                          {
+                            padding: 10,
+                            backgroundColor: "lightblue",
+                            borderRadius: 10,
+                            marginTop: 5,
+                            // width: 100,
+                            // marginRight: "auto",
+                            // marginLeft: "auto",
+                          },
+                        ]}
+                      >
+                        <Text
+                          style={{
+                            color: "red",
+                            textAlign: "center",
+                            fontWeight: "600",
+                          }}
+                        >
+                          Close
+                        </Text>
+                      </TouchableOpacity>
+                      {/* </View> */}
+                    </View>
+                  </View>
+                </Modal>
+              </View>
               <View
                 style={{
                   alignSelf: "center",
@@ -196,9 +355,12 @@ export default function loginindex() {
     </>
   );
 
+  /////////////////
   async function loginUser() {
     try {
-      const login = await fetch("http://192.168.43.201:8082/api/login", {
+      // console.log(`${API_URL}/login`);
+
+      const login = await fetch(`http://192.168.43.201:8082/api/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -237,7 +399,35 @@ export default function loginindex() {
     }
   }
   //////////
-
+  ///change pword function
+  async function changepword() {
+    // console.log(newMonth, lastMonth);
+    try {
+      const changep = await fetch("http://192.168.43.201:8082/api/change", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          lastMonth: lastMonth,
+          oraclededuct: oraclededuct,
+          pwordn: pwordn,
+        }),
+      });
+      const response = await changep.json();
+      if (response?.success === true) {
+        alert(response?.message);
+        /////
+        refOraclededuct.current?.clear();
+        refPwordn.current?.clear();
+      } else if (response?.success === false) {
+        alert(response?.message);
+        /////
+        refOraclededuct.current?.clear();
+        refPwordn.current?.clear();
+      }
+    } catch (error) {
+      alert("Check  your Internet Connection");
+    }
+  }
   ///////
 }
 // console.log("Freeman:", freeman); // Log the oracle number for debugging
@@ -250,3 +440,19 @@ export default function loginindex() {
 // }
 // Reasonable implementation of useRef for React Native/React context
 // Exporting freeman to be used in other parts of the app
+const styles2 = StyleSheet.create({
+  container: { marginTop: 100, padding: 20 },
+
+  overlay: {
+    flex: 1,
+    justifyContent: "center",
+    backgroundColor: "rgba(0,0,0,0.5)",
+  },
+  dialog: {
+    margin: 30,
+    padding: 20,
+    backgroundColor: "#fff",
+    borderRadius: 10,
+  },
+});
+// This is a simple modal dialog component that can be used to confirm actions or display messages.

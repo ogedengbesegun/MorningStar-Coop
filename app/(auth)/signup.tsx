@@ -9,7 +9,8 @@ import {
   View,
 } from "react-native";
 import styles from "../../styles/dstyles";
-// import myDialog from "./myDialog";
+
+
 
 export default function signup() {
   ////navigation
