@@ -1,45 +1,10 @@
-// import cors from 'cors';
-// // import Constants from 'expo-constants';
-// import 'dotenv/config';
-// import express from 'express';
-// import { MongoClient } from 'mongodb';
 
 
-// // const MONGO_db2 = Constants.expoConfig?.extra?.MONGO_db2;
-// const app = express()
-// const PORT = 8081
-// // Initialize Express app
-// app.use(express.json());
-// app.use(cors());
-// const client = new MongoClient(process.env.MONGO_DB_URI)
-
-// client.connect().then(() => {
-//     const db = client.db('morningStar');
-//     const yr25 = db.collection('2025');
-//     const userslog = db.collection('userslog');
-//     /////////////////
-//     app.post('/api/signup', async (req, res) => {
-//         // Implement your logic here
-//         const {
-//             fullname,
-//             oracleNum,
-//             pword,
-//             cpword
-//         } = req.body;
-//         const signup = await userslog.insertOne({
-//             full_name: fullname, oracle: oracleNum,
-//             password: pword
-//         });
-//         res.json(signup);
-//         // res.send('Users endpoint');
-//     });
 
 
-//     // Start the server
-//     app.listen(PORT, () => {
-//         console.log(`Server is running on port ${PORT}`);
-//     });
-// }).catch((error) => { console.log(`error connecting Mongodb, ${error}`) });
+
+
+
 
 import bcrypt from 'bcrypt';
 import cors from 'cors';
@@ -53,7 +18,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const PORT = process.env.PORT || 8082;
+const PORT = process.env.PORT || 3000;
 const client = new MongoClient(process.env.MONGO_DB_URI);
 
 // async function startServer() {
