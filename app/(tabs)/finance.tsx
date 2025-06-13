@@ -1,8 +1,7 @@
-import React,{useState} from "react";
+import React from "react";
 import { useUser } from "../../context/UserContext";
 
 import {
-  FlatList,
   Button,
   Image,
   ScrollView,
@@ -15,7 +14,7 @@ import {
 
 export default function finance() {
   const { user } = useUser();
-  
+
   return (
     <ScrollView>
       <View style={[{ padding: 10 }]}>
@@ -100,8 +99,10 @@ export default function finance() {
             marginLeft: 10,
           }}
         >
-          <Text style={{marginLeft:30,fontSize:15}}>Oracle: {user?.oracle}</Text>
-       
+          <Text style={{ marginLeft: 30, fontSize: 15 }}>
+            Oracle: {user?.oracle}
+          </Text>
+
           <Text style={{ marginTop: 15, marginRight: 30, marginLeft: 30 }}>
             Balance Brought Down
           </Text>
