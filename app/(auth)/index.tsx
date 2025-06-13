@@ -26,6 +26,7 @@ import {
 import styles from "../../styles/dstyles"; // Adjust the path as necessary
 
 export default function loginindex() {
+  const renderUrl="https://morningstarbackend-rzgx.onrender.com"
   // const { API_URL } = Constants.expoConfig?.extra ?? {};
   const [visible, setVisible] = React.useState(false);
 
