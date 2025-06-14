@@ -25,8 +25,13 @@ import {
 } from "react-native";
 import styles from "../../styles/dstyles"; // Adjust the path as necessary
 
+// useEffect(()=>{
+// FetchExample
+// },[])
+
 export default function loginindex() {
-  // const { API_URL } = Constants.expoConfig?.extra ?? {};
+
+  
   const [visible, setVisible] = React.useState(false);
 
   ///to get value of the compo
@@ -46,6 +51,8 @@ export default function loginindex() {
   const refOraclededuct = useRef<TextInput>(null);
   const refPwordn = useRef<TextInput>(null);
   /////
+
+
 
   ///for Navigation btw screens
   const nav = useNavigation<any>(); // Ensure you have the correct type for navigation
@@ -363,6 +370,9 @@ export default function loginindex() {
               </View>
             </View>
           </View>
+          {/*  */}
+         
+              {/*  */}
         </ScrollView>
       </KeyboardAvoidingView>
     </>
