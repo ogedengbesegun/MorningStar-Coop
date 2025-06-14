@@ -3,8 +3,8 @@ import { Link } from "expo-router"; // Ensure you have expo-router installed
 import React, { useRef, useState } from "react";
 import { useUser } from "../../context/UserContext";
 
+import { API_URL } from "@env";
 import { lastMonth } from "../../utilities/mydate";
-import { API_URL } from '@env';
 // import Constants from 'expo-constants';
 // const API_URL = Constants.expoConfig?.extra?.API_URL;
 //
@@ -134,7 +134,7 @@ export default function loginindex() {
                 value={oracle}
                 placeholder="Oracle Number"
                 placeholderTextColor="grey"
-                style={[styles.input, { marginTop: 0 }]}
+                style={[styles.input, { marginTop: 0, padding: 10 }]}
                 maxLength={10}
                 keyboardType="numeric"
                 onChangeText={setOracle}
@@ -154,7 +154,7 @@ export default function loginindex() {
                 value={pword}
                 placeholder="Password"
                 placeholderTextColor="grey"
-                style={[styles.input, { marginTop: 0 }]}
+                style={[styles.input, { marginTop: 0, padding: 10 }]}
                 maxLength={15}
                 secureTextEntry={true}
                 keyboardType="default"
@@ -250,7 +250,12 @@ export default function loginindex() {
                         onChangeText={(text) => setOraclededuct(text.trim())}
                         style={[
                           styles.input,
-                          { marginTop: 10, fontSize: 15, width: "100%" },
+                          {
+                            fontSize: 15,
+                            width: "100%",
+                            padding: 10,
+                            borderWidth: 0,
+                          },
                         ]}
                       ></TextInput>
                       <TextInput
@@ -260,7 +265,15 @@ export default function loginindex() {
                         secureTextEntry={true}
                         maxLength={15}
                         keyboardType="default"
-                        style={[styles.input, { fontSize: 15, width: "100%" }]}
+                        style={[
+                          styles.input,
+                          {
+                            fontSize: 15,
+                            width: "100%",
+                            padding: 10,
+                            borderWidth: 0,
+                          },
+                        ]}
                         onChangeText={(text) => setPwordn(text.trim())}
                       ></TextInput>
                       {/* <View
@@ -358,9 +371,9 @@ export default function loginindex() {
   /////////////////
   async function loginUser() {
     try {
-      // console.log(`${API_URL}/login`);
+      console.log(`${API_URL}/api/login`);
 
-      const login = await fetch(`${API_URL}api/login`, {
+      const login = await fetch(`${API_URL}/api/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -401,9 +414,9 @@ export default function loginindex() {
   //////////
   ///change pword function
   async function changepword() {
-    // console.log(newMonth, lastMonth);
+    console.log(API_URL);
     try {
-      const changep = await fetch(`${API_URL}api/change`, {
+      const changep = await fetch(`${API_URL}/api/change`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
