@@ -136,7 +136,7 @@ app.post("/api/login", async (req, res) => {
 
   res.status(200).json({
     success: true,
-    message: `${krtlogin.full_name.split(" ")[1]} Welcome to MorningStar Cooperative Society`,
+    message: `${krtlogin.full_name.split(" ")[1]} Welcome to Morning Star Cooperative Society`,
     user: {
       id: krtlogin._id,
       full_name: krtlogin.full_name,
