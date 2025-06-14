@@ -8,7 +8,7 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "web-build": "eas-cli export --platform web",
+    "web-build": "npx eas-cli export --platform web",
     "build": "expo export:web",
     "lint": "expo lint"
   },
