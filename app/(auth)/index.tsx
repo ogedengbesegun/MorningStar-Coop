@@ -381,7 +381,7 @@ const URL_PRO=`https://morningstar-coop-backend.onrender.com`
   /////////////////
   async function loginUser() {
     try {
-      console.log(URL_PRO+`/api/login`);
+      console.log(`https://morningstar-coop-backend.onrender.com/api/login`);
 
       const login = await fetch(`${API_URL}/api/login`, {
         method: "POST",
@@ -426,7 +426,7 @@ const URL_PRO=`https://morningstar-coop-backend.onrender.com`
   async function changepword() {
     console.log(API_URL);
     try {
-      const changep = await fetch(URL_PRO+`/api/change`, {
+      const changep = await fetch(`https://morningstar-coop-backend.onrender.com/api/change`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
