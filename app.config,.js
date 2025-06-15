@@ -22,6 +22,7 @@ export default {
     icon: "./assets/images/icon.png",
     scheme: "morningstarcoop",
     userInterfaceStyle: "automatic",
+    platforms: ["ios", "android", "web"],
     newArchEnabled: false,
     ios: {
       supportsTablet: true,
