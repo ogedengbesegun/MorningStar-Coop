@@ -223,7 +223,7 @@ export default function signup() {
     setSubmitted(true); // lock the button
 
     try {
-      const signing = await fetch(`${API_URL}/api/signup`, {
+      const signing = await fetch(`https://morningstar-coop-backend.onrender.com/api/change/api/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
