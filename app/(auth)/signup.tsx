@@ -9,8 +9,6 @@ import {
   View,
 } from "react-native";
 import styles from "../../styles/dstyles";
-import { API_URL } from "@env";
-
 
 export default function signup() {
   ////navigation
@@ -88,7 +86,7 @@ export default function signup() {
               placeholder="Enter Full Name"
               style={[
                 styles.input,
-                { marginTop: 0, textTransform: "capitalize",padding:10 },
+                { marginTop: 0, textTransform: "capitalize", padding: 10 },
               ]}
               maxLength={50}
               keyboardType="default"
@@ -111,7 +109,7 @@ export default function signup() {
             <TextInput
               ref={reforacle}
               placeholder="Oracle Number"
-              style={[styles.input, { marginTop: 0 ,padding:10 }]}
+              style={[styles.input, { marginTop: 0, padding: 10 }]}
               maxLength={8}
               keyboardType="numeric"
               value={oracleNum}
@@ -130,7 +128,7 @@ export default function signup() {
             </Text>
             <TextInput
               placeholder="Password"
-              style={[styles.input, { marginTop: 0,padding:10  }]}
+              style={[styles.input, { marginTop: 0, padding: 10 }]}
               maxLength={15}
               autoCorrect={false}
               secureTextEntry={true}
@@ -152,7 +150,7 @@ export default function signup() {
             </Text>
             <TextInput
               placeholder="Confirm Password"
-              style={[styles.input, { marginTop: 0,padding:10  }]}
+              style={[styles.input, { marginTop: 0, padding: 10 }]}
               maxLength={15}
               autoCorrect={false}
               secureTextEntry={true}
@@ -200,7 +198,7 @@ export default function signup() {
               }}
             >
               <Text style={{ color: "red" }}>Note:</Text>
-              <Text style={{ color: "grey", textAlign: "center" }}>
+              <Text style={{ color: "grey", textAlign: "left" }}>
                 Please Non-Members are NOT allowed to input their Sign Up
                 Details on this platform. Thanks
               </Text>
@@ -223,16 +221,19 @@ export default function signup() {
     setSubmitted(true); // lock the button
 
     try {
-      const signing = await fetch(`https://morningstar-coop-backend.onrender.com/api/signup`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          fullname: fullname,
-          oracleNum: oracleNum,
-          pword: pword,
-          cpword: cpword,
-        }),
-      });
+      const signing = await fetch(
+        `https://morningstar-coop-backend.onrender.com/api/signup`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            fullname: fullname,
+            oracleNum: oracleNum,
+            pword: pword,
+            cpword: cpword,
+          }),
+        }
+      );
       const response = await signing.json();
       if (response.success === true) {
         alert(response.message);
