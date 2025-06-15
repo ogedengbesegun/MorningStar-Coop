@@ -30,8 +30,6 @@ import styles from "../../styles/dstyles"; // Adjust the path as necessary
 // },[])
 
 export default function loginindex() {
-
-  
   const [visible, setVisible] = React.useState(false);
 
   ///to get value of the compo
@@ -51,8 +49,7 @@ export default function loginindex() {
   const refOraclededuct = useRef<TextInput>(null);
   const refPwordn = useRef<TextInput>(null);
   /////
-
-
+  const URL_PRO = `https://morningstar-coop-backend.onrender.com`;
 
   ///for Navigation btw screens
   const nav = useNavigation<any>(); // Ensure you have the correct type for navigation
@@ -371,8 +368,8 @@ export default function loginindex() {
             </View>
           </View>
           {/*  */}
-         
-              {/*  */}
+
+          {/*  */}
         </ScrollView>
       </KeyboardAvoidingView>
     </>
@@ -381,7 +378,7 @@ export default function loginindex() {
   /////////////////
   async function loginUser() {
     try {
-      console.log(`${API_URL}/api/login`);
+      console.log(`${URL_PRO}/api/login`);
 
       const login = await fetch(`${API_URL}/api/login`, {
         method: "POST",
@@ -426,7 +423,7 @@ export default function loginindex() {
   async function changepword() {
     console.log(API_URL);
     try {
-      const changep = await fetch(`${API_URL}/api/change`, {
+      const changep = await fetch(`${URL_PRO}/api/change`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
