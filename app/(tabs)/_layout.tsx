@@ -2,9 +2,6 @@
 // import { Tabs } from "expo-router";
 // import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
-
-
-
 // export default function RootLayout() {
 //   return (
 //     <Tabs
@@ -88,7 +85,6 @@
 // //   />
 // // </Stack>
 
-
 import { Ionicons } from "@expo/vector-icons";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { Tabs } from "expo-router";
@@ -96,7 +92,6 @@ import { Tabs } from "expo-router";
 export default function TabsLayout() {
   return (
     <Tabs
-    
       screenOptions={{
         headerShown: true,
         headerStyle: { backgroundColor: "green" },

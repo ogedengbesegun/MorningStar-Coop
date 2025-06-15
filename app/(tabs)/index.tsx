@@ -82,13 +82,13 @@ export default function indextabs() {
         //////
       } else {
         alert("Not Updated yet: " + response.message);
-        setLast_deduct("XXXX");
-        setSaving("XXXX");
-        setRetirement("XXXX");
-        setLoanBalance("XXXX");
+        setLast_deduct(response?.acct);
+        setSaving(response?.acct);
+        setRetirement(response?.acct);
+        setLoanBalance(response?.acct);
       }
     } catch (error) {
-      alert("Error fetching financial data: " + error);
+      alert("Error fetching financial data: ");
     }
   }
 }
