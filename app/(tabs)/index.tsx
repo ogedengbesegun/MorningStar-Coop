@@ -74,11 +74,30 @@ export default function indextabs() {
       );
       const response = await financialData.json();
       if (response.success === true) {
-        ///////
-        setLast_deduct(response?.acct.deduction);
-        setSaving(response?.acct.savings);
-        setRetirement(response?.acct.retirement);
-        setLoanBalance(response?.acct.loan_balance);
+        setLast_deduct(
+          Number(response?.acct.deduction).toLocaleString("en-NG", {
+            style: "currency",
+            currency: "NGN",
+          })
+        );
+        setSaving(
+          Number(response?.acct.savings).toLocaleString("en-NG", {
+            style: "currency",
+            currency: "NGN",
+          })
+        );
+        setRetirement(
+          Number(response?.acct.retirement).toLocaleString("en-NG", {
+            style: "currency",
+            currency: "NGN",
+          })
+        );
+        setLoanBalance(
+          Number(response?.acct.loan_balance).toLocaleString("en-NG", {
+            style: "currency",
+            currency: "NGN",
+          })
+        );
         //////
       } else {
         alert("Not Updated yet: " + response.message);

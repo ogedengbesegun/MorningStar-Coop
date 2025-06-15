@@ -30,8 +30,6 @@ import styles from "../../styles/dstyles"; // Adjust the path as necessary
 // },[])
 
 export default function loginindex() {
-
-
   const [visible, setVisible] = React.useState(false);
 
   ///to get value of the compo
@@ -51,8 +49,7 @@ export default function loginindex() {
   const refOraclededuct = useRef<TextInput>(null);
   const refPwordn = useRef<TextInput>(null);
   /////
-const URL_PRO=`https://morningstar-coop-backend.onrender.com`
-
+  const URL_PRO = `https://morningstar-coop-backend.onrender.com`;
 
   ///for Navigation btw screens
   const nav = useNavigation<any>(); // Ensure you have the correct type for navigation
@@ -167,8 +164,14 @@ const URL_PRO=`https://morningstar-coop-backend.onrender.com`
                 keyboardType="default"
                 onChangeText={setPword}
               ></TextInput>
-
-              {/* button */}
+              {/* Dialog Text View for info */}
+              {/* <Text style={{fontSize:15,fontStyle:"italic"}}></Text> */}
+              <Modal visible={visible}>
+                <View>
+                  <Text>Loading</Text>
+                </View>
+              </Modal>
+              {/* TouchableOpacity */}
               <TouchableOpacity
                 style={[
                   styles.border,
@@ -237,7 +240,7 @@ const URL_PRO=`https://morningstar-coop-backend.onrender.com`
                       <Text
                         style={{
                           // width: 350,
-                          textAlign: "center",
+                          textAlign: "left",
                           color: "grey",
                           marginRight: "auto",
                           marginLeft: "auto",
@@ -245,9 +248,9 @@ const URL_PRO=`https://morningstar-coop-backend.onrender.com`
                         }}
                       >
                         Enter Oracle Number with last Month Deduction without
-                        space e.g 141516,200000 Oracle Number is e.g 141516 and
-                        last Month Deduction is e.g 200000 Note: No space
-                        fullstop is allowed but put comma as separator.
+                        space e.g 141516,200000 Oracle Number e.g 141516 and
+                        last Month Deduction e.g 200000 Note: No space fullstop
+                        is allowed but put comma as separator.
                       </Text>
                       <TextInput
                         ref={refOraclededuct}
@@ -371,8 +374,8 @@ const URL_PRO=`https://morningstar-coop-backend.onrender.com`
             </View>
           </View>
           {/*  */}
-         
-              {/*  */}
+
+          {/*  */}
         </ScrollView>
       </KeyboardAvoidingView>
     </>
@@ -383,14 +386,17 @@ const URL_PRO=`https://morningstar-coop-backend.onrender.com`
     try {
       console.log(`https://morningstar-coop-backend.onrender.com/api/login`);
 
-      const login = await fetch(`https://morningstar-coop-backend.onrender.com/api/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          oracle: oracle,
-          pword: pword,
-        }),
-      });
+      const login = await fetch(
+        `https://morningstar-coop-backend.onrender.com/api/login`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            oracle: oracle,
+            pword: pword,
+          }),
+        }
+      );
       const response = await login.json();
 
       if (response.success === true) {
@@ -426,15 +432,18 @@ const URL_PRO=`https://morningstar-coop-backend.onrender.com`
   async function changepword() {
     console.log(API_URL);
     try {
-      const changep = await fetch(`https://morningstar-coop-backend.onrender.com/api/change`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          lastMonth: lastMonth,
-          oraclededuct: oraclededuct,
-          pwordn: pwordn,
-        }),
-      });
+      const changep = await fetch(
+        `https://morningstar-coop-backend.onrender.com/api/change`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            lastMonth: lastMonth,
+            oraclededuct: oraclededuct,
+            pwordn: pwordn,
+          }),
+        }
+      );
       const response = await changep.json();
       if (response?.success === true) {
         alert(response?.message);
