@@ -263,12 +263,13 @@ export default function loginindex() {
                           {
                             fontSize: 15,
                             width: "100%",
-                            padding: 10,
-                            borderWidth: 0,
+                            padding: 13,
+                           
                           },
                         ]}
                       ></TextInput>
                       <TextInput
+                      
                         ref={refPwordn}
                         value={pwordn}
                         placeholder="Enter New Password"
@@ -280,8 +281,8 @@ export default function loginindex() {
                           {
                             fontSize: 15,
                             width: "100%",
-                            padding: 10,
-                            borderWidth: 0,
+                            padding: 13,
+                           
                           },
                         ]}
                         onChangeText={(text) => setPwordn(text.trim())}
@@ -302,9 +303,9 @@ export default function loginindex() {
                         onPress={changepword}
                         style={[
                           {
-                            padding: 10,
+                            padding: 13,
                             backgroundColor: "lightgreen",
-                            borderRadius: 10,
+                            borderRadius: 5,
                             marginTop: 15,
 
                             // marginRight: "auto",
@@ -326,9 +327,9 @@ export default function loginindex() {
                         onPress={() => setVisible(false)}
                         style={[
                           {
-                            padding: 10,
+                            padding: 13,
                             backgroundColor: "lightblue",
-                            borderRadius: 10,
+                            borderRadius: 5,
                             marginTop: 5,
                             // width: 100,
                             // marginRight: "auto",

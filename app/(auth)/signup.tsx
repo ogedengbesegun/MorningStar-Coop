@@ -86,7 +86,7 @@ export default function signup() {
               placeholder="Enter Full Name"
               style={[
                 styles.input,
-                { marginTop: 0, textTransform: "capitalize", padding: 10 },
+                { marginTop: 0, textTransform: "capitalize", padding: 13 },
               ]}
               maxLength={50}
               keyboardType="default"
@@ -109,7 +109,7 @@ export default function signup() {
             <TextInput
               ref={reforacle}
               placeholder="Oracle Number"
-              style={[styles.input, { marginTop: 0, padding: 10 }]}
+              style={[styles.input, { marginTop: 0, padding: 13 }]}
               maxLength={8}
               keyboardType="numeric"
               value={oracleNum}
@@ -128,7 +128,7 @@ export default function signup() {
             </Text>
             <TextInput
               placeholder="Password"
-              style={[styles.input, { marginTop: 0, padding: 10 }]}
+              style={[styles.input, { marginTop: 0, padding: 13 }]}
               maxLength={15}
               autoCorrect={false}
               secureTextEntry={true}
@@ -150,7 +150,7 @@ export default function signup() {
             </Text>
             <TextInput
               placeholder="Confirm Password"
-              style={[styles.input, { marginTop: 0, padding: 10 }]}
+              style={[styles.input, { marginTop: 0, padding: 13 }]}
               maxLength={15}
               autoCorrect={false}
               secureTextEntry={true}

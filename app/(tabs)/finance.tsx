@@ -17,18 +17,18 @@ export default function finance() {
 
   return (
     <ScrollView>
-      <View style={[{ padding: 10 }]}>
+      <View style={[{ padding: 10, width: 300,alignSelf:"center" }]}>
         <View>
           <Image
             source={require("../../assets/images/d_img/finance_calculator.jpg")}
             style={{
               width: 200,
-              height: 100,
+              height: 200,
               marginRight: "auto",
               marginLeft: "auto",
               position: "static",
               top: 0,
-              zIndex: 2,
+              // zIndex: 2,
             }}
           ></Image>
         </View>
