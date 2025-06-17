@@ -43,11 +43,11 @@ export default function indextabs() {
         <Text style={{ fontSize: 20, color: "green" }}>
           Balances as at: {c_year}/{c_month}/{c_day}
         </Text>
-        <Text style={{ fontSize: 15, color: "green" }}>Savings: {saving}</Text>
-        <Text style={{ fontSize: 15, color: "green" }}>
+        <Text style={{ fontSize: 17, color: "green" }}>Savings: {saving}</Text>
+        <Text style={{ fontSize: 17, color: "green" }}>
           Retirement: {retirement}
         </Text>
-        <Text style={{ fontSize: 15, color: "green" }}>
+        <Text style={{ fontSize: 17, color: "green" }}>
           Loan Balance: {loanBalance}
         </Text>
       </View>
@@ -100,7 +100,7 @@ export default function indextabs() {
         );
         //////
       } else {
-        alert("Not Updated yet: " + response.message);
+        alert(response?.message);
         setLast_deduct(response?.acct);
         setSaving(response?.acct);
         setRetirement(response?.acct);
