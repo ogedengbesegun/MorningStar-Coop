@@ -35,22 +35,22 @@ const newMonth =
                     : c_month === "05"
                         ? monthNames[4]
                         : c_month === "06"
- ? monthNames[5]
-: c_month === "07"
-? monthNames[6]
-: c_month === "08"
-   ? monthNames[7]
-  : c_month === "09"
- ? monthNames[8]
-   : c_month === "10"
-   ? monthNames[9]
- : c_month === "11"
-  ? monthNames[10]
-: c_month === "12"
-  ? monthNames[11]
-     : "";
-const lastMonth = monthNames[(c_date.getMonth()-1)];
+                            ? monthNames[5]
+                            : c_month === "07"
+                                ? monthNames[6]
+                                : c_month === "08"
+                                    ? monthNames[7]
+                                    : c_month === "09"
+                                        ? monthNames[8]
+                                        : c_month === "10"
+                                            ? monthNames[9]
+                                            : c_month === "11"
+                                                ? monthNames[10]
+                                                : c_month === "12"
+                                                    ? monthNames[11]
+                                                    : "";
+const lastMonth = monthNames[(c_date.getMonth() - 1)];
+const nMonth = monthNames[(c_date.getMonth() + 1)]
 
-
-export { c_day, c_month, c_year, newMonth, lastMonth };
+export { c_day, c_month, c_year, lastMonth, newMonth, nMonth };
 

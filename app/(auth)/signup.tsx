@@ -1,3 +1,4 @@
+import { API_URL } from "@env";
 import { useNavigation } from "@react-navigation/native";
 import React, { useRef, useState } from "react";
 import {
@@ -11,6 +12,7 @@ import {
 import styles from "../../styles/dstyles";
 
 export default function signup() {
+  // console.log(API_URL);
   ////navigation
   const nav = useNavigation() as any;
 
@@ -21,7 +23,7 @@ export default function signup() {
   /////////////
   /////to set the button disabled after once click
   const [submitted, setSubmitted] = useState(false);
-
+  const [regText, setRegText] = useState("Register Now");
   ///to set the value of the components
   const [fullname, setFullname] = useState("");
   const [oracleNum, setOracle] = useState("");
@@ -170,7 +172,11 @@ export default function signup() {
                   backgroundColor: "lightgreen",
                 },
               ]}
-              onPress={handle_signup}
+              onPress={async () => {
+                setRegText("In Progress...");
+                await handle_signup();
+                setRegText("Register Now");
+              }}
               disabled={submitted}
             >
               <Text
@@ -183,7 +189,7 @@ export default function signup() {
                   fontWeight: "bold",
                 }}
               >
-                Register Now
+                {regText}
               </Text>
             </TouchableOpacity>
             <View
@@ -211,7 +217,7 @@ export default function signup() {
 
   //   //capitalise
 
-  async function handle_signup(e: any) {
+  async function handle_signup() {
     // if (fullname === "" || oracleNum === "" || pword === "") {
     //   alert(`Sorry, Please Enter your Details`);
     //   e.preventDefault();
@@ -221,19 +227,16 @@ export default function signup() {
     setSubmitted(true); // lock the button
 
     try {
-      const signing = await fetch(
-        `https://morningstar-coop-backend.onrender.com/api/signup`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            fullname: fullname,
-            oracleNum: oracleNum,
-            pword: pword,
-            cpword: cpword,
-          }),
-        }
-      );
+      const signing = await fetch(`${API_URL}/api/signup`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fullname: fullname,
+          oracleNum: oracleNum,
+          pword: pword,
+          cpword: cpword,
+        }),
+      });
       const response = await signing.json();
       if (response.success === true) {
         alert(response.message);

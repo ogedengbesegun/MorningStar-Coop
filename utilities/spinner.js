@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, Button, ActivityIndicator, StyleSheet } from 'react-native';
 
-const FetchExample = () => {
+const FetchExample = ({setLoading,loading}) => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState(null);
 

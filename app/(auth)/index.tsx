@@ -1,9 +1,10 @@
+import { API_URL } from "@env";
 import { useNavigation } from "@react-navigation/native";
 import { Link } from "expo-router"; // Ensure you have expo-router installed
 import React, { useRef, useState } from "react";
 import { useUser } from "../../context/UserContext";
-
-import { API_URL } from "@env";
+// import CustomModal from "../../utilities/CustomModal";
+// import FetchExample from "../../utilities/spinner";
 import { lastMonth } from "../../utilities/mydate";
 // import Constants from 'expo-constants';
 // const API_URL = Constants.expoConfig?.extra?.API_URL;
@@ -31,7 +32,7 @@ import styles from "../../styles/dstyles"; // Adjust the path as necessary
 
 export default function loginindex() {
   const [visible, setVisible] = React.useState(false);
-
+  const [textChange, setTextChange] = useState('Login');
   ///to get value of the compo
   const [oracle, setOracle] = useState("");
   const [pword, setPword] = useState("");
@@ -166,11 +167,7 @@ export default function loginindex() {
               ></TextInput>
               {/* Dialog Text View for info */}
               {/* <Text style={{fontSize:15,fontStyle:"italic"}}></Text> */}
-              <Modal visible={visible}>
-                <View>
-                  <Text>Loading</Text>
-                </View>
-              </Modal>
+
               {/* TouchableOpacity */}
               <TouchableOpacity
                 style={[
@@ -184,7 +181,11 @@ export default function loginindex() {
                     marginLeft: "auto",
                   },
                 ]}
-                onPress={loginUser}
+                onPress={async () => {
+                  setTextChange("Loading...");
+                  await loginUser();
+                  setTextChange("Login");
+                }}
               >
                 <Text
                   style={{
@@ -194,7 +195,7 @@ export default function loginindex() {
                     fontSize: 18,
                   }}
                 >
-                  Login
+                 {textChange}
                 </Text>
               </TouchableOpacity>
 
@@ -264,12 +265,10 @@ export default function loginindex() {
                             fontSize: 15,
                             width: "100%",
                             padding: 13,
-                           
                           },
                         ]}
                       ></TextInput>
                       <TextInput
-                      
                         ref={refPwordn}
                         value={pwordn}
                         placeholder="Enter New Password"
@@ -282,7 +281,6 @@ export default function loginindex() {
                             fontSize: 15,
                             width: "100%",
                             padding: 13,
-                           
                           },
                         ]}
                         onChangeText={(text) => setPwordn(text.trim())}
@@ -385,10 +383,10 @@ export default function loginindex() {
   /////////////////
   async function loginUser() {
     try {
-      console.log(`https://morningstar-coop-backend.onrender.com/api/login`);
+      // console.log(`${API_URL}/api/login`);
 
       const login = await fetch(
-        `https://morningstar-coop-backend.onrender.com/api/login`,
+        `${API_URL}/api/login`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -431,10 +429,10 @@ export default function loginindex() {
   //////////
   ///change pword function
   async function changepword() {
-    console.log(API_URL);
+    // console.log(API_URL);
     try {
       const changep = await fetch(
-        `https://morningstar-coop-backend.onrender.com/api/change`,
+        `${API_URL}/api/change`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -463,7 +461,6 @@ export default function loginindex() {
   }
   ///////
 }
-// console.log("Freeman:", freeman); // Log the oracle number for debugging
 
 // This function returns the stored oracle number (freeman)
 // export async function transf(){
