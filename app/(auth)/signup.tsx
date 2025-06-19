@@ -1,6 +1,7 @@
-import { API_URL } from "@env";
 import { useNavigation } from "@react-navigation/native";
 import React, { useRef, useState } from "react";
+import ReusableModal from "../../utilities/ReusableModal";
+
 import {
   ImageBackground,
   ScrollView,
@@ -14,6 +15,10 @@ import styles from "../../styles/dstyles";
 export default function signup() {
   // console.log(API_URL);
   ////navigation
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalText, setmodalText] = useState("");
+
+  //////
   const nav = useNavigation() as any;
 
   ////////useEffect to navigate back to login page
@@ -83,6 +88,17 @@ export default function signup() {
             >
               Enter Full Name
             </Text>
+            <ReusableModal
+              visible={modalVisible}
+              onClose={() => setModalVisible(false)}
+            >
+              <Text style={{ color: "grey", marginBottom: 5 }}>
+                MorningStar Says...
+              </Text>
+              <Text style={{ textAlign: "left", color: "green", fontSize: 17 }}>
+                {modalText}
+              </Text>
+            </ReusableModal>
             <TextInput
               ref={refname}
               placeholder="Enter Full Name"
@@ -227,19 +243,24 @@ export default function signup() {
     setSubmitted(true); // lock the button
 
     try {
-      const signing = await fetch(`https://morningstar-coop-backend.onrender.com/api/signup`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          fullname: fullname,
-          oracleNum: oracleNum,
-          pword: pword,
-          cpword: cpword,
-        }),
-      });
+      const signing = await fetch(
+        `https://morningstar-coop-backend.onrender.com/api/signup`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            fullname: fullname,
+            oracleNum: oracleNum,
+            pword: pword,
+            cpword: cpword,
+          }),
+        }
+      );
       const response = await signing.json();
       if (response.success === true) {
-        alert(response.message);
+        setModalVisible(true);
+        setmodalText(response.message);
+        // alert(response.message);
 
         setTimeout(() => {
           refname.current?.clear();
@@ -255,13 +276,17 @@ export default function signup() {
           return;
         }, 2000);
       } else if (response.success === false) {
-        alert(response.message);
+        setModalVisible(true);
+        setmodalText(response.message);
+        // alert(response.message);
         // refpword.current?.clear();
         // refcpword.current?.clear();
         // nav.replace("signup");
       }
     } catch (error) {
-      alert(`Sorry not sending to server, Check your Internet`);
+      setModalVisible(true);
+      setmodalText(`Sorry not sending to server, Check your Internet`);
+      // alert(`Sorry not sending to server, Check your Internet`);
       refname.current?.clear();
       reforacle.current?.clear();
       refpword.current?.clear();

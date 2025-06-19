@@ -4,7 +4,7 @@ import { Link } from "expo-router"; // Ensure you have expo-router installed
 import React, { useRef, useState } from "react";
 import { useUser } from "../../context/UserContext";
 // import CustomModal from "../../utilities/CustomModal";
-// import FetchExample from "../../utilities/spinner";
+import ReusableModal from "../../utilities/ReusableModal";
 import { lastMonth } from "../../utilities/mydate";
 // import Constants from 'expo-constants';
 // const API_URL = Constants.expoConfig?.extra?.API_URL;
@@ -31,6 +31,9 @@ import styles from "../../styles/dstyles"; // Adjust the path as necessary
 // },[])
 
 export default function loginindex() {
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalText, setmodalText] = useState("");
+
   const [visible, setVisible] = React.useState(false);
   const [textChange, setTextChange] = useState("Login");
   ///to get value of the compo
@@ -50,7 +53,6 @@ export default function loginindex() {
   const refOraclededuct = useRef<TextInput>(null);
   const refPwordn = useRef<TextInput>(null);
   /////
-  const URL_PRO = `https://morningstar-coop-backend.onrender.com`;
 
   ///for Navigation btw screens
   const nav = useNavigation<any>(); // Ensure you have the correct type for navigation
@@ -113,6 +115,7 @@ export default function loginindex() {
                 padding: 5,
                 width: 320,
                 marginBottom: 20,
+                // boxShadow:,
               }}
             >
               <Text
@@ -125,8 +128,22 @@ export default function loginindex() {
                   textAlign: "center",
                 }}
               >
-                Enter your login details here
+                Members' Login
               </Text>
+
+              <ReusableModal
+                visible={modalVisible}
+                onClose={() => setModalVisible(false)}
+              >
+                <Text style={{ color: "grey", marginBottom: 5 }}>
+                  MorningStar Says...
+                </Text>
+                <Text
+                  style={{ textAlign: "left", color: "green", fontSize: 17 }}
+                >
+                  {modalText}
+                </Text>
+              </ReusableModal>
 
               {/* oracle */}
               <Text
@@ -169,6 +186,7 @@ export default function loginindex() {
               {/* <Text style={{fontSize:15,fontStyle:"italic"}}></Text> */}
 
               {/* TouchableOpacity */}
+
               <TouchableOpacity
                 style={[
                   styles.border,
@@ -176,13 +194,13 @@ export default function loginindex() {
                     backgroundColor: "white",
                     borderRadius: 10,
                     marginTop: 15,
-                    width: 150,
+                    width: "70%",
                     marginRight: "auto",
                     marginLeft: "auto",
                   },
                 ]}
                 onPress={async () => {
-                  setTextChange("Loading...");
+                  setTextChange("Wait Loading...");
                   await loginUser();
                   setTextChange("Login");
                 }}
@@ -354,19 +372,26 @@ export default function loginindex() {
                 style={{
                   alignSelf: "center",
                   marginTop: 10,
-                  borderWidth: 2,
-                  borderColor: "lightgreen",
-                  padding: 8,
-                  borderRadius: 5,
+                  borderWidth: 1,
+                  borderStyle: "solid",
+                  borderColor: "black",
+                  padding: 10,
+                  borderRadius: 7,
                   marginRight: "auto",
                   marginLeft: "auto",
                   marginBottom: 10,
                   backgroundColor: "lightgreen",
+                  width: 200,
                 }}
               >
-                <Link href={"/(auth)/signup"}>
-                  <Text style={{ textTransform: "capitalize" }}>
-                    Create an Account
+                <Link href={"/(auth)/signup"} style={{ textAlign: "center" }}>
+                  <Text
+                    style={{
+                      textTransform: "capitalize",
+                      color: "green",
+                    }}
+                  >
+                    create an account
                   </Text>
                 </Link>
               </View>
@@ -399,7 +424,9 @@ export default function loginindex() {
       const response = await login.json();
 
       if (response.success === true) {
-        alert(response.message);
+        setModalVisible(true);
+        setmodalText(response.message);
+        // alert(response.message);
         // Set the user context with the user's name and password
         setUser({
           name: response.user.full_name.split(" ")[1],
@@ -418,12 +445,18 @@ export default function loginindex() {
         ////////set Oracle into Users device
         // await SecureStore.setItemAsync("myOracle", `${response.oracle}`);
       } else if (response.success === false) {
-        alert(response.message);
+        setModalVisible(true);
+        setmodalText(response.message);
+        // alert(response.message);
         refPword.current?.clear();
         return;
       }
     } catch (error) {
-      alert(`${error} Server NOT responding, try again later`);
+      setModalVisible(true);
+      setmodalText(`${error} Server NOT responding, try again later`);
+      // alert(`${error} Server NOT responding, try again later`);
+    } finally {
+      // setModalVisible(false);
     }
   }
   ///////
@@ -445,18 +478,24 @@ export default function loginindex() {
       );
       const response = await changep.json();
       if (response?.success === true) {
-        alert(response?.message);
+        setModalVisible(true);
+        setmodalText(response.message);
+        // alert(response?.message);
         /////
         refOraclededuct.current?.clear();
         refPwordn.current?.clear();
       } else if (response?.success === false) {
-        alert(response?.message);
+        setModalVisible(true);
+        setmodalText(response.message);
+        // alert(response?.message);
         /////
         refOraclededuct.current?.clear();
         refPwordn.current?.clear();
       }
     } catch (error) {
-      alert("Check  your Internet Connection");
+      setModalVisible(true);
+      setmodalText("Check  your Internet Connection");
+      // alert("Check  your Internet Connection");
     }
   }
   ///////

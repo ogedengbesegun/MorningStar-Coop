@@ -1,10 +1,12 @@
 import styles from "@/styles/dstyles";
-import { c_day, c_month, c_year, lastMonth, nMonth } from "@/utilities/mydate";
-import { API_URL } from "@env";
+import { c_day, c_month, c_year, lastMonth } from "@/utilities/mydate";
 import React, { useEffect, useRef, useState } from "react";
 import { Image, ScrollView, Text, View } from "react-native";
 import { useUser } from "../../context/UserContext";
 
+import Card from "../../utilities/card";
+
+/////////////
 export default function indextabs() {
   const refText = useRef<Text>(null);
   const [last_deduct, setLast_deduct] = useState<any | null>(null);
@@ -60,30 +62,39 @@ export default function indextabs() {
             <Text style={{ fontSize: 20, color: "green", marginTop: 15 }}>
               Balances as at: {c_year}/{c_month}/{c_day}
             </Text>
-            <Text style={{ fontSize: 17, color: "green" }}>
-              Savings: {saving}
-            </Text>
-            <Text style={{ fontSize: 17, color: "green" }}>
-              Retirement: {retirement}
-            </Text>
-            <Text style={{ fontSize: 17, color: "green" }}>
-              Loan Balance: {loanBalance}
-            </Text>
+            <Card style={[]}>
+              <Text style={{ fontSize: 17, color: "green" }}>
+                Savings: {saving}
+              </Text>
+            </Card>
 
-            <Text style={{ marginTop: 20 }}>
-              {c_year} Dividends: 
-              <Text style={{ color: "red", fontSize: 15 }}> XXX</Text>
-            </Text>
-            <Text style={{ fontStyle: "italic", color: "grey",marginTop:15 }}>
+            <Card style={[]}>
+              <Text style={{ fontSize: 17, color: "green" }}>
+                Retirement: {retirement}
+              </Text>
+            </Card>
+
+            <Card style={[]}>
+              <Text style={{ fontSize: 17, color: "green" }}>
+                Loan Balance: {loanBalance}
+              </Text>
+            </Card>
+
+            <Card style={[]}>
+              <Text style={{ marginTop: 20 }}>
+                {c_year} Dividends:
+                <Text style={{ color: "red", fontSize: 15 }}> XXX</Text>
+              </Text>
+            </Card>
+
+            <Text style={{ fontStyle: "italic", color: "grey", marginTop: 15 }}>
               These Financial Records are Carefully calculated for each member
               in accordance to remittances from the Oracle. However, if you have
               concerns about the figures displayed, please contact the Financial
               Secretary or any of the Exco Members.
               {"\n\n"}
-
-              Our Members are treasures
-              and we value all of your input for the advancement of this great
-              cooperative Society.
+              Our Members are treasures and we value all of your input for the
+              advancement of this great cooperative Society.
               {"\n\n"}
             </Text>
           </View>
@@ -97,16 +108,19 @@ export default function indextabs() {
   async function msc_index_finance() {
     // Fetch financial data from the API
     try {
-      const financialData = await fetch(`https://morningstar-coop-backend.onrender.com/api/msc_monthly_2025`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          newOracle: user?.oracle, // Ensure user.oracle is defined
-          lastMonth: lastMonth,
-        }),
-      });
+      const financialData = await fetch(
+        `https://morningstar-coop-backend.onrender.com/api/msc_monthly_2025`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            newOracle: user?.oracle, // Ensure user.oracle is defined
+            lastMonth: lastMonth,
+          }),
+        }
+      );
       const response = await financialData.json();
       if (response.success === true) {
         setLast_deduct(

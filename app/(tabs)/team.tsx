@@ -10,6 +10,7 @@ export default function team() {
       </View> */}
       <ScrollView>
         <View style={[styles.container, { width: 350 }]}>
+          <Text>Our Team like No Other</Text>
           <Image
             source={require("../../assets/images/favicon.png")}
             style={{ width: 150, height: 150, marginBottom: 20, marginTop: 20 }}
