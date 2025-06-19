@@ -32,7 +32,7 @@ import styles from "../../styles/dstyles"; // Adjust the path as necessary
 
 export default function loginindex() {
   const [visible, setVisible] = React.useState(false);
-  const [textChange, setTextChange] = useState('Login');
+  const [textChange, setTextChange] = useState("Login");
   ///to get value of the compo
   const [oracle, setOracle] = useState("");
   const [pword, setPword] = useState("");
@@ -195,7 +195,7 @@ export default function loginindex() {
                     fontSize: 18,
                   }}
                 >
-                 {textChange}
+                  {textChange}
                 </Text>
               </TouchableOpacity>
 
@@ -426,13 +426,13 @@ export default function loginindex() {
       alert(`${error} Server NOT responding, try again later`);
     }
   }
-  //////////
+  ///////
   ///change pword function
   async function changepword() {
     console.log(API_URL);
     try {
       const changep = await fetch(
-        `${API_URL}/api/change`,
+        `https://morningstar-coop-backend.onrender.com/api/change`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

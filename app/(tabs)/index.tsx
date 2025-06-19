@@ -97,7 +97,7 @@ export default function indextabs() {
   async function msc_index_finance() {
     // Fetch financial data from the API
     try {
-      const financialData = await fetch(`${API_URL}/api/msc_monthly_2025`, {
+      const financialData = await fetch(`https://morningstar-coop-backend.onrender.com/api/msc_monthly_2025`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
