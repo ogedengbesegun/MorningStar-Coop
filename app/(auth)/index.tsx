@@ -383,7 +383,7 @@ export default function loginindex() {
   /////////////////
   async function loginUser() {
     try {
-      // console.log(`${API_URL}/api/login`);
+      console.log(`${API_URL}/api/login`);
 
       const login = await fetch(
         `${API_URL}/api/login`,
@@ -429,7 +429,7 @@ export default function loginindex() {
   //////////
   ///change pword function
   async function changepword() {
-    // console.log(API_URL);
+    console.log(API_URL);
     try {
       const changep = await fetch(
         `${API_URL}/api/change`,
