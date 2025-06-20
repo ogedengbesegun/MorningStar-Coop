@@ -1,7 +1,6 @@
+import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import React, { useRef, useState } from "react";
-import ReusableModal from "../../utilities/ReusableModal";
-
 import {
   ImageBackground,
   ScrollView,
@@ -11,6 +10,7 @@ import {
   View,
 } from "react-native";
 import styles from "../../styles/dstyles";
+import ReusableModal from "../../utilities/ReusableModal";
 
 export default function signup() {
   // console.log(API_URL);
@@ -34,7 +34,11 @@ export default function signup() {
   const [oracleNum, setOracle] = useState("");
   const [pword, setPword] = useState("");
   const [cpword, setCpword] = useState("");
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
+  const togglePasswordVisibility = () => {
+    setIsPasswordVisible(!isPasswordVisible);
+  };
   /////to make refrence to the components
   const refname = useRef<TextInput>(null);
   const reforacle = useRef<TextInput>(null);
@@ -144,19 +148,53 @@ export default function signup() {
             >
               Password
             </Text>
-            <TextInput
-              placeholder="Password"
-              style={[styles.input, { marginTop: 0, padding: 13 }]}
-              maxLength={15}
-              autoCorrect={false}
-              secureTextEntry={true}
-              keyboardType="default"
-              value={pword}
-              onChangeText={(text) => setPword(text.trim())}
-              ref={refpword}
-              // onFocus={() => alert("15 Maximum characters allowed")}
-            />
-
+            <View
+              style={{
+                marginRight: "auto",
+                marginLeft: "auto",
+                backgroundColor: "grey",
+                width: 240,
+              }}
+            >
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  // justifyContent: "space-between",
+                }}
+              >
+                <TextInput
+                  placeholder="Password"
+                  style={[
+                    styles.input,
+                    { marginTop: 0, padding: 13, width: 240 },
+                  ]}
+                  maxLength={15}
+                  autoCorrect={false}
+                  secureTextEntry={!isPasswordVisible}
+                  keyboardType="default"
+                  value={pword}
+                  onChangeText={(text) => setPword(text.trim())}
+                  ref={refpword}
+                  // onFocus={() => alert("15 Maximum characters allowed")}
+                />
+                <TouchableOpacity
+                  onPress={togglePasswordVisibility}
+                  style={{ zIndex: 2 }}
+                >
+                  <Ionicons
+                    style={{
+                      marginLeft: -30,
+                      // backgroundColor: "lightgrey",
+                    }}
+                    name={isPasswordVisible ? "eye" : "eye-off"}
+                    size={30}
+                    color="green"
+                    // onPress={}
+                  />
+                </TouchableOpacity>
+              </View>
+            </View>
             {/*  */}
             <Text
               style={[

@@ -39,11 +39,15 @@ export default function loginindex() {
   const [modalChangeText, setmodalChangeText] = useState("");
   ////////
 
+  /////MainModal
   const [visible, setVisible] = React.useState(false);
   const [textChange, setTextChange] = useState("Login");
+  ///MainModal
+
   ///to get value of the compo
   const [oracle, setOracle] = useState("");
   const [pword, setPword] = useState("");
+  ///////
 
   ////refrence the new textInput comp
   const refOracle = useRef<TextInput>(null);
@@ -53,7 +57,8 @@ export default function loginindex() {
   //to get value for forgot comp
   const [oraclededuct, setOraclededuct] = useState("");
   const [pwordn, setPwordn] = useState("");
-
+  const [changeTextOraclededuct, setChangeTextOraclededuct] =
+    useState("Change Password");
   ///make refrence to the compo
   const refOraclededuct = useRef<TextInput>(null);
   const refPwordn = useRef<TextInput>(null);
@@ -269,12 +274,13 @@ export default function loginindex() {
                           marginRight: "auto",
                           marginLeft: "auto",
                           fontSize: 16,
+                          padding: 10,
                         }}
                       >
                         Enter Oracle Number with last Month Deduction without
                         space e.g 141516,200000 Oracle Number e.g 141516 and
-                        last Month Deduction e.g 200000 Note: No space fullstop
-                        is allowed but put comma as separator.
+                        last Month Deduction e.g 200000 {"\n"}Note: No space
+                        fullstop is allowed but put comma as separator.
                       </Text>
                       {/* reuseableModal */}
                       <ReusableModal
@@ -294,6 +300,8 @@ export default function loginindex() {
                           {modalChangeText}
                         </Text>
                       </ReusableModal>
+
+                      {/*  */}
                       <TextInput
                         ref={refOraclededuct}
                         value={oraclededuct}
@@ -339,7 +347,11 @@ export default function loginindex() {
                         }}
                       > */}
                       <TouchableOpacity
-                        onPress={changepword}
+                        onPress={async () => {
+                          setChangeTextOraclededuct("Password Changing...");
+                          await changepword();
+                          setChangeTextOraclededuct("Change Password");
+                        }}
                         style={[
                           {
                             padding: 13,
@@ -359,11 +371,22 @@ export default function loginindex() {
                             fontWeight: "600",
                           }}
                         >
-                          Change Password
+                          {changeTextOraclededuct}
+                          {/* Change Password */}
                         </Text>
                       </TouchableOpacity>
+
+                      {/* Close Button */}
                       <TouchableOpacity
-                        onPress={() => setVisible(false)}
+                        onPress={() => {
+                          // refPwordn.current?.clear();
+                          // refOraclededuct.current?.clear();
+                          setPwordn("");
+                          setOraclededuct("");
+                          setTimeout(() => {
+                            setVisible(false);
+                          }, 500);
+                        }}
                         style={[
                           {
                             padding: 13,
@@ -412,6 +435,7 @@ export default function loginindex() {
                     style={{
                       textTransform: "capitalize",
                       color: "green",
+                      fontWeight:'bold',
                     }}
                   >
                     create an account
