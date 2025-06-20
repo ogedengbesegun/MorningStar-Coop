@@ -31,8 +31,13 @@ import styles from "../../styles/dstyles"; // Adjust the path as necessary
 // },[])
 
 export default function loginindex() {
+  //other Modals
   const [modalVisible, setModalVisible] = useState(false);
   const [modalText, setmodalText] = useState("");
+  ////Modals  for change
+  const [modalChangeVisible, setModalChangeVisible] = useState(false);
+  const [modalChangeText, setmodalChangeText] = useState("");
+  ////////
 
   const [visible, setVisible] = React.useState(false);
   const [textChange, setTextChange] = useState("Login");
@@ -271,6 +276,24 @@ export default function loginindex() {
                         last Month Deduction e.g 200000 Note: No space fullstop
                         is allowed but put comma as separator.
                       </Text>
+                      {/* reuseableModal */}
+                      <ReusableModal
+                        visible={modalChangeVisible}
+                        onClose={() => setModalChangeVisible(false)}
+                      >
+                        <Text style={{ color: "grey", marginBottom: 5 }}>
+                          MorningStar Says...
+                        </Text>
+                        <Text
+                          style={{
+                            textAlign: "left",
+                            color: "green",
+                            fontSize: 17,
+                          }}
+                        >
+                          {modalChangeText}
+                        </Text>
+                      </ReusableModal>
                       <TextInput
                         ref={refOraclededuct}
                         value={oraclededuct}
@@ -478,23 +501,24 @@ export default function loginindex() {
       );
       const response = await changep.json();
       if (response?.success === true) {
-        setModalVisible(true);
-        setmodalText(response.message);
+        setModalChangeVisible(true);
+        setmodalChangeText(response.message);
         // alert(response?.message);
         /////
         refOraclededuct.current?.clear();
         refPwordn.current?.clear();
       } else if (response?.success === false) {
-        setModalVisible(true);
-        setmodalText(response.message);
+        setModalChangeVisible(true);
+        setmodalChangeText(response.message);
         // alert(response?.message);
         /////
         refOraclededuct.current?.clear();
         refPwordn.current?.clear();
       }
     } catch (error) {
-      setModalVisible(true);
-      setmodalText("Check  your Internet Connection");
+      setModalChangeVisible(true);
+      setmodalChangeText("Check your Internet Connection");
+
       // alert("Check  your Internet Connection");
     }
   }

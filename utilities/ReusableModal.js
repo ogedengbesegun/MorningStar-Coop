@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 12,
     padding: 20,
-    width: '85%',
+    width: 300,
     alignItems: 'center',
   },
   closeButton: {
