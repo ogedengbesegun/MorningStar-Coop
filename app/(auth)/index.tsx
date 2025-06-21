@@ -4,8 +4,10 @@ import { Link } from "expo-router"; // Ensure you have expo-router installed
 import React, { useRef, useState } from "react";
 import { useUser } from "../../context/UserContext";
 // import CustomModal from "../../utilities/CustomModal";
+import { Ionicons } from "@expo/vector-icons";
 import ReusableModal from "../../utilities/ReusableModal";
 import { lastMonth } from "../../utilities/mydate";
+
 // import Constants from 'expo-constants';
 // const API_URL = Constants.expoConfig?.extra?.API_URL;
 //
@@ -63,7 +65,12 @@ export default function loginindex() {
   const refOraclededuct = useRef<TextInput>(null);
   const refPwordn = useRef<TextInput>(null);
   /////
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
+  const togglePasswordVisibility = () => {
+    setIsPasswordVisible(!isPasswordVisible);
+  };
+  /////////
   ///for Navigation btw screens
   const nav = useNavigation<any>(); // Ensure you have the correct type for navigation
   /////////////////////
@@ -317,23 +324,47 @@ export default function loginindex() {
                           },
                         ]}
                       ></TextInput>
-                      <TextInput
-                        ref={refPwordn}
-                        value={pwordn}
-                        placeholder="Enter New Password"
-                        secureTextEntry={true}
-                        maxLength={15}
-                        keyboardType="default"
-                        style={[
-                          styles.input,
-                          {
-                            fontSize: 15,
-                            width: "100%",
-                            padding: 13,
-                          },
-                        ]}
-                        onChangeText={(text) => setPwordn(text.trim())}
-                      ></TextInput>
+                      {/*  */}
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          alignItems: "center",
+                          // justifyContent: "space-between",
+                        }}
+                      >
+                        <TextInput
+                          ref={refPwordn}
+                          value={pwordn}
+                          placeholder="Enter New Password"
+                          secureTextEntry={!isPasswordVisible}
+                          maxLength={15}
+                          keyboardType="default"
+                          style={[
+                            styles.input,
+                            {
+                              fontSize: 15,
+                              width: "100%",
+                              padding: 13,
+                            },
+                          ]}
+                          onChangeText={(text) => setPwordn(text.trim())}
+                        ></TextInput>
+                        {/* eye eye-off */}
+                        <TouchableOpacity
+                          onPress={togglePasswordVisibility}
+                          style={{ zIndex: 2 }}
+                        >
+                          <Ionicons
+                            style={{
+                              marginLeft: -35,
+                            }}
+                            name={isPasswordVisible ? "eye" : "eye-off"}
+                            size={35}
+                            color={isPasswordVisible ? "green" : "grey"}
+                            // onPress={}
+                          />
+                        </TouchableOpacity>
+                      </View>
                       {/* <View
                         style={{
                           flex: 1,
@@ -383,6 +414,10 @@ export default function loginindex() {
                           // refOraclededuct.current?.clear();
                           setPwordn("");
                           setOraclededuct("");
+                          ///
+                          ///make eye revert
+                          setIsPasswordVisible(false);
+                          ///setTime
                           setTimeout(() => {
                             setVisible(false);
                           }, 500);
@@ -435,7 +470,7 @@ export default function loginindex() {
                     style={{
                       textTransform: "capitalize",
                       color: "green",
-                      fontWeight:'bold',
+                      fontWeight: "bold",
                     }}
                   >
                     create an account
@@ -443,9 +478,27 @@ export default function loginindex() {
                 </Link>
               </View>
             </View>
+            <View
+              style={{
+                backgroundColor: "green",
+                marginBottom: 15,
+                borderRadius: 10,
+              }}
+            >
+              <Image
+                source={require("../../assets/images/d_img/groupMSC.jpg")}
+                style={{ width: 320, 
+                  borderTopLeftRadius:10,
+                borderTopRightRadius:10,
+                }}
+              />
+              <Text style={{ color: "white", margin: 5, padding: 5 ,fontSize:15}}>
+                Our Story Over the years are success...
+              </Text>
+            </View>
           </View>
           {/*  */}
-
+          <View></View>
           {/*  */}
         </ScrollView>
       </KeyboardAvoidingView>

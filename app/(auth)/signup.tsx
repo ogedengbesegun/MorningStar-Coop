@@ -68,8 +68,15 @@ export default function signup() {
             style={{ width: 300, height: 200, marginBottom: 5, marginTop: 15 }}
           />
 
-          <Text style={{ marginTop: 1, marginBottom: 7, fontSize: 20 }}>
-            Please enter your details
+          <Text
+            style={{
+              marginTop: 1,
+              marginBottom: 7,
+              fontSize: 20,
+              fontWeight: "bold",
+            }}
+          >
+            Members' Registration
           </Text>
 
           {/* sign up and touchableOpacity styling */}
@@ -108,7 +115,12 @@ export default function signup() {
               placeholder="Enter Full Name"
               style={[
                 styles.input,
-                { marginTop: 0, textTransform: "capitalize", padding: 13 },
+                {
+                  marginTop: 0,
+                  textTransform: "capitalize",
+                  padding: 13,
+                  borderWidth: 0,
+                },
               ]}
               maxLength={50}
               keyboardType="default"
@@ -184,12 +196,11 @@ export default function signup() {
                 >
                   <Ionicons
                     style={{
-                      marginLeft: -30,
-                      // backgroundColor: "lightgrey",
+                      marginLeft: -35,
                     }}
                     name={isPasswordVisible ? "eye" : "eye-off"}
-                    size={30}
-                    color="green"
+                    size={35}
+                    color={isPasswordVisible ? "green" : "grey"}
                     // onPress={}
                   />
                 </TouchableOpacity>
@@ -253,12 +264,12 @@ export default function signup() {
                 justifyContent: "flex-start",
                 // alignItems: "baseline",
                 // alignContent:"flex-start",
-                width: 250,
+                // width: 280,
                 padding: 10,
               }}
             >
               <Text style={{ color: "red" }}>Note:</Text>
-              <Text style={{ color: "grey", textAlign: "left" }}>
+              <Text style={{ color: "grey", textAlign: "left", width: 250 }}>
                 Please Non-Members are NOT allowed to input their Sign Up
                 Details on this platform. Thanks
               </Text>
