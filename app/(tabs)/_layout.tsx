@@ -117,15 +117,20 @@ export default function TabsLayout() {
             <Ionicons name="home" size={size} color={color} />
           ),
           headerTitle: "Home",
+         
         }}
       />
       <Tabs.Screen
         name="team"
         options={{
-          title: "Team",
+          title: "Meet Our Team like No Other",
           tabBarIcon: ({ size, color }) => (
             <Ionicons name="infinite" size={size} color={color} />
           ),
+        headerTintColor:"gold",
+        headerTitleStyle:{
+          fontSize:25
+        }
         }}
       />
       <Tabs.Screen

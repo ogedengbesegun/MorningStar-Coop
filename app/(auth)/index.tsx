@@ -173,7 +173,7 @@ export default function loginindex() {
                 value={oracle}
                 placeholder="Oracle Number"
                 placeholderTextColor="grey"
-                style={[styles.input, { marginTop: 0, padding: 10 }]}
+                style={[styles.input, { marginTop: 0, padding: 10 ,}]}
                 maxLength={10}
                 keyboardType="numeric"
                 onChangeText={setOracle}
