@@ -35,7 +35,7 @@ export default function team() {
               style={{
                 width: 300,
 
-                marginBottom: 20,
+                // marginBottom: 20,
                 marginTop: 20,
               }}
             />
@@ -51,7 +51,7 @@ export default function team() {
               style={{
                 width: 300,
 
-                marginBottom: 20,
+                // marginBottom: 20,
                 marginTop: 20,
               }}
             />
@@ -67,7 +67,7 @@ export default function team() {
               style={{
                 width: 300,
 
-                marginBottom: 20,
+                // marginBottom: 20,
                 marginTop: 20,
               }}
             />
@@ -83,7 +83,7 @@ export default function team() {
               style={{
                 width: 300,
 
-                marginBottom: 20,
+                // marginBottom: 20,
                 marginTop: 20,
               }}
             />

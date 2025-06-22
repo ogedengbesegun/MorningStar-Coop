@@ -97,7 +97,7 @@ export default function TabsLayout() {
         headerStyle: { backgroundColor: "green" },
         headerTintColor: "white",
         headerTitleAlign: "center",
-        tabBarShowLabel: true,
+        tabBarShowLabel: false,
         tabBarActiveTintColor: "white",
         tabBarInactiveTintColor: "#ccc",
         tabBarLabelStyle: { marginBottom: 5 },
@@ -129,7 +129,7 @@ export default function TabsLayout() {
           ),
         headerTintColor:"gold",
         headerTitleStyle:{
-          fontSize:25
+          fontSize:20
         }
         }}
       />
