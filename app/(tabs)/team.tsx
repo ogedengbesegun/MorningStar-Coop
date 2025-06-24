@@ -31,23 +31,38 @@ export default function team() {
           </Text> */}
           <Card style={[]}>
             <Image
+              source={require("../../assets/images/d_img/Mr. Raji President.jpg")}
+              style={{
+                width: 300,
+height: 400,
+
+                // marginBottom: 20,
+                marginTop: 20,
+              }}
+            />
+            <Text style={{ fontSize: 18 }}>Mr. Raji</Text>
+            <Text style={{ fontSize: 17, fontWeight: "bold" }}>President</Text>
+          </Card>
+
+          <Card style={[]}>
+            <Image
               source={require("../../assets/images/d_img/Mrs Bello Vice President.jpg")}
               style={{
                 width: 300,
-
+height: 400,
                 // marginBottom: 20,
                 marginTop: 20,
               }}
             />
             <Text style={{ fontSize: 18 }}>Mrs. Bello</Text>
-            <Text style={{ fontSize: 15, fontWeight: "bold" }}>
+            <Text style={{ fontSize: 17, fontWeight: "bold" }}>
               Vice President
             </Text>
           </Card>
 
-           <Card style={[]}>
+          <Card style={[]}>
             <Image
-              source={require("../../assets/images/d_img/Mr Babajide Olanrewaju General Secreatary.jpg")}
+              source={require("../../assets/images/d_img/Mr Babajide Olanrewaju General Secretary.jpg")}
               style={{
                 width: 300,
 
@@ -55,9 +70,25 @@ export default function team() {
                 marginTop: 20,
               }}
             />
-            <Text style={{ fontSize: 18 }}>Mr. Babajide olanrewaju</Text>
-            <Text style={{ fontSize: 15, fontWeight: "bold" }}>
-              General Secreatary
+            <Text style={{ fontSize: 18 }}>Mr. Babajide</Text>
+            <Text style={{ fontSize: 17, fontWeight: "bold" }}>
+              General Secretary
+            </Text>
+          </Card>
+
+          <Card style={[]}>
+            <Image
+              source={require("../../assets/images/d_img/Mr. Oyewale Assistant Secretary.jpg")}
+              style={{
+                width: 300,
+
+                // marginBottom: 20,
+                marginTop: 20,
+              }}
+            />
+            <Text style={{ fontSize: 18 }}>Mr. Oyewale</Text>
+            <Text style={{ fontSize: 17, fontWeight: "bold" }}>
+              Assistant Secretary
             </Text>
           </Card>
 
@@ -66,18 +97,32 @@ export default function team() {
               source={require("../../assets/images/d_img/Mrs Ogunleye Treasurer.jpg")}
               style={{
                 width: 300,
-
+height: 400,
                 // marginBottom: 20,
                 marginTop: 20,
               }}
             />
             <Text style={{ fontSize: 18 }}>Mrs. Ogunleye</Text>
-            <Text style={{ fontSize: 15, fontWeight: "bold" }}>
-              Treasurer
+            <Text style={{ fontSize: 17, fontWeight: "bold" }}>Treasurer</Text>
+          </Card>
+
+          <Card style={[]}>
+            <Image
+              source={require("../../assets/images/d_img/Mr. Bakare Financial Secretary.jpg")}
+              style={{
+                width: 300,
+                height: 400,
+                // marginBottom: 20,
+                marginTop: 20,
+              }}
+            />
+            <Text style={{ fontSize: 18 }}>Mr. Bakare</Text>
+            <Text style={{ fontSize: 17, fontWeight: "bold" }}>
+              Financial Secretary
             </Text>
           </Card>
 
-           <Card style={[]}>
+          <Card style={[]}>
             <Image
               source={require("../../assets/images/d_img/Mr Ojebode Ex Officio.jpg")}
               style={{
@@ -88,9 +133,7 @@ export default function team() {
               }}
             />
             <Text style={{ fontSize: 18 }}>Mr. Ojebode</Text>
-            <Text style={{ fontSize: 15, fontWeight: "bold" }}>
-              Ex-Officio
-            </Text>
+            <Text style={{ fontSize: 17, fontWeight: "bold" }}>Ex-Officio</Text>
           </Card>
         </View>
       </ScrollView>

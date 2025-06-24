@@ -19,7 +19,7 @@ export default {
     slug: "MorningStar-Coop",
     version: "1.0.0",
     orientation: "portrait",
-    icon: "./assets/images/icon.png",
+    icon: "./assets/images/d_img/logo.png",
     scheme: "morningstarcoop",
     userInterfaceStyle: "automatic",
     platforms: ["ios", "android", "web"],
@@ -36,7 +36,7 @@ export default {
     },
     web: {
       bundler: "metro",
-      favicon: "./assets/images/favicon.png",
+      favicon: "./assets/images/d_img/logo.png",
       output: "export"
     },
     plugins: [

@@ -2,7 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 // import * as SecureStore from "expo-secure-store";
 import { MaterialIcons } from "@expo/vector-icons";
 import React from "react";
-import { Text, View } from "react-native";
+import { Image, ScrollView, Text, View } from "react-native";
 
 import {
   GestureHandlerRootView,
@@ -38,58 +38,82 @@ export default function index() {
     //     backgroundColor: "lightgreen",
     //   }}
     // >
-    <GestureHandlerRootView
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "lightgreen",
-      }}
-    >
-      <View style={{ width: 300 }}>
-        <Text
+    <>
+      {/* <View></View> */}
+      {/* <ScrollView> */}
+        <GestureHandlerRootView
           style={{
-            fontSize: 35,
-            paddingLeft: 20,
-            paddingRight: 20,
-            textAlign: "center",
-            color: "grey",
-            fontWeight: "bold",
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "lightgreen",
           }}
         >
-          {" "}
-          Welcome
-        </Text>
-        <Text
-          style={{
-            fontSize: 40,
-            color: "green",
-            textAlign: "center",
-            fontWeight: "bold",
-          }}
-        >
-          {" "}
-          Morning Star Cooperative Society
-        </Text>
-      </View>
+          <View style={{ width: 300 }}>
+            {/* <View>
+              <Image
+                source={require("../assets/images/d_img/Mr. Raji President.jpg")}
+                style={{
+                  // width: "auto",
+                  // height:300,
+                  marginRight: "auto",
+                  marginLeft: "auto",
+                  marginTop: 15,
+                  borderRadius: 20,
+                }}
+              />
+              <Text  style={{fontSize:25,fontFamily:"time new roma"}}>Mr. Raji</Text>
+              <Text style={{fontSize:30,fontFamily:"time new roma"}}>President</Text>
+            </View> */}
+            <Text
+              style={{
+                fontSize: 35,
+                paddingLeft: 20,
+                paddingRight: 20,
+                textAlign: "center",
+                color: "grey",
+                fontWeight: "bold",
+              }}
+            >
+              {" "}
+              Welcome
+            </Text>
+            <Text
+              style={{
+                fontSize: 40,
+                color: "green",
+                textAlign: "center",
+                fontWeight: "bold",
+              }}
+            >
+              {" "}
+              Morning Star Cooperative Society
+            </Text>
+          </View>
 
-      <TapGestureHandler onActivated={onSingleTap}>
-        {/* <Text >
+          <TapGestureHandler onActivated={onSingleTap}>
+            {/* <Text >
           👆 Tap Me
         </Text> */}
-        <View style={{ justifyContent: "center", alignItems: "center" }}>
-          <Text style={{ color: "red", marginTop: 20 }}>
-            Tap home to Continue
-          </Text>
-          <MaterialIcons
-            name="home"
-            size={60}
-            color="white"
-            style={{ backgroundColor: "green", borderRadius: 10, marginTop: 2 }}
-          />
-        </View>
-      </TapGestureHandler>
-    </GestureHandlerRootView>
+            <View style={{ justifyContent: "center", alignItems: "center" }}>
+              <Text style={{ color: "red", marginTop: 20 }}>
+                Tap home to Continue
+              </Text>
+              <MaterialIcons
+                name="home"
+                size={60}
+                color="white"
+                style={{
+                  backgroundColor: "green",
+                  borderRadius: 10,
+                  marginTop: 2,
+                }}
+              />
+            </View>
+          </TapGestureHandler>
+        </GestureHandlerRootView>
+      {/* </ScrollView> */}
+    </>
     // </View>
   );
 }
