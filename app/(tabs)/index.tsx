@@ -1,5 +1,5 @@
 import styles from "@/styles/dstyles";
-import { c_day, c_month, c_year, lastMonth } from "@/utilities/mydate";
+import { c_day, c_month, c_year, lastMonth, nMonth } from "@/utilities/mydate";
 import React, { useEffect, useRef, useState } from "react";
 import { Image, ScrollView, Text, View } from "react-native";
 import { useUser } from "../../context/UserContext";
@@ -118,7 +118,7 @@ export default function indextabs() {
           body: JSON.stringify({
             newOracle: user?.oracle, // Ensure user.oracle is defined
             lastMonth: lastMonth,
-            c_month: c_month,
+            nMonth: nMonth,
           }),
         }
       );
