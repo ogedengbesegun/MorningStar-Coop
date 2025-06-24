@@ -119,7 +119,7 @@ export default function indextabs() {
           body: JSON.stringify({
             newOracle: user?.oracle, // Ensure user.oracle is defined
             lastMonth: lastMonth,
-            nMonth: nMonth,
+            nMonth: newMonth,
           }),
         }
       );
