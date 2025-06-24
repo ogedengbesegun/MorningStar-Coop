@@ -49,8 +49,8 @@ const newMonth =
                                                 : c_month === "12"
                                                     ? monthNames[11]
                                                     : "";
-const lastMonth = monthNames[(c_date.getMonth() - 1)];
-const nMonth = monthNames[(c_date.getMonth() + 1)]
+const lastMonth = monthNames[(c_month - 1)];
+const thisMonth = monthNames[c_month]
 
-export { c_day, c_month, c_year, lastMonth, newMonth, nMonth };
+export { c_day, c_month, c_year, lastMonth, thisMonth, };
 
