@@ -1,5 +1,5 @@
 import styles from "@/styles/dstyles";
-import { c_day, c_month, c_year, lastMonth, nMonth } from "@/utilities/mydate";
+import { c_day, c_month, c_year, lastMonth, nMonth ,newMonth} from "@/utilities/mydate";
 import React, { useEffect, useRef, useState } from "react";
 import { Image, ScrollView, Text, View } from "react-native";
 import { useUser } from "../../context/UserContext";
@@ -107,6 +107,7 @@ export default function indextabs() {
 
   async function msc_index_finance() {
     // Fetch financial data from the API
+    console.log(newMonth);
     try {
       const financialData = await fetch(
         `https://morningstar-coop-backend.onrender.com/api/msc_monthly_2025`,
