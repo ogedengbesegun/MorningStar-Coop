@@ -84,7 +84,7 @@ export default function indextabs() {
             // on={() => setMenuModal(false)}
           >
             {/* <Link href="/some-path" > */}
-            <Text>Home</Text>
+            {/* <Text>Home</Text> */}
             {/* </Link> */}
           {/* </Modal> */}
         </View>
