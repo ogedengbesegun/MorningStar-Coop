@@ -3,7 +3,7 @@ import { useNavigation } from "@react-navigation/native";
 import { MaterialIcons } from "@expo/vector-icons";
 import React from "react";
 import { Image, ScrollView, Text, View } from "react-native";
-
+import { c_month,thisMonth,lastMonth,c_year,c_day } from "@/utilities/mydate";
 import {
   GestureHandlerRootView,
   TapGestureHandler,

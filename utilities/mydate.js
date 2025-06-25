@@ -5,23 +5,24 @@ const c_day =
 //////formattting month
 const c_month =
     c_date.getMonth() + 1 < 10
-        ? "0" + (c_date.getMonth() + 1)
+        ? "0" + (c_date.getMonth()+1)
         : c_date.getMonth() + 1;
+
 const c_year = c_date.getFullYear();
 ///////////
 const monthNames = [
-    "jan",
-    "feb",
-    "mar",
-    "apr",
+    "january",
+    "february",
+    "march",
+    "april",
     "may",
-    "jun",
-    "jul",
-    "aug",
-    "sep",
-    "oct",
-    "nov",
-    "dec",
+    "june",
+    "july",
+    "august",
+    "september",
+    "october",
+    "november",
+    "december",
 ];
 const newMonth =
     c_month === "01"
@@ -49,8 +50,8 @@ const newMonth =
                                                 : c_month === "12"
                                                     ? monthNames[11]
                                                     : "";
-const lastMonth = monthNames[(c_month - 1)];
-const thisMonth = monthNames[c_month]
+const lastMonth = monthNames[c_date.getMonth()-1];
+const thisMonth = monthNames[c_date.getMonth()]
 
-export { c_day, c_month, c_year, lastMonth, thisMonth, };
+export { c_day, c_month, c_year, lastMonth, thisMonth,c_date };
 

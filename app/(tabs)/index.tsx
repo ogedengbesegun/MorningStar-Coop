@@ -9,13 +9,20 @@ import {
 import React, { useEffect, useRef, useState } from "react";
 import { Image, ScrollView, Text, View } from "react-native";
 import { useUser } from "../../context/UserContext";
+import ReusableModal from "../../utilities/ReusableModal";
 
 import Card from "../../utilities/card";
 
 /////////////
 export default function indextabs() {
+  ///madal
+  const [modalChangeVisible, setModalChangeVisible] = useState(false);
+  const [modalChangeText, setmodalChangeText] = useState("");
+
   const refText = useRef<Text>(null);
   const [last_deduct, setLast_deduct] = useState<any | null>(null);
+  const [this_deduct, setThis_deduct] = useState<any | null>(null);
+
   const [saving, setSaving] = useState<any | null>(null);
   const [retirement, setRetirement] = useState<any | null>(null);
   const [loanBalance, setLoanBalance] = useState<any | null>(null);
@@ -61,11 +68,29 @@ export default function indextabs() {
           />
           <View style={{ width: 300 }}>
             <Text style={{ fontSize: 20, color: "grey" }}>{user?.oracle}</Text>
-            <Text style={{ fontSize: 15, color: "green" }}>
-              Oracle Deduction as at:{" "}
-              {thisMonth.toLocaleUpperCase() || lastMonth.toLocaleUpperCase()},{" "}
-              {c_year} {last_deduct}
-            </Text>
+            <Card style={[]}>
+              <Text style={{ fontSize: 15, color: "grey" }}>
+                Oracle Deduction as at: {lastMonth.toLocaleUpperCase()},{" "}
+                {c_year} {last_deduct}
+              </Text>
+              <Text style={{ fontSize: 15, color: "green", paddingTop: 5 }}>
+                Oracle Deduction as at: {thisMonth.toLocaleUpperCase()},{" "}
+                {c_year} {this_deduct}
+              </Text>
+            </Card>
+
+            {/* Modal */}
+            {/* <ReusableModal
+              visible={modalChangeVisible}
+              onClose={() => setModalChangeVisible(false)}
+            >
+              <Text style={{ color: "grey", marginBottom: 5 }}>
+                MorningStar Says...
+              </Text>
+              <Text>{modalChangeText}</Text>
+            </ReusableModal> */}
+            {/* MOdal End */}
+
             <Text style={{ fontSize: 20, color: "green", marginTop: 15 }}>
               Balances as at: {c_year}/{c_month}/{c_day}
             </Text>
@@ -114,6 +139,7 @@ export default function indextabs() {
 
   async function msc_index_finance() {
     // Fetch financial data from the API
+    console.log(lastMonth);
     console.log(thisMonth);
     try {
       const financialData = await fetch(
@@ -132,12 +158,14 @@ export default function indextabs() {
       );
       const response = await financialData.json();
       if (response.success === true) {
+        ///////////
         setLast_deduct(
           Number(response?.acct.deduction).toLocaleString("en-NG", {
             style: "currency",
             currency: "NGN",
           })
         );
+
         setSaving(
           Number(response?.acct.savings).toLocaleString("en-NG", {
             style: "currency",
@@ -157,15 +185,28 @@ export default function indextabs() {
           })
         );
         //////
+        setThis_deduct(
+          Number(response?.acct2.deduction).toLocaleString("en-NG", {
+            style: "currency",
+            currency: "NGN",
+          })
+        );
+        ////////////
       } else {
-        alert(response?.message);
+        // setModalChangeVisible(true);
+        // setmodalChangeText("Error fetching financial data:");
+        // alert(response?.message);
+
         setLast_deduct(response?.acct);
+        setThis_deduct(response?.acct2);
         setSaving(response?.acct);
         setRetirement(response?.acct);
         setLoanBalance(response?.acct);
       }
     } catch (error) {
-      alert("Error fetching financial data: ");
+      // setModalChangeVisible(true)
+      // setmodalChangeText("Error fetching financial data: ");
+      // alert("Error fetching financial data: ");
     }
   }
 }
