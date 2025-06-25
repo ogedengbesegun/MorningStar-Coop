@@ -116,8 +116,8 @@ export default function TabsLayout() {
           tabBarIcon: ({ size, color }) => (
             <Ionicons name="home" size={size} color={color} />
           ),
-          headerTitle: "Home",
-         
+          headerTitle: "Morning Star Coop Society",
+          // headerShown: false,
         }}
       />
       <Tabs.Screen
@@ -127,10 +127,10 @@ export default function TabsLayout() {
           tabBarIcon: ({ size, color }) => (
             <Ionicons name="infinite" size={size} color={color} />
           ),
-        headerTintColor:"gold",
-        headerTitleStyle:{
-          fontSize:20
-        }
+          headerTintColor: "gold",
+          headerTitleStyle: {
+            fontSize: 20,
+          },
         }}
       />
       <Tabs.Screen

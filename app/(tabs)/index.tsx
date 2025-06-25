@@ -1,3 +1,5 @@
+import { API_URL } from "@env";
+
 import styles from "@/styles/dstyles";
 import {
   c_day,
@@ -7,9 +9,9 @@ import {
   thisMonth,
 } from "@/utilities/mydate";
 import React, { useEffect, useRef, useState } from "react";
-import { Image, ScrollView, Text, View } from "react-native";
+import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { useUser } from "../../context/UserContext";
-import ReusableModal from "../../utilities/ReusableModal";
+// import ReusableModal from "../../utilities/ReusableModal";
 
 import Card from "../../utilities/card";
 
@@ -44,24 +46,63 @@ export default function indextabs() {
     <>
       <View
         style={{
-          alignSelf: "center",
           backgroundColor: "white",
-          width: "100%",
+          display: "flex",
+          flexDirection: "row",
         }}
       >
-        <Text
+        <View style={{ width: "20%" }}>
+          <TouchableOpacity
+            style={{
+              margin: 5,
+              backgroundColor: "green",
+              padding: 5,
+              borderRadius: 5,
+            }}
+          >
+            {/* <Card style={[styles]}> */}
+            <Text
+              style={{
+                fontSize: 13,
+                fontWeight: "bold",
+                lineHeight: 30,
+                color: "white",
+                textAlign: "center",
+              }}
+            >
+              Menu
+            </Text>
+            {/* </Card> */}
+          </TouchableOpacity>
+        </View>
+        <View
           style={{
-            fontSize: 25,
-            color: "green",
-            textAlign: "center",
-            marginTop: 5,
+            alignSelf: "flex-start",
+            backgroundColor: "white",
+            width: "80%",
+            // display: "flex",
+            // flexDirection: "row",
+            // alignItems: "center",
+            // justifyContent: "flex-start",
+            borderBottomWidth: 1,
+            borderBottomColor: "green",
           }}
         >
-          Welcome, {user?.name ?? "Guest"}
-        </Text>
+          <Text
+            style={{
+              fontSize: 20,
+              color: "green",
+              textAlign: "left",
+              marginTop: 5,
+            }}
+          >
+            Welcome, {user?.name ?? "Guest"}
+          </Text>
+        </View>
       </View>
       <ScrollView>
         <View style={[styles.container, { backgroundColor: "white" }]}>
+          {/*  */}
           <Image
             source={require("../../assets/images/d_img/money-graphic-3d.jpg")}
             style={{ width: 320, height: 250, backgroundColor: "green" }}
@@ -142,20 +183,17 @@ export default function indextabs() {
     console.log(lastMonth);
     console.log(thisMonth);
     try {
-      const financialData = await fetch(
-        `https://morningstar-coop-backend.onrender.com/api/msc_monthly_2025`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            newOracle: user?.oracle, // Ensure user.oracle is defined
-            lastMonth: lastMonth,
-            thisMonth: thisMonth,
-          }),
-        }
-      );
+      const financialData = await fetch(`${API_URL}/api/msc_monthly_2025`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          newOracle: user?.oracle, // Ensure user.oracle is defined
+          lastMonth: lastMonth,
+          thisMonth: thisMonth,
+        }),
+      });
       const response = await financialData.json();
       if (response.success === true) {
         ///////////

@@ -1,3 +1,5 @@
+import { API_URL } from "@env";
+
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import React, { useRef, useState } from "react";
@@ -293,7 +295,7 @@ export default function signup() {
 
     try {
       const signing = await fetch(
-        `https://morningstar-coop-backend.onrender.com/api/signup`,
+        `${API_URL}/api/signup`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

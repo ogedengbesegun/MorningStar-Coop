@@ -33,6 +33,7 @@ import styles from "../../styles/dstyles"; // Adjust the path as necessary
 // },[])
 
 export default function loginindex() {
+  // console.log(`${API_URL}`);
   //other Modals
   const [modalVisible, setModalVisible] = useState(false);
   const [modalText, setmodalText] = useState("");
@@ -173,7 +174,7 @@ export default function loginindex() {
                 value={oracle}
                 placeholder="Oracle Number"
                 placeholderTextColor="grey"
-                style={[styles.input, { marginTop: 0, padding: 10 ,}]}
+                style={[styles.input, { marginTop: 0, padding: 10 }]}
                 maxLength={10}
                 keyboardType="numeric"
                 onChangeText={setOracle}
@@ -487,12 +488,15 @@ export default function loginindex() {
             >
               <Image
                 source={require("../../assets/images/d_img/groupMSC.jpg")}
-                style={{ width: 320, 
-                  borderTopLeftRadius:10,
-                borderTopRightRadius:10,
+                style={{
+                  width: 320,
+                  borderTopLeftRadius: 10,
+                  borderTopRightRadius: 10,
                 }}
               />
-              <Text style={{ color: "white", margin: 5, padding: 5 ,fontSize:15}}>
+              <Text
+                style={{ color: "white", margin: 5, padding: 5, fontSize: 15 }}
+              >
                 Our Story Over the years are success...
               </Text>
             </View>
@@ -508,10 +512,10 @@ export default function loginindex() {
   /////////////////
   async function loginUser() {
     try {
-      console.log(`${API_URL}/api/login`);
+      // console.log(`${API_URL}/api/login`);
 
       const login = await fetch(
-        `https://morningstar-coop-backend.onrender.com/api/login`,
+        `${API_URL}/api/login`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -565,7 +569,7 @@ export default function loginindex() {
     console.log(API_URL);
     try {
       const changep = await fetch(
-        `https://morningstar-coop-backend.onrender.com/api/change`,
+        `${API_URL}/api/change`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
