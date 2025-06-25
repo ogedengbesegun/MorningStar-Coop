@@ -1,4 +1,4 @@
-import { API_URL } from "@env";
+import { API_URL as ENV_API_URL } from "@env";
 
 import styles from "@/styles/dstyles";
 import {
@@ -17,9 +17,12 @@ import Card from "../../utilities/card";
 
 /////////////
 export default function indextabs() {
+  const API_URL =
+    ENV_API_URL || "https://morningstar-coop-backend.onrender.com";
+
   ///madal
-  const [modalChangeVisible, setModalChangeVisible] = useState(false);
-  const [modalChangeText, setmodalChangeText] = useState("");
+  // const [modalChangeVisible, setModalChangeVisible] = useState(false);
+  // const [modalChangeText, setmodalChangeText] = useState("");
 
   const refText = useRef<Text>(null);
   const [last_deduct, setLast_deduct] = useState<any | null>(null);

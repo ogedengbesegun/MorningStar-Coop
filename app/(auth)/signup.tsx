@@ -1,4 +1,4 @@
-import { API_URL } from "@env";
+import { API_URL as ENV_API_URL } from "@env";
 
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
@@ -17,6 +17,9 @@ import ReusableModal from "../../utilities/ReusableModal";
 export default function signup() {
   // console.log(API_URL);
   ////navigation
+  const API_URL =
+    ENV_API_URL || "https://morningstar-coop-backend.onrender.com";
+
   const [modalVisible, setModalVisible] = useState(false);
   const [modalText, setmodalText] = useState("");
 
@@ -294,19 +297,16 @@ export default function signup() {
     setSubmitted(true); // lock the button
 
     try {
-      const signing = await fetch(
-        `${API_URL}/api/signup`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            fullname: fullname,
-            oracleNum: oracleNum,
-            pword: pword,
-            cpword: cpword,
-          }),
-        }
-      );
+      const signing = await fetch(`${API_URL}/api/signup`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fullname: fullname,
+          oracleNum: oracleNum,
+          pword: pword,
+          cpword: cpword,
+        }),
+      });
       const response = await signing.json();
       if (response.success === true) {
         setModalVisible(true);

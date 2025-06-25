@@ -9,7 +9,6 @@ import ReusableModal from "../../utilities/ReusableModal";
 import { lastMonth } from "../../utilities/mydate";
 
 // import Constants from 'expo-constants';
-const API_URL = ENV_API_URL || "https://morningstar-coop-backend.onrender.com";
 //
 
 // import * as SecureStore from "expo-secure-store";
@@ -33,6 +32,9 @@ import styles from "../../styles/dstyles"; // Adjust the path as necessary
 // },[])
 
 export default function loginindex() {
+  const API_URL =
+    ENV_API_URL || "https://morningstar-coop-backend.onrender.com";
+
   // console.log(`${API_URL}`);
   //other Modals
   const [modalVisible, setModalVisible] = useState(false);
