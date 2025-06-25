@@ -1,4 +1,4 @@
-import { API_URL } from "@env";
+import { API_URL as ENV_API_URL } from "@env";
 import { useNavigation } from "@react-navigation/native";
 import { Link } from "expo-router"; // Ensure you have expo-router installed
 import React, { useRef, useState } from "react";
@@ -9,7 +9,7 @@ import ReusableModal from "../../utilities/ReusableModal";
 import { lastMonth } from "../../utilities/mydate";
 
 // import Constants from 'expo-constants';
-// const API_URL = Constants.expoConfig?.extra?.API_URL;
+const API_URL = ENV_API_URL || "https://morningstar-coop-backend.onrender.com";
 //
 
 // import * as SecureStore from "expo-secure-store";
@@ -514,17 +514,14 @@ export default function loginindex() {
     try {
       // console.log(`${API_URL}/api/login`);
 
-      const login = await fetch(
-        `${API_URL}/api/login`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            oracle: oracle,
-            pword: pword,
-          }),
-        }
-      );
+      const login = await fetch(`${API_URL}/api/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          oracle: oracle,
+          pword: pword,
+        }),
+      });
       const response = await login.json();
 
       if (response.success === true) {
@@ -568,18 +565,15 @@ export default function loginindex() {
   async function changepword() {
     console.log(API_URL);
     try {
-      const changep = await fetch(
-        `${API_URL}/api/change`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            lastMonth: lastMonth,
-            oraclededuct: oraclededuct,
-            pwordn: pwordn,
-          }),
-        }
-      );
+      const changep = await fetch(`${API_URL}/api/change`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          lastMonth: lastMonth,
+          oraclededuct: oraclededuct,
+          pwordn: pwordn,
+        }),
+      });
       const response = await changep.json();
       if (response?.success === true) {
         setModalChangeVisible(true);
