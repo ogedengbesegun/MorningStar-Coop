@@ -2,7 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 // import * as SecureStore from "expo-secure-store";
 import { MaterialIcons } from "@expo/vector-icons";
 import React from "react";
-import { Text, View } from "react-native";
+import { Image, Text, View } from "react-native";
 import {
   GestureHandlerRootView,
   TapGestureHandler,
@@ -33,19 +33,6 @@ export default function index() {
   };
 
   return (
-    //     setTimeout(() => {
-    //   <Redirect href="/(auth)/index" />;
-    // }, 3000)
-    // <View
-    //   style={{
-    //     flex: 1,
-    //     justifyContent: "center",
-    //     alignItems: "center",
-    //     paddingLeft: 10,
-    //     paddingRight: 10,
-    //     backgroundColor: "lightgreen",
-    //   }}
-    // >
     <>
       {/* <View></View> */}
       {/* <ScrollView> */}
@@ -59,20 +46,23 @@ export default function index() {
       >
         <View style={{ width: 300 }}>
           {/* <View>
-              <Image
-                source={require("../assets/images/d_img/Mr. Raji President.jpg")}
-                style={{
-                  // width: "auto",
-                  // height:300,
-                  marginRight: "auto",
-                  marginLeft: "auto",
-                  marginTop: 15,
-                  borderRadius: 20,
-                }}
-              />
+             
               <Text  style={{fontSize:25,fontFamily:"time new roma"}}>Mr. Raji</Text>
               <Text style={{fontSize:30,fontFamily:"time new roma"}}>President</Text>
             </View> */}
+          <View>
+            <Image
+              source={require("../assets/images/d_img/mscKnittedHands.png")}
+              style={{
+                
+                marginRight: "auto",
+                marginLeft: "auto",
+                // marginTop: 15,
+                // borderRadius: 20,
+                // resizeMode: "center",
+              }}
+            />
+          </View>
           <Text
             style={{
               fontSize: 35,

@@ -1,5 +1,3 @@
-import { API_URL as ENV_API_URL } from "@env";
-
 import styles from "@/styles/dstyles";
 import {
   c_day,
@@ -8,11 +6,12 @@ import {
   lastMonth,
   thisMonth,
 } from "@/utilities/mydate";
+import { API_URL as ENV_API_URL } from "@env";
 import React, { useEffect, useRef, useState } from "react";
-import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { Image, ScrollView, Text, TouchableOpacity, View,Modal } from "react-native";
 import { useUser } from "../../context/UserContext";
 // import ReusableModal from "../../utilities/ReusableModal";
-
+// import { Link } from "expo-router";
 import Card from "../../utilities/card";
 
 /////////////
@@ -31,7 +30,8 @@ export default function indextabs() {
   const [saving, setSaving] = useState<any | null>(null);
   const [retirement, setRetirement] = useState<any | null>(null);
   const [loanBalance, setLoanBalance] = useState<any | null>(null);
-
+  /////
+  const [menuModal, setMenuModal] = useState(false);
   const { user } = useUser();
 
   // Provide a default value to complete the expression
@@ -62,6 +62,7 @@ export default function indextabs() {
               padding: 5,
               borderRadius: 5,
             }}
+            onPress={()=>setMenuModal(true)}
           >
             {/* <Card style={[styles]}> */}
             <Text
@@ -75,8 +76,17 @@ export default function indextabs() {
             >
               Menu
             </Text>
+
             {/* </Card> */}
           </TouchableOpacity>
+          {/* <Modal
+            visible={menuModal}
+            // on={() => setMenuModal(false)}
+          >
+            {/* <Link href="/some-path" > */}
+            <Text>Home</Text>
+            {/* </Link> */}
+          {/* </Modal> */}
         </View>
         <View
           style={{
