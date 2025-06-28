@@ -6,10 +6,22 @@ export default function _layout() {
     <Stack screenOptions={{ headerStyle: { backgroundColor: "green" } }}>
       <Stack.Screen
         name="index"
+        
         options={{
           title: "Login",
           headerTitleAlign: "center",
           headerTintColor: "white",
+          headerShown:false,
+        }}
+      />
+      <Stack.Screen
+        name="callus"
+        
+        options={{
+          title: "Call Us ☎️",
+          headerTitleAlign: "center",
+          headerTintColor: "white",
+          headerShown:true,
         }}
       />
       <Stack.Screen

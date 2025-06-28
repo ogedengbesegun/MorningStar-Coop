@@ -20,8 +20,8 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginTop: 5,
   },
-  text: {
-    color: "green",
+  textWhite: {
+    color: "white",
     opacity: 0.8,
     fontSize: 20,
     fontWeight: "bold",

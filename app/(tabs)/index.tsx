@@ -152,9 +152,7 @@ export default function indextabs() {
               animationType="slide"
               onRequestClose={() => setMenuModal(true)}
             >
-              <View
-                style={[styles2.overlay]}
-              >
+              <View style={[styles2.overlay]}>
                 <TouchableOpacity
                   style={{
                     alignSelf: "flex-end",
@@ -458,31 +456,34 @@ const styles2 = StyleSheet.create({
   menuBtnTop: {
     padding: 15,
     backgroundColor: "white",
-    borderColor: "grey",
+    borderColor: "green",
     borderStyle: "solid",
     borderWidth: 1,
     marginRight: 50,
     marginBottom: 5,
     borderRadius: 10,
+    elevation: 5,
   },
   menuBtn: {
     padding: 15,
     backgroundColor: "white",
-    borderColor: "grey",
+    borderColor: "green",
     borderStyle: "solid",
     borderWidth: 1,
     marginRight: 50,
     borderRadius: 10,
     marginBottom: 5,
+    elevation: 5,
   },
   menuBtnBottom: {
     padding: 15,
     backgroundColor: "white",
-    borderColor: "grey",
+    borderColor: "green",
     borderStyle: "solid",
     borderWidth: 1,
     marginRight: 50,
     borderRadius: 10,
     marginBottom: 20,
+    elevation: 5,
   },
 });
