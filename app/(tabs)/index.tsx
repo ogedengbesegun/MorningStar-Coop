@@ -7,21 +7,25 @@ import {
   thisMonth,
 } from "@/utilities/mydate";
 import { API_URL as ENV_API_URL } from "@env";
+import { useNavigation } from "@react-navigation/native";
+import { Link, useRouter } from "expo-router";
 import React, { useEffect, useRef, useState } from "react";
-import { Image, ScrollView, Text, TouchableOpacity, View,Modal } from "react-native";
+import {
+  Image,
+  Modal,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { useUser } from "../../context/UserContext";
-// import ReusableModal from "../../utilities/ReusableModal";
-// import { Link } from "expo-router";
 import Card from "../../utilities/card";
 
 /////////////
 export default function indextabs() {
   const API_URL =
     ENV_API_URL || "https://morningstar-coop-backend.onrender.com";
-
-  ///madal
-  // const [modalChangeVisible, setModalChangeVisible] = useState(false);
-  // const [modalChangeText, setmodalChangeText] = useState("");
 
   const refText = useRef<Text>(null);
   const [last_deduct, setLast_deduct] = useState<any | null>(null);
@@ -33,7 +37,9 @@ export default function indextabs() {
   /////
   const [menuModal, setMenuModal] = useState(false);
   const { user } = useUser();
-
+  /////
+  const nav = useNavigation<any>();
+  const router = useRouter();
   // Provide a default value to complete the expression
   ///////useEffect(() => {
   useEffect(() => {
@@ -52,6 +58,9 @@ export default function indextabs() {
           backgroundColor: "white",
           display: "flex",
           flexDirection: "row",
+          justifyContent: "flex-start",
+          borderBottomWidth: 1,
+          borderBottomColor: "grey",
         }}
       >
         <View style={{ width: "20%" }}>
@@ -62,7 +71,7 @@ export default function indextabs() {
               padding: 5,
               borderRadius: 5,
             }}
-            onPress={()=>setMenuModal(true)}
+            onPress={() => setMenuModal(true)}
           >
             {/* <Card style={[styles]}> */}
             <Text
@@ -84,8 +93,8 @@ export default function indextabs() {
             // on={() => setMenuModal(false)}
           >
             {/* <Link href="/some-path" > */}
-            {/* <Text>Home</Text> */}
-            {/* </Link> */}
+          {/* <Text>Home</Text> */}
+          {/* </Link> */}
           {/* </Modal> */}
         </View>
         <View
@@ -95,21 +104,20 @@ export default function indextabs() {
             width: "80%",
             // display: "flex",
             // flexDirection: "row",
-            // alignItems: "center",
+            alignItems: "baseline",
             // justifyContent: "flex-start",
-            borderBottomWidth: 1,
-            borderBottomColor: "green",
           }}
         >
-          <Text
-            style={{
-              fontSize: 20,
-              color: "green",
-              textAlign: "left",
-              marginTop: 5,
-            }}
-          >
-            Welcome, {user?.name ?? "Guest"}
+          <Text style={{ fontSize: 15, marginTop: 16, color: "green" }}>
+            {" "}
+            Welcome,
+            <Text
+              style={{
+                fontSize: 22,
+              }}
+            >
+              {user?.name ?? "Guest"}
+            </Text>
           </Text>
         </View>
       </View>
@@ -121,18 +129,164 @@ export default function indextabs() {
             style={{ width: 320, height: 250, backgroundColor: "green" }}
           />
           <View style={{ width: 300 }}>
-            <Text style={{ fontSize: 20, color: "grey" }}>{user?.oracle}</Text>
+            <Text style={{ fontSize: 23, color: "grey", fontWeight: "bold" }}>
+              {user?.oracle}
+            </Text>
             <Card style={[]}>
-              <Text style={{ fontSize: 15, color: "grey" }}>
+              <Text style={{ fontSize: 17, color: "black" }}>
                 Oracle Deduction as at: {lastMonth.toLocaleUpperCase()},{" "}
-                {c_year} {last_deduct}
+                {c_year}
+                {":"} {last_deduct}
               </Text>
-              <Text style={{ fontSize: 15, color: "green", paddingTop: 5 }}>
+              <Text style={{ fontSize: 17, color: "green", paddingTop: 5 }}>
                 Oracle Deduction as at: {thisMonth.toLocaleUpperCase()},{" "}
-                {c_year} {this_deduct}
+                {c_year}
+                {":"} {this_deduct}
               </Text>
             </Card>
 
+            {/* modal */}
+            <Modal
+              visible={menuModal}
+              transparent
+              animationType="slide"
+              onRequestClose={() => setMenuModal(true)}
+            >
+              <View style={[styles2.overlay]}>
+                <TouchableOpacity
+                  style={{
+                    alignSelf: "flex-end",
+                    marginRight: 30,
+                    padding: 5,
+                    marginTop: 10,
+                    backgroundColor: "white",
+                    borderRadius: 40,
+                    height: 40,
+                    width: 40,
+                  }}
+                  onPress={() => setMenuModal(false)}
+                >
+                  <Text
+                    style={{
+                      // fontSize: 10,
+                      fontWeight: "bold",
+                      color: "red",
+
+                      textAlign: "center",
+                      padding: 5,
+                    }}
+                  >
+                    X
+                  </Text>
+                </TouchableOpacity>
+
+                <View
+                  style={{
+                    backgroundColor: "white",
+                    width: 300,
+                    // height: 450,
+                    marginTop: 10,
+                    marginRight: "auto",
+                    marginLeft: "auto",
+
+                    borderRadius: 10,
+                  }}
+                >
+                  <ScrollView>
+                    <View style={{ marginLeft: 20, marginTop: 20 }}>
+                      <Link
+                        href={"(tabs)/team"}
+                        style={styles2.menuBtnTop}
+                        onPress={() => {
+                          setMenuModal(false);
+                        }}
+                      >
+                        <Text style={{}}>Meet Our Team</Text>
+                      </Link>
+
+                      <Link
+                        href={"(tabs)/finance"}
+                        style={styles2.menuBtn}
+                        onPress={() => {
+                          setMenuModal(false);
+                        }}
+                      >
+                        <Text style={{}}>Personal Finance</Text>
+                      </Link>
+
+                      <Link
+                        href={"#"}
+                        style={styles2.menuBtn}
+                        onPress={() => {
+                          setMenuModal(false);
+                        }}
+                      >
+                        <Text style={{}}>News</Text>
+                      </Link>
+
+                      <Link
+                        href={"#"}
+                        style={styles2.menuBtn}
+                        onPress={() => {
+                          setMenuModal(false);
+                        }}
+                      >
+                        <Text style={{}}>Advertisements</Text>
+                      </Link>
+
+                      <Link
+                        href={"#"}
+                        style={styles2.menuBtn}
+                        onPress={() => {
+                          setMenuModal(false);
+                        }}
+                      >
+                        <Text style={{}}>Apply for Loan</Text>
+                      </Link>
+
+                      <Link
+                        href={"#"}
+                        style={styles2.menuBtn}
+                        onPress={() => {
+                          setMenuModal(false);
+                        }}
+                      >
+                        <Text style={{}}>Photo Gallery</Text>
+                      </Link>
+
+                      <Link
+                        href={"#"}
+                        style={styles2.menuBtn}
+                        onPress={() => {
+                          setMenuModal(false);
+                        }}
+                      >
+                        <Text style={{}}>AGM</Text>
+                      </Link>
+
+                      <Link
+                        href={"#"}
+                        style={styles2.menuBtn}
+                        onPress={() => {
+                          setMenuModal(false);
+                        }}
+                      >
+                        <Text style={{}}>Suggestion</Text>
+                      </Link>
+
+                      <TouchableOpacity
+                        style={styles2.menuBtnBottom}
+                        onPress={() => {
+                          router.replace("(auth)");
+                        }}
+                      >
+                        <Text style={{ color: "red" }}>Logout</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </ScrollView>
+                </View>
+              </View>
+            </Modal>
             {/* Modal */}
             {/* <ReusableModal
               visible={modalChangeVisible}
@@ -145,7 +299,14 @@ export default function indextabs() {
             </ReusableModal> */}
             {/* MOdal End */}
 
-            <Text style={{ fontSize: 20, color: "green", marginTop: 15 }}>
+            <Text
+              style={{
+                fontSize: 20,
+                color: "green",
+                marginTop: 15,
+                textAlign: "center",
+              }}
+            >
               Balances as at: {c_year}/{c_month}/{c_day}
             </Text>
             <Card style={[]}>
@@ -208,8 +369,26 @@ export default function indextabs() {
         }),
       });
       const response = await financialData.json();
+      /////////////////////////////////////////////
+      const savings =
+        response?.acct2.savings === "0" || null
+          ? response?.acct.savings
+          : response?.acct2.savings;
+      //////
+      const retirement =
+        response?.acct2.retirement === "0" || null
+          ? response?.acct.retirement
+          : response?.acct2.retirement;
+      //////
+      const loan_balance =
+        response?.acct2.loan_balance === "0" || null
+          ? response?.acct.loan_balance
+          : response?.acct2.loan_balance;
+
       if (response.success === true) {
         ///////////
+
+        ////////
         setLast_deduct(
           Number(response?.acct.deduction).toLocaleString("en-NG", {
             style: "currency",
@@ -218,19 +397,19 @@ export default function indextabs() {
         );
 
         setSaving(
-          Number(response?.acct.savings).toLocaleString("en-NG", {
+          Number(savings).toLocaleString("en-NG", {
             style: "currency",
             currency: "NGN",
           })
         );
         setRetirement(
-          Number(response?.acct.retirement).toLocaleString("en-NG", {
+          Number(retirement).toLocaleString("en-NG", {
             style: "currency",
             currency: "NGN",
           })
         );
         setLoanBalance(
-          Number(response?.acct.loan_balance).toLocaleString("en-NG", {
+          Number(loan_balance).toLocaleString("en-NG", {
             style: "currency",
             currency: "NGN",
           })
@@ -261,3 +440,47 @@ export default function indextabs() {
     }
   }
 }
+
+/////
+const styles2 = StyleSheet.create({
+  // container: { marginTop: 100, padding: 20 },
+
+  overlay: {
+    // flex: 1,
+    // justifyContent: "center",
+    backgroundColor: "rgba(0,0,0,0.5)",
+    marginTop: 60,
+    height: "100%",
+  },
+
+  menuBtnTop: {
+    padding: 15,
+    backgroundColor: "white",
+    borderColor: "grey",
+    borderStyle: "solid",
+    borderWidth: 1,
+    marginRight: 50,
+    marginBottom: 5,
+    borderRadius: 10,
+  },
+  menuBtn: {
+    padding: 15,
+    backgroundColor: "white",
+    borderColor: "grey",
+    borderStyle: "solid",
+    borderWidth: 1,
+    marginRight: 50,
+    borderRadius: 10,
+    marginBottom: 5,
+  },
+  menuBtnBottom: {
+    padding: 15,
+    backgroundColor: "white",
+    borderColor: "grey",
+    borderStyle: "solid",
+    borderWidth: 1,
+    marginRight: 50,
+    borderRadius: 10,
+    marginBottom: 20,
+  },
+});
