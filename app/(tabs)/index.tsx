@@ -152,7 +152,9 @@ export default function indextabs() {
               animationType="slide"
               onRequestClose={() => setMenuModal(true)}
             >
-              <View style={[styles2.overlay]}>
+              <View
+                style={[styles2.overlay]}
+              >
                 <TouchableOpacity
                   style={{
                     alignSelf: "flex-end",
@@ -184,7 +186,7 @@ export default function indextabs() {
                   style={{
                     backgroundColor: "white",
                     width: 300,
-                    // height: 450,
+                    height: "80%",
                     marginTop: 10,
                     marginRight: "auto",
                     marginLeft: "auto",
