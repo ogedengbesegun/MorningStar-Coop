@@ -3,6 +3,7 @@ import {
   Image,
   Linking,
   ScrollView,
+  StyleSheet,
   Text,
   TouchableOpacity,
   View,
@@ -39,116 +40,101 @@ export default function team() {
           <Card style={[]}>
             <Image
               source={require("../../assets/images/d_img/Mr. Raji President.jpg")}
-              style={{
-                width: 250,
-                height: 300,
-                marginTop: 20,
-              }}
+              style={style.imageStyle}
             />
             <Text style={{ fontSize: 18 }}>Mr. Raji</Text>
             <Text style={{ fontSize: 17, fontWeight: "bold" }}>
               The President
             </Text>
-            <TouchableOpacity
-              onPress={() => {
-                Linking.openURL("tel:+2347069986008");
-              }}
-            >
-              <Text style={{ marginTop: 10, fontSize: 17, color: "green" }}>
-                Call now 📱
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                Linking.openURL("https://wa.me/2347069986008");
-              }}
-            >
-              <Text style={{ fontSize: 17, color: "green" }}>
-                WhatsApp Chat 💬{" "}
-              </Text>
-            </TouchableOpacity>
+            <View style={style.callWhatsapp}>
+              <TouchableOpacity
+                onPress={() => {
+                  Linking.openURL("tel:+2347069986008");
+                }}
+              >
+                <Text style={{ fontSize: 15, color: "green" }}>
+                  Call now 📱
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  Linking.openURL("https://wa.me/2347069986008");
+                }}
+              >
+                <Text style={{ fontSize: 15, color: "green" }}>
+                  WhatsApp Chat 💬{" "}
+                </Text>
+              </TouchableOpacity>
+            </View>
           </Card>
 
           <Card style={[]}>
             <Image
               source={require("../../assets/images/d_img/Mrs Bello Vice President.jpg")}
-              style={{
-                width: 250,
-                height: 300,
-                // marginBottom: 20,
-                marginTop: 20,
-              }}
+              style={style.imageStyle}
             />
             <Text style={{ fontSize: 18 }}>Mrs. Bello</Text>
             <Text style={{ fontSize: 17, fontWeight: "bold" }}>
               Vice President
             </Text>
-
-            <TouchableOpacity
-              onPress={() => {
-                Linking.openURL("tel:+2348099731790");
-              }}
-            >
-              <Text style={{ marginTop: 10, fontSize: 17, color: "green" }}>
-                Call now 📱
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                Linking.openURL("https://wa.me/2348099731790");
-              }}
-            >
-              <Text style={{ fontSize: 17, color: "green" }}>
-                WhatsApp Chat 💬{" "}
-              </Text>
-            </TouchableOpacity>
+            <View style={style.callWhatsapp}>
+              <TouchableOpacity
+                onPress={() => {
+                  Linking.openURL("tel:+2348099731790");
+                }}
+              >
+                <Text style={{ fontSize: 15, color: "green" }}>
+                  Call now 📱
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  Linking.openURL("https://wa.me/2348099731790");
+                }}
+              >
+                <Text style={{ fontSize: 15, color: "green" }}>
+                  WhatsApp Chat 💬{" "}
+                </Text>
+              </TouchableOpacity>
+            </View>
           </Card>
 
           <Card style={[]}>
             <Image
               source={require("../../assets/images/d_img/Mr Babajide Olanrewaju General Secretary.jpg")}
-              style={{
-                width: 250,
-                height: 300,
-                // marginBottom: 20,
-                marginTop: 20,
-              }}
+              style={style.imageStyle}
             />
             <Text style={{ fontSize: 18 }}>Mr. Babajide</Text>
             <Text style={{ fontSize: 17, fontWeight: "bold" }}>
               General Secretary
             </Text>
+            <View style={style.callWhatsapp}>
+              <TouchableOpacity
+                onPress={() => {
+                  Linking.openURL("tel:+2348132422537");
+                }}
+              >
+                <Text style={{ fontSize: 15, color: "green" }}>
+                  Call now 📱
+                </Text>
+              </TouchableOpacity>
 
-            <TouchableOpacity
-              onPress={() => {
-                Linking.openURL("tel:+2348132422537");
-              }}
-            >
-              <Text style={{ marginTop: 10, fontSize: 17, color: "green" }}>
-                Call now 📱
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                Linking.openURL("https://wa.me/2348132422537");
-              }}
-            >
-              <Text style={{ fontSize: 17, color: "green" }}>
-                WhatsApp Chat 💬{" "}
-              </Text>
-            </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  Linking.openURL("https://wa.me/2348132422537");
+                }}
+              >
+                <Text style={{ fontSize: 15, color: "green" }}>
+                  WhatsApp Chat 💬{" "}
+                </Text>
+              </TouchableOpacity>
+            </View>
           </Card>
 
           <Card style={[]}>
             <Image
               source={require("../../assets/images/d_img/Mr. Oyewale Assistant Secretary.jpg")}
-              style={{
-                width: 250,
-                height: 300,
-
-                // marginBottom: 20,
-                marginTop: 20,
-              }}
+              style={style.imageStyle}
             />
             <Text style={{ fontSize: 18 }}>Mr. Oyewale</Text>
             <Text style={{ fontSize: 17, fontWeight: "bold" }}>
@@ -159,81 +145,67 @@ export default function team() {
           <Card style={[]}>
             <Image
               source={require("../../assets/images/d_img/Mrs Ogunleye Treasurer.jpg")}
-              style={{
-                width: 250,
-                height: 300,
-                // marginBottom: 20,
-                marginTop: 20,
-              }}
+              style={style.imageStyle}
             />
             <Text style={{ fontSize: 18 }}>Mrs. Ogunleye</Text>
             <Text style={{ fontSize: 17, fontWeight: "bold" }}>Treasurer</Text>
-
-            <TouchableOpacity
-              onPress={() => {
-                Linking.openURL("tel:+2348107344660");
-              }}
-            >
-              <Text style={{ marginTop: 10, fontSize: 17, color: "green" }}>
-                Call now 📱
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                Linking.openURL("https://wa.me/2348107344660");
-              }}
-            >
-              <Text style={{ fontSize: 17, color: "green" }}>
-                WhatsApp Chat 💬{" "}
-              </Text>
-            </TouchableOpacity>
+            <View style={style.callWhatsapp}>
+              <TouchableOpacity
+                onPress={() => {
+                  Linking.openURL("tel:+2348107344660");
+                }}
+              >
+                <Text style={{ fontSize: 15, color: "green" }}>
+                  Call now 📱
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  Linking.openURL("https://wa.me/2348107344660");
+                }}
+              >
+                <Text style={{ fontSize: 15, color: "green" }}>
+                  WhatsApp Chat 💬{" "}
+                </Text>
+              </TouchableOpacity>
+            </View>
           </Card>
 
           <Card style={[]}>
             <Image
               source={require("../../assets/images/d_img/Mr. Bakare Financial Secretary.jpg")}
-              style={{
-                width: 250,
-                height: 300,
-                // marginBottom: 20,
-                marginTop: 20,
-              }}
+              style={style.imageStyle}
             />
             <Text style={{ fontSize: 18 }}>Mr. Bakare</Text>
             <Text style={{ fontSize: 17, fontWeight: "bold" }}>
               Financial Secretary
             </Text>
-
-            <TouchableOpacity
-              onPress={() => {
-                Linking.openURL("tel:+2347036214834");
-              }}
-            >
-              <Text style={{ marginTop: 10, fontSize: 17, color: "green" }}>
-                Call now 📱
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                Linking.openURL("https://wa.me/2347036214834");
-              }}
-            >
-              <Text style={{ fontSize: 17, color: "green" }}>
-                WhatsApp Chat 💬{" "}
-              </Text>
-            </TouchableOpacity>
+            <View style={style.callWhatsapp}>
+              <TouchableOpacity
+                onPress={() => {
+                  Linking.openURL("tel:+2347036214834");
+                }}
+              >
+                <Text style={{ fontSize: 15, color: "green" }}>
+                  Call now 📱
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  Linking.openURL("https://wa.me/2347036214834");
+                }}
+              >
+                <Text style={{ fontSize: 15, color: "green" }}>
+                  WhatsApp Chat 💬{" "}
+                </Text>
+              </TouchableOpacity>
+            </View>
           </Card>
 
           <Card style={[]}>
             <Image
               source={require("../../assets/images/d_img/Mr Ojebode Ex Officio.jpg")}
-              style={{
-                width: 250,
-                height: 300,
-
-                // marginBottom: 20,
-                marginTop: 20,
-              }}
+              style={style.imageStyle}
             />
             <Text style={{ fontSize: 18 }}>Mr. Ojebode</Text>
             <Text style={{ fontSize: 17, fontWeight: "bold" }}>Ex-Officio</Text>
@@ -243,3 +215,17 @@ export default function team() {
     </>
   );
 }
+
+/////
+const style = StyleSheet.create({
+  callWhatsapp: {
+    marginTop: 10,
+    flexDirection: "row",
+    alignSelf: "center",
+  },
+  imageStyle: {
+    width: 250,
+    height: 300,
+    marginTop: 20,
+  },
+});
