@@ -176,7 +176,7 @@ export default function loginindex() {
                 value={oracle}
                 placeholder="Oracle Number"
                 placeholderTextColor="grey"
-                style={[styles.input, { marginTop: 0, padding: 10 }]}
+                style={[styles.input, { marginTop: 0, padding: 15 }]}
                 maxLength={10}
                 keyboardType="numeric"
                 onChangeText={setOracle}
@@ -196,7 +196,7 @@ export default function loginindex() {
                 value={pword}
                 placeholder="Password"
                 placeholderTextColor="grey"
-                style={[styles.input, { marginTop: 0, padding: 10 }]}
+                style={[styles.input, { marginTop: 0, padding: 15 }]}
                 maxLength={15}
                 secureTextEntry={true}
                 keyboardType="default"
@@ -217,6 +217,7 @@ export default function loginindex() {
                     width: "70%",
                     marginRight: "auto",
                     marginLeft: "auto",
+                    padding:10
                   },
                 ]}
                 onPress={async () => {
@@ -468,7 +469,7 @@ export default function loginindex() {
                   width: 200,
                 }}
               >
-                <Link href={"/(auth)/signup"} style={{ textAlign: "center" }}>
+                <Link href={"/(auth)/signup"} style={{ textAlign: "center", padding:5 }}>
                   <Text
                     style={{
                       textTransform: "capitalize",
