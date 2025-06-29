@@ -265,9 +265,6 @@ export default function signup() {
                 display: "flex",
                 flexDirection: "row",
                 justifyContent: "flex-start",
-                // alignItems: "baseline",
-                // alignContent:"flex-start",
-                // width: 280,
                 padding: 10,
               }}
             >
@@ -327,7 +324,7 @@ export default function signup() {
       } else if (response.success === false) {
         setModalVisible(true);
         setmodalText(response.message);
-        // alert(response.message);
+        //////////////
         // refpword.current?.clear();
         // refcpword.current?.clear();
         // nav.replace("signup");
