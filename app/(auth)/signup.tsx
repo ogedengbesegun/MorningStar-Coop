@@ -127,7 +127,9 @@ export default function signup() {
               maxLength={50}
               keyboardType="default"
               value={fullname}
-              onEndEditing={(e) => setFullname(e.nativeEvent.text.trim())}
+              onEndEditing={(event) =>
+                setFullname(event.nativeEvent.text.trim())
+              }
               onChangeText={setFullname}
               // onFocus={focusme}
             />
@@ -293,19 +295,16 @@ export default function signup() {
     setSubmitted(true); // lock the button
 
     try {
-      const signing = await fetch(
-        `${API_URL}/api/signup`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            fullname: fullname,
-            oracleNum: oracleNum,
-            pword: pword,
-            cpword: cpword,
-          }),
-        }
-      );
+      const signing = await fetch(`${API_URL}/api/signup`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fullname: fullname,
+          oracleNum: oracleNum,
+          pword: pword,
+          cpword: cpword,
+        }),
+      });
       const response = await signing.json();
       if (response.success === true) {
         setModalVisible(true);

@@ -15,7 +15,6 @@ import { lastMonth } from "../../utilities/mydate";
 // import Constants from "expo-constants";
 import {
   Image,
-  ImageBackground,
   KeyboardAvoidingView,
   Modal,
   Platform,
@@ -100,11 +99,14 @@ export default function loginindex() {
               textAlign: "center",
               marginTop: 0,
               backgroundColor: "green",
-              padding: 5,
+              paddingTop: 7,
+              paddingBottom: 7,
+              paddingRight: 20,
+              paddingLeft: 20,
             },
           ]}
         >
-          Welcome to Morning-Star Cooperative Society
+          Welcome to Morning-Star Cooperative Society 🌿
         </Text>
         <ScrollView>
           <View
@@ -136,202 +138,221 @@ export default function loginindex() {
               source={require("../../assets/images/d_img/money-graphic-3d.jpg")}
               resizeMode="cover"
             > */}
-              <View
+            <View
+              style={{
+                borderWidth: 2,
+                borderColor: "lightgreen",
+                borderRadius: 5,
+                padding: 5,
+                width: 320,
+                marginBottom: 20,
+              }}
+            >
+              <Text
                 style={{
-                  borderWidth: 2,
-                  borderColor: "lightgreen",
-                  borderRadius: 5,
-                  padding: 5,
-                  width: 320,
-                  marginBottom: 20,
+                  marginTop: 5,
+                  marginBottom: 5,
+                  color: "dark",
+                  fontSize: 20,
+                  textDecorationLine: "underline",
+                  textAlign: "center",
+                }}
+              >
+                Members' Login
+              </Text>
+
+              <ReusableModal
+                visible={modalVisible}
+                onClose={() => setModalVisible(false)}
+              >
+                <Text style={{ color: "grey", marginBottom: 5 }}>
+                  MorningStar Says...
+                </Text>
+                <Text
+                  style={{ textAlign: "left", color: "green", fontSize: 17 }}
+                >
+                  {modalText}
+                </Text>
+              </ReusableModal>
+
+              {/* oracle */}
+              <Text
+                style={[styles.smalltext, { marginBottom: 0, marginLeft: 30 }]}
+              >
+                Oracle Number
+              </Text>
+              <TextInput
+                ref={refOracle}
+                value={oracle}
+                placeholder="Oracle Number"
+                placeholderTextColor="grey"
+                style={[styles.input, { marginTop: 0, padding: 15 }]}
+                maxLength={10}
+                keyboardType="numeric"
+                onChangeText={setOracle}
+              ></TextInput>
+
+              {/* password */}
+              <Text
+                style={[
+                  styles.smalltext,
+                  { marginBottom: 0, marginTop: 5, marginLeft: 30 },
+                ]}
+              >
+                Password
+              </Text>
+              <TextInput
+                ref={refPword}
+                value={pword}
+                placeholder="Password"
+                placeholderTextColor="grey"
+                style={[styles.input, { marginTop: 0, padding: 15 }]}
+                maxLength={15}
+                secureTextEntry={true}
+                keyboardType="default"
+                onChangeText={setPword}
+              ></TextInput>
+              {/* Dialog Text View for info */}
+              {/* <Text style={{fontSize:15,fontStyle:"italic"}}></Text> */}
+
+              {/* TouchableOpacity */}
+
+              <TouchableOpacity
+                style={[
+                  styles.border,
+                  {
+                    backgroundColor: "white",
+                    borderRadius: 10,
+                    marginTop: 15,
+                    width: "70%",
+                    marginRight: "auto",
+                    marginLeft: "auto",
+                    padding: 10,
+                  },
+                ]}
+                onPress={async () => {
+                  setTextChange("Wait Loading...");
+                  await loginUser();
+                  setTextChange("Login");
                 }}
               >
                 <Text
                   style={{
-                    marginTop: 5,
-                    marginBottom: 5,
-                    color: "dark",
-                    fontSize: 20,
-                    textDecorationLine: "underline",
+                    color: "green",
+                    //   width: 200,
                     textAlign: "center",
+                    fontSize: 18,
                   }}
                 >
-                  Members' Login
+                  {textChange}
                 </Text>
+              </TouchableOpacity>
 
-                <ReusableModal
-                  visible={modalVisible}
-                  onClose={() => setModalVisible(false)}
-                >
-                  <Text style={{ color: "grey", marginBottom: 5 }}>
-                    MorningStar Says...
-                  </Text>
-                  <Text
-                    style={{ textAlign: "left", color: "green", fontSize: 17 }}
-                  >
-                    {modalText}
-                  </Text>
-                </ReusableModal>
-
-                {/* oracle */}
-                <Text
-                  style={[
-                    styles.smalltext,
-                    { marginBottom: 0, marginLeft: 30 },
-                  ]}
-                >
-                  Oracle Number
-                </Text>
-                <TextInput
-                  ref={refOracle}
-                  value={oracle}
-                  placeholder="Oracle Number"
-                  placeholderTextColor="grey"
-                  style={[styles.input, { marginTop: 0, padding: 15 }]}
-                  maxLength={10}
-                  keyboardType="numeric"
-                  onChangeText={setOracle}
-                ></TextInput>
-
-                {/* password */}
-                <Text
-                  style={[
-                    styles.smalltext,
-                    { marginBottom: 0, marginTop: 5, marginLeft: 30 },
-                  ]}
-                >
-                  Password
-                </Text>
-                <TextInput
-                  ref={refPword}
-                  value={pword}
-                  placeholder="Password"
-                  placeholderTextColor="grey"
-                  style={[styles.input, { marginTop: 0, padding: 15 }]}
-                  maxLength={15}
-                  secureTextEntry={true}
-                  keyboardType="default"
-                  onChangeText={setPword}
-                ></TextInput>
-                {/* Dialog Text View for info */}
-                {/* <Text style={{fontSize:15,fontStyle:"italic"}}></Text> */}
-
-                {/* TouchableOpacity */}
-
-                <TouchableOpacity
-                  style={[
-                    styles.border,
-                    {
-                      backgroundColor: "white",
-                      borderRadius: 10,
-                      marginTop: 15,
-                      width: "70%",
-                      marginRight: "auto",
-                      marginLeft: "auto",
-                      padding: 10,
-                    },
-                  ]}
-                  onPress={async () => {
-                    setTextChange("Wait Loading...");
-                    await loginUser();
-                    setTextChange("Login");
-                  }}
-                >
-                  <Text
-                    style={{
-                      color: "green",
-                      //   width: 200,
-                      textAlign: "center",
-                      fontSize: 18,
-                    }}
-                  >
-                    {textChange}
-                  </Text>
+              {/* Link */}
+              <View
+                style={{
+                  flex: 1,
+                  flexDirection: "row",
+                  alignItems: "center",
+                  alignSelf: "center",
+                  marginTop: 5,
+                  marginBottom: 5,
+                }}
+              >
+                <Text style={{ textAlign: "center", color: "grey" }}>OR </Text>
+                <TouchableOpacity onPress={() => setVisible(true)}>
+                  <Text style={{ color: "red" }}>forgot password?</Text>
                 </TouchableOpacity>
 
-                {/* Link */}
-                <View
-                  style={{
-                    flex: 1,
-                    flexDirection: "row",
-                    alignItems: "center",
-                    alignSelf: "center",
-                    marginTop: 5,
-                    marginBottom: 5,
-                  }}
+                <Modal
+                  visible={visible}
+                  transparent
+                  animationType="slide"
+                  onRequestClose={() => setVisible(false)}
                 >
-                  <Text style={{ textAlign: "center", color: "grey" }}>
-                    OR{" "}
-                  </Text>
-                  <TouchableOpacity onPress={() => setVisible(true)}>
-                    <Text style={{ color: "red" }}>forgot password?</Text>
-                  </TouchableOpacity>
-
-                  <Modal
-                    visible={visible}
-                    transparent
-                    animationType="slide"
-                    onRequestClose={() => setVisible(false)}
-                  >
-                    <View style={[styles2.overlay]}>
-                      <View
-                        style={[
-                          styles2.dialog,
-                          { width: 300, alignSelf: "center" },
-                        ]}
+                  <View style={[styles2.overlay]}>
+                    <View
+                      style={[
+                        styles2.dialog,
+                        { width: 300, alignSelf: "center" },
+                      ]}
+                    >
+                      <Text
+                        style={{
+                          fontSize: 20,
+                          textAlign: "center",
+                          color: "green",
+                          textDecorationLine: "underline",
+                        }}
                       >
-                        <Text
-                          style={{
-                            fontSize: 20,
-                            textAlign: "center",
-                            color: "green",
-                            textDecorationLine: "underline",
-                          }}
-                        >
-                          Change your Password Instructions?
+                        Change your Password Instructions?
+                      </Text>
+                      <Text
+                        style={{
+                          // width: 350,
+                          textAlign: "left",
+                          color: "grey",
+                          marginRight: "auto",
+                          marginLeft: "auto",
+                          fontSize: 16,
+                          padding: 10,
+                        }}
+                      >
+                        Enter Oracle Number with last Month Deduction without
+                        space e.g 141516,200000 Oracle Number e.g 141516 and
+                        last Month Deduction e.g 200000 {"\n"}Note: No space
+                        fullstop is allowed but put comma as separator.
+                      </Text>
+                      {/* reuseableModal */}
+                      <ReusableModal
+                        visible={modalChangeVisible}
+                        onClose={() => setModalChangeVisible(false)}
+                      >
+                        <Text style={{ color: "grey", marginBottom: 5 }}>
+                          MorningStar Says...
                         </Text>
                         <Text
                           style={{
-                            // width: 350,
                             textAlign: "left",
-                            color: "grey",
-                            marginRight: "auto",
-                            marginLeft: "auto",
-                            fontSize: 16,
-                            padding: 10,
+                            color: "green",
+                            fontSize: 17,
                           }}
                         >
-                          Enter Oracle Number with last Month Deduction without
-                          space e.g 141516,200000 Oracle Number e.g 141516 and
-                          last Month Deduction e.g 200000 {"\n"}Note: No space
-                          fullstop is allowed but put comma as separator.
+                          {modalChangeText}
                         </Text>
-                        {/* reuseableModal */}
-                        <ReusableModal
-                          visible={modalChangeVisible}
-                          onClose={() => setModalChangeVisible(false)}
-                        >
-                          <Text style={{ color: "grey", marginBottom: 5 }}>
-                            MorningStar Says...
-                          </Text>
-                          <Text
-                            style={{
-                              textAlign: "left",
-                              color: "green",
-                              fontSize: 17,
-                            }}
-                          >
-                            {modalChangeText}
-                          </Text>
-                        </ReusableModal>
+                      </ReusableModal>
 
-                        {/*  */}
+                      {/*  */}
+                      <TextInput
+                        ref={refOraclededuct}
+                        value={oraclededuct}
+                        placeholder="Oracle with last deduction "
+                        keyboardType="numeric"
+                        onChangeText={(text) => setOraclededuct(text.trim())}
+                        style={[
+                          styles.input,
+                          {
+                            fontSize: 15,
+                            width: "100%",
+                            padding: 13,
+                          },
+                        ]}
+                      ></TextInput>
+                      {/*  */}
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          alignItems: "center",
+                          // justifyContent: "space-between",
+                        }}
+                      >
                         <TextInput
-                          ref={refOraclededuct}
-                          value={oraclededuct}
-                          placeholder="Oracle with last deduction "
-                          keyboardType="numeric"
-                          onChangeText={(text) => setOraclededuct(text.trim())}
+                          ref={refPwordn}
+                          value={pwordn}
+                          placeholder="Enter New Password"
+                          secureTextEntry={!isPasswordVisible}
+                          maxLength={15}
+                          keyboardType="default"
                           style={[
                             styles.input,
                             {
@@ -340,49 +361,25 @@ export default function loginindex() {
                               padding: 13,
                             },
                           ]}
+                          onChangeText={(text) => setPwordn(text.trim())}
                         ></TextInput>
-                        {/*  */}
-                        <View
-                          style={{
-                            flexDirection: "row",
-                            alignItems: "center",
-                            // justifyContent: "space-between",
-                          }}
+                        {/* eye eye-off */}
+                        <TouchableOpacity
+                          onPress={togglePasswordVisibility}
+                          style={{ zIndex: 2 }}
                         >
-                          <TextInput
-                            ref={refPwordn}
-                            value={pwordn}
-                            placeholder="Enter New Password"
-                            secureTextEntry={!isPasswordVisible}
-                            maxLength={15}
-                            keyboardType="default"
-                            style={[
-                              styles.input,
-                              {
-                                fontSize: 15,
-                                width: "100%",
-                                padding: 13,
-                              },
-                            ]}
-                            onChangeText={(text) => setPwordn(text.trim())}
-                          ></TextInput>
-                          {/* eye eye-off */}
-                          <TouchableOpacity
-                            onPress={togglePasswordVisibility}
-                            style={{ zIndex: 2 }}
-                          >
-                            <Ionicons
-                              style={{
-                                marginLeft: -35,
-                              }}
-                              name={isPasswordVisible ? "eye" : "eye-off"}
-                              size={35}
-                              color={isPasswordVisible ? "green" : "grey"}
-                              // onPress={}
-                            />
-                          </TouchableOpacity>
-                        </View>
-                        {/* <View
+                          <Ionicons
+                            style={{
+                              marginLeft: -35,
+                            }}
+                            name={isPasswordVisible ? "eye" : "eye-off"}
+                            size={35}
+                            color={isPasswordVisible ? "green" : "grey"}
+                            // onPress={}
+                          />
+                        </TouchableOpacity>
+                      </View>
+                      {/* <View
                         style={{
                           flex: 1,
                           flexDirection: "row",
@@ -394,110 +391,110 @@ export default function loginindex() {
                           justifyContent: "center",
                         }}
                       > */}
-                        <TouchableOpacity
-                          onPress={async () => {
-                            setChangeTextOraclededuct("Password Changing...");
-                            await changepword();
-                            setChangeTextOraclededuct("Change Password");
-                          }}
-                          style={[
-                            {
-                              padding: 13,
-                              backgroundColor: "lightgreen",
-                              borderRadius: 5,
-                              marginTop: 15,
+                      <TouchableOpacity
+                        onPress={async () => {
+                          setChangeTextOraclededuct("Password Changing...");
+                          await changepword();
+                          setChangeTextOraclededuct("Change Password");
+                        }}
+                        style={[
+                          {
+                            padding: 13,
+                            backgroundColor: "lightgreen",
+                            borderRadius: 5,
+                            marginTop: 15,
 
-                              // marginRight: "auto",
-                              // marginLeft: "auto",
-                            },
-                          ]}
-                        >
-                          <Text
-                            style={{
-                              color: "black",
-                              textAlign: "center",
-                              fontWeight: "600",
-                            }}
-                          >
-                            {changeTextOraclededuct}
-                            {/* Change Password */}
-                          </Text>
-                        </TouchableOpacity>
-
-                        {/* Close Button */}
-                        <TouchableOpacity
-                          onPress={() => {
-                            // refPwordn.current?.clear();
-                            // refOraclededuct.current?.clear();
-                            setPwordn("");
-                            setOraclededuct("");
-                            ///
-                            ///make eye revert
-                            setIsPasswordVisible(false);
-                            ///setTime
-                            setTimeout(() => {
-                              setVisible(false);
-                            }, 500);
+                            // marginRight: "auto",
+                            // marginLeft: "auto",
+                          },
+                        ]}
+                      >
+                        <Text
+                          style={{
+                            color: "black",
+                            textAlign: "center",
+                            fontWeight: "600",
                           }}
-                          style={[
-                            {
-                              padding: 13,
-                              backgroundColor: "lightblue",
-                              borderRadius: 5,
-                              marginTop: 5,
-                              // width: 100,
-                              // marginRight: "auto",
-                              // marginLeft: "auto",
-                            },
-                          ]}
                         >
-                          <Text
-                            style={{
-                              color: "red",
-                              textAlign: "center",
-                              fontWeight: "600",
-                            }}
-                          >
-                            Close
-                          </Text>
-                        </TouchableOpacity>
-                        {/* </View> */}
-                      </View>
+                          {changeTextOraclededuct}
+                          {/* Change Password */}
+                        </Text>
+                      </TouchableOpacity>
+
+                      {/* Close Button */}
+                      <TouchableOpacity
+                        onPress={() => {
+                          // refPwordn.current?.clear();
+                          // refOraclededuct.current?.clear();
+                          setPwordn("");
+                          setOraclededuct("");
+                          ///
+                          ///make eye revert
+                          setIsPasswordVisible(false);
+                          ///setTime
+                          setTimeout(() => {
+                            setVisible(false);
+                          }, 500);
+                        }}
+                        style={[
+                          {
+                            padding: 13,
+                            backgroundColor: "lightblue",
+                            borderRadius: 5,
+                            marginTop: 5,
+                            // width: 100,
+                            // marginRight: "auto",
+                            // marginLeft: "auto",
+                          },
+                        ]}
+                      >
+                        <Text
+                          style={{
+                            color: "red",
+                            textAlign: "center",
+                            fontWeight: "600",
+                          }}
+                        >
+                          Close
+                        </Text>
+                      </TouchableOpacity>
+                      {/* </View> */}
                     </View>
-                  </Modal>
-                </View>
-                <View
-                  style={{
-                    alignSelf: "center",
-                    marginTop: 10,
-                    borderWidth: 1,
-                    borderStyle: "solid",
-                    borderColor: "black",
-                    padding: 10,
-                    borderRadius: 7,
-                    marginRight: "auto",
-                    marginLeft: "auto",
-                    marginBottom: 10,
-                    backgroundColor: "lightgreen",
-                    width: 200,
-                  }}
-                >
-                  <Link
-                    href={"/(auth)/signup"}
-                    style={{ textAlign: "center", padding: 5 }}
-                  >
-                    <Text
-                      style={{
-                        textTransform: "capitalize",
-                        color: "green",
-                        fontWeight: "bold",
-                      }}
-                    >
-                      create an account
-                    </Text>
-                  </Link>
-                </View>
+                  </View>
+                </Modal>
               </View>
+              <View
+                style={{
+                  alignSelf: "center",
+                  marginTop: 10,
+                  borderWidth: 1,
+                  borderStyle: "solid",
+                  borderColor: "black",
+                  padding: 10,
+                  borderRadius: 7,
+                  marginRight: "auto",
+                  marginLeft: "auto",
+                  marginBottom: 10,
+                  backgroundColor: "lightgreen",
+                  width: 200,
+                }}
+              >
+                <Link
+                  href={"/(auth)/signup"}
+                  style={{ textAlign: "center", padding: 5 }}
+                >
+                  <Text
+                    style={{
+                      textTransform: "capitalize",
+                      color: "green",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    create an account
+                  </Text>
+                </Link>
+              </View>
+            </View>
             {/* </ImageBackground> */}
             {/* New Menmbers */}
             {/* <View
@@ -524,7 +521,7 @@ export default function loginindex() {
             <Link href={"#"} style={styles2.joinUs}>
               <Text style={styles2.joinUsText}>Join Us Now 🌱</Text>
             </Link>
-             <Link href={"(auth)/callus"} style={styles2.joinUs}>
+            <Link href={"(auth)/callus"} style={styles2.joinUs}>
               <Text style={styles2.callUsText}>For inquiries, call us 📞</Text>
             </Link>
             {/* </View> */}
@@ -693,7 +690,7 @@ const styles2 = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 25,
   },
-   callUsText: {
+  callUsText: {
     textTransform: "capitalize",
     color: "green",
     fontWeight: "bold",
