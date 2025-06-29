@@ -26,6 +26,12 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
   },
+  text: {
+    color: "white",
+    opacity: 0.8,
+    fontSize: 20,
+    fontWeight: "bold",
+  },
   border: {
     borderColor: "green",
     borderWidth: 1,
