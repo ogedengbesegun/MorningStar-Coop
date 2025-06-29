@@ -1,4 +1,4 @@
-import { API_URL } from "@env";
+import { API_URL as ENV_API_URL } from "@env";
 
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
@@ -15,6 +15,9 @@ import styles from "../../styles/dstyles";
 import ReusableModal from "../../utilities/ReusableModal";
 
 export default function signup() {
+  const API_URL =
+      ENV_API_URL || "https://morningstar-coop-backend.onrender.com";
+  
   // console.log(API_URL);
   ////navigation
   const [modalVisible, setModalVisible] = useState(false);
