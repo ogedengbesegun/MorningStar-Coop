@@ -24,6 +24,7 @@ import Card from "../../utilities/card";
 
 /////////////
 export default function indextabs() {
+  const API_URL1 = "http://192.168.43.201:10000";
   const API_URL =
     ENV_API_URL || "https://morningstar-coop-backend.onrender.com";
 
@@ -370,27 +371,36 @@ export default function indextabs() {
       });
       const response = await financialData.json();
       /////////////////////////////////////////////
+
+      const lastDeduct = response?.acct.deduction;
+      const newDeduct = response?.acct2.deduction
+        ? response.acct2.deduction
+        : response.acct2;
+
       const savings =
-        response?.acct2.savings === "0" || null
-          ? response?.acct.savings
-          : response?.acct2.savings;
+        response?.acct2.savings > "0"
+          ? response?.acct2.savings
+          : response?.acct.savings;
+
       //////
       const retirement =
-        response?.acct2.retirement === "0" || null
-          ? response?.acct.retirement
-          : response?.acct2.retirement;
+        response?.acct2.retirement > "0"
+          ? response?.acct2.retirement
+          : response?.acct.retirement;
+
       //////
       const loan_balance =
-        response?.acct2.loan_balance === "0" || null
-          ? response?.acct.loan_balance
-          : response?.acct2.loan_balance;
+        response?.acct2.loan_balance > "0"
+          ? response?.acct2.loan_balance
+          : response?.acct.loan_balance;
+      ///////////
 
       if (response.success === true) {
         ///////////
 
         ////////
         setLast_deduct(
-          Number(response?.acct.deduction).toLocaleString("en-NG", {
+          Number(lastDeduct).toLocaleString("en-NG", {
             style: "currency",
             currency: "NGN",
           })
@@ -416,22 +426,25 @@ export default function indextabs() {
         );
         //////
         setThis_deduct(
-          Number(response?.acct2.deduction).toLocaleString("en-NG", {
+          Number(newDeduct).toLocaleString("en-NG", {
             style: "currency",
             currency: "NGN",
           })
         );
         ////////////
       } else {
+        const Tonum = Number("0").toLocaleString("en-NG", {
+          style: "currency",
+          currency: "NGN",
+        });
         // setModalChangeVisible(true);
         // setmodalChangeText("Error fetching financial data:");
         // alert(response?.message);
-
-        setLast_deduct(response?.acct);
-        setThis_deduct(response?.acct2);
-        setSaving(response?.acct);
-        setRetirement(response?.acct);
-        setLoanBalance(response?.acct);
+        setLast_deduct(Tonum);
+        setThis_deduct(Tonum);
+        setSaving(Tonum);
+        setRetirement(Tonum);
+        setLoanBalance(Tonum);
       }
     } catch (error) {
       // setModalChangeVisible(true)

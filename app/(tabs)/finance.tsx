@@ -1,6 +1,4 @@
-import React from "react";
-import { useUser } from "../../context/UserContext";
-
+import React, { useRef } from "react";
 import {
   Button,
   Image,
@@ -10,11 +8,12 @@ import {
   TextInput,
   View,
 } from "react-native";
+import { useUser } from "../../context/UserContext";
 // import { FlatList } from "react-native-gesture-handler";
 
 export default function finance() {
   const { user } = useUser();
-
+  const mayRef = useRef();
   return (
     <>
       <ScrollView>
@@ -35,7 +34,11 @@ export default function finance() {
           ></Image>
         </View>
         {/*the rest body */}
-        <View style={[{ padding: 10, width: 350, alignSelf: "center" }]}>
+        <View
+          style={[
+            { display: "none", padding: 10, width: 350, alignSelf: "center" },
+          ]}
+        >
           <Text
             style={{
               textAlign: "center",
