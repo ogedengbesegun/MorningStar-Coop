@@ -6,8 +6,8 @@ import { useUser } from "../../context/UserContext";
 // import CustomModal from "../../utilities/CustomModal";
 import { Ionicons } from "@expo/vector-icons";
 import ReusableModal from "../../utilities/ReusableModal";
+import Card from "../../utilities/card";
 import { lastMonth } from "../../utilities/mydate";
-
 // import Constants from 'expo-constants';
 //
 
@@ -26,7 +26,7 @@ import {
   View,
 } from "react-native";
 import styles from "../../styles/dstyles"; // Adjust the path as necessary
-
+import ModalContent from '../../utilities/menuModal';
 // useEffect(()=>{
 // FetchExample
 // },[])
@@ -74,11 +74,131 @@ export default function loginindex() {
     setIsPasswordVisible(!isPasswordVisible);
   };
   /////////
+  const menuIcon = <Ionicons name="menu" size={30} color="black" />;
+  const menuIcon2 = <Ionicons name="close" size={30} color="red" />;
+  const [menuDialog, setMenuDialog] = useState(false);
+  const toggleMenuIcon = () => setMenuDialog(!menuDialog);
+  ////////////
   ///for Navigation btw screens
   const nav = useNavigation<any>(); // Ensure you have the correct type for navigation
   /////////////////////
   const { setUser } = useUser();
+  //////////////////
+  const [dialogMenu, setDialogMenu] = useState(false);
+  const scrollRef = useRef(null);
+  const refVision = useRef(null);
+  const refMission = useRef(null);
 
+  //   const modalContent = (
+  //     <View
+  //       style={{
+  //         marginTop: 25, // offset to appear below header
+  //         marginLeft: 30,
+  //         width: 200,
+  //         backgroundColor: "white",
+  //         // opacity: 0.75,
+  //         borderRadius: 6,
+
+  //         padding: 10,
+  //         elevation: 5, // Android shadow
+  //         shadowColor: "#000", // iOS shadow
+  //         shadowOpacity: 0.2,
+  //         shadowOffset: { width: 0, height: 2 },
+  //       }}
+  //     >
+  //       <Text
+  //         style={{
+  //           textAlign: "center",
+  //           backgroundColor: "grey",
+  //           marginBottom: 10,
+  //           padding: 10,
+  //           color: "white",
+  //           fontWeight: "bold",
+  //         }}
+  //       >
+  //         Menu
+  //       </Text>
+  //       <View style={{ alignSelf: "center" }}>
+  //         <Link
+  //           href={"#"}
+  //           onPress={() => {
+  //             setDialogMenu(false);
+  //             toggleMenuIcon(); // switch icon back
+  //           }}
+  //           style={{ color: "green", fontWeight: "bold" }}
+  //         >
+  //           <Text
+  //             style={{
+  //               color: "green",
+  //               fontSize: 20,
+  //               textDecorationLine: "underline",
+  //               padding: 8,
+  //             }}
+  //           >
+  //             Admin Login
+  //           </Text>
+  //         </Link>
+  //         <Link
+  //           href={"#"}
+  //           onPress={() => {
+  //             setDialogMenu(false);
+  //             toggleMenuIcon(); // switch icon back
+  //           }}
+  //           style={{ color: "green", fontWeight: "bold", marginTop: 20 }}
+  //         >
+  //           <Text style={{ color: "green", fontSize: 15 }}>
+  //             Why Morning Star?
+  //           </Text>
+  //         </Link>
+  //         <Link
+  //           href={"#"}
+  //           onPress={() => {
+  //             setDialogMenu(false);
+  //             toggleMenuIcon(); // switch icon back
+  //           }}
+  //           style={{ color: "green", fontWeight: "bold", marginTop: 20 }}
+  //         >
+  //           <Text style={{ color: "green", fontSize: 15 }}>🍀 Our Vision</Text>
+  //         </Link>
+  //        <TouchableOpacity
+  //           style={{  marginTop: 20 }}
+  //   onPress={() => {
+  //     setDialogMenu(false);
+  //     toggleMenuIcon();
+  //     // refVision.current?.measureLayout(scrollRef.current,
+  //     //   (x, y) => {
+  //     //     scrollRef.current?.scrollTo({ y, animated: true });
+  //     //   }
+  //     // );
+  //   }}
+  // >
+  //           <Text style={{ color: "green", fontSize: 15 }}>🌴 Our Mission</Text>
+  //        </TouchableOpacity>
+  //         <Link
+  //           href={"#"}
+  //           onPress={() => {
+  //             setDialogMenu(false);
+  //             toggleMenuIcon(); // switch icon back
+  //           }}
+  //           style={{ color: "green", fontWeight: "bold", marginTop: 20 }}
+  //         >
+  //           <Text style={{ color: "green", fontSize: 15 }}>🌱 Join Us Now</Text>
+  //         </Link>
+  //         <Link
+  //           href={"(auth)/callus"}
+  //           onPress={() => {
+  //             setDialogMenu(false);
+  //             toggleMenuIcon(); // switch icon back
+  //           }}
+  //           style={{ color: "green", fontWeight: "bold", marginTop: 20 }}
+  //         >
+  //           <Text style={{ color: "green", fontSize: 15 }}>
+  //             📞 Call Us for Inquiries
+  //           </Text>
+  //         </Link>
+  //       </View>
+  //     </View>
+  //   );
   // const server = process.env.SERVER_API as string | null;
 
   return (
@@ -92,23 +212,66 @@ export default function loginindex() {
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={{ flex: 1 }}
       >
-        <Text
-          style={[
-            styles.textWhite,
-            {
-              textAlign: "center",
-              marginTop: 0,
-              backgroundColor: "green",
-              paddingTop: 7,
-              paddingBottom: 7,
-              paddingRight: 20,
-              paddingLeft: 20,
-            },
-          ]}
+        <View
+          style={{
+            backgroundColor: "green",
+            flexDirection: "row",
+            justifyContent: "center",
+          }}
         >
-          Welcome to Morning-Star Cooperative Society 🌿
-        </Text>
-        <ScrollView>
+          <TouchableOpacity
+            style={{ marginLeft: 15, alignSelf: "center" }}
+            onPress={() => {
+              toggleMenuIcon();
+              setDialogMenu(true);
+            }}
+          >
+            {menuDialog ? menuIcon2 : menuIcon}
+
+            {/* {dialogMenu ? menuModal : null} */}
+          </TouchableOpacity>
+          <Text
+            style={[
+              styles.textWhite,
+              {
+                textAlign: "center",
+                marginTop: 0,
+                paddingTop: 7,
+                paddingBottom: 7,
+                paddingRight: 20,
+                paddingLeft: 20,
+              },
+            ]}
+          >
+            Welcome to Morning-Star Cooperative Society 🌿
+          </Text>
+
+          <Modal
+            visible={dialogMenu}
+            transparent
+            animationType="slide"
+            onRequestClose={() => setDialogMenu(false)}
+            // style={{ marginTop: 70, width: 15 }}
+          >
+            <View style={{backgroundColor:'rgba(0, 0, 0, 0.5)',
+              height:"100%"}}>
+            <TouchableOpacity
+              style={{ alignSelf: "flex-start", marginTop: 20, marginLeft: 25 }}
+              onPress={() => {
+                setDialogMenu(false);
+                toggleMenuIcon(); // switch icon back
+              }}
+            >
+              <Text style={{ fontSize: 20, color: "red" }}>✕</Text>
+            </TouchableOpacity>
+            <ModalContent
+              setDialogMenu={setDialogMenu}
+              toggleMenuIcon={toggleMenuIcon}
+            />
+            </View>
+          </Modal>
+        </View>
+        <ScrollView ref={scrollRef}>
           <View
             // Img Src={require("../assets/images/react-logo.png")}
             style={{
@@ -379,18 +542,7 @@ export default function loginindex() {
                           />
                         </TouchableOpacity>
                       </View>
-                      {/* <View
-                        style={{
-                          flex: 1,
-                          flexDirection: "row",
-                          alignItems: "center",
-                          alignSelf: "center",
-                          marginTop: 10,
-                          gap: 10,
-                          width: 100,
-                          justifyContent: "center",
-                        }}
-                      > */}
+                      {/*  */}
                       <TouchableOpacity
                         onPress={async () => {
                           setChangeTextOraclededuct("Password Changing...");
@@ -403,9 +555,6 @@ export default function loginindex() {
                             backgroundColor: "lightgreen",
                             borderRadius: 5,
                             marginTop: 15,
-
-                            // marginRight: "auto",
-                            // marginLeft: "auto",
                           },
                         ]}
                       >
@@ -505,8 +654,9 @@ export default function loginindex() {
                 padding: 5,
               }}
             > */}
-            <Text style={{ textAlign: "center" }}>
-              🌿 Are you a Civil Servant?
+            {/* are you a teacher? */}
+            <Text style={{ textAlign: "center", fontWeight: "bold" }}>
+              Are you a Civil Servant in Lagos?
             </Text>
             <Link
               href={"#"}
@@ -517,7 +667,13 @@ export default function loginindex() {
             >
               <Text style={{ textAlign: "center" }}>Join Us Now 🌱</Text>
             </Link>
-            <Text style={styles2.joinUsMsgStyle}>{joinUsMsg}</Text>
+
+            <Text style={styles2.joinUsMsgStyle}>
+              <Text style={{ fontSize: 23 }}>
+                Why Morning Star Cooperative Society?
+              </Text>
+              {joinUsMsg}
+            </Text>
             <Link href={"#"} style={styles2.joinUs}>
               <Text style={styles2.joinUsText}>Join Us Now 🌱</Text>
             </Link>
@@ -525,7 +681,38 @@ export default function loginindex() {
               <Text style={styles2.callUsText}>For inquiries, call us 📞</Text>
             </Link>
             {/* </View> */}
+            <View
+              style={{
+                backgroundColor: "green",
+                width: 300,
 
+                borderRadius: 8,
+              }}
+            >
+              {/* Vision Statement */}
+              <View
+                style={{ width: 290, marginRight: "auto", marginLeft: "auto" }}
+              >
+                <Card style={[, { backgroundColor: "white" }]}>
+                  <Text style={styles2.vmHeader} ref={refVision}>
+                    Our Vision 🍀
+                  </Text>
+                  <Text style={styles2.vmStatement}>{vision}</Text>
+                </Card>
+              </View>
+              {/* Mission Statement */}
+              <View
+                style={{ width: 290, marginRight: "auto", marginLeft: "auto" }}
+              >
+                <Card style={[, { backgroundColor: "white", marginTop: 1 }]}>
+                  <Text style={styles2.vmHeader} ref={refMission}>
+                    Our Mission 🌴
+                  </Text>
+                  <Text style={styles2.vmStatement}>{mission}</Text>
+                </Card>
+              </View>
+            </View>
+            {/* Image Success & Story msg */}
             <View
               style={{
                 backgroundColor: "green",
@@ -702,14 +889,26 @@ const styles2 = StyleSheet.create({
     width: 300,
     fontSize: 16,
     padding: 20,
-    textAlign: "left",
+    textAlign: "center",
     borderRadius: 8,
     margin: 5,
     elevation: 10,
   },
+  vmStatement: {
+    fontWeight: "bold",
+    fontSize: 15,
+    textAlign: "center",
+    padding: 8,
+  },
+  vmHeader: {
+    textAlign: "center",
+    fontSize: 25,
+    fontWeight: "bold",
+    color: "green",
+  },
 });
 // This is a simple modal dialog component that can be used to confirm actions or display messages.
-const joinUsMsg = `Welcome to Morning Star Cooperative Society
+const joinUsMsg = `
 
 Just like the color green, your arrival brings a sense of renewal, hope, and promise.
 
@@ -720,3 +919,9 @@ Together, we thrive — just like a flourishing garden.
 Welcome to a future of growth and abundance. 
 
 Welcome to Morning Star. 🌱`;
+const mission = `To provide our members with accessible financial services, 
+prompt financial access and support, and a 
+trusted platform for growth—fostering a cooperative community where 
+wealth is built, opportunities are shared, and success is multiplied.`;
+const vision = `To be a beacon of financial empowerment, where every member achieves
+ financial independence, prosperity, and the collective strength to thrive.`;

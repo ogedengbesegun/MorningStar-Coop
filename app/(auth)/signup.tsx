@@ -16,8 +16,8 @@ import ReusableModal from "../../utilities/ReusableModal";
 
 export default function signup() {
   const API_URL =
-      ENV_API_URL || "https://morningstar-coop-backend.onrender.com";
-  
+    ENV_API_URL || "https://morningstar-coop-backend.onrender.com";
+
   // console.log(API_URL);
   ////navigation
   const [modalVisible, setModalVisible] = useState(false);
@@ -49,10 +49,11 @@ export default function signup() {
   const reforacle = useRef<TextInput>(null);
   const refpword = useRef<TextInput>(null);
   const refcpword = useRef<TextInput>(null);
+  const mydate = new Date().getFullYear();
 
   return (
     <>
-      <Text
+      {/* <Text
         style={[
           styles.text,
           {
@@ -64,13 +65,13 @@ export default function signup() {
         ]}
       >
         Morning Star Cooperative Society
-      </Text>
+      </Text> */}
       <ScrollView>
         <View style={[styles.container, { backgroundColor: "white" }]}>
           {/* Imagebackground */}
           <ImageBackground
-            source={require("../../assets/images/d_img/finance_calculator.jpg")}
-            style={{ width: 300, height: 200, marginBottom: 5, marginTop: 15 }}
+            source={require("../../assets/images/d_img/mscKnittedHands.png")}
+            style={{ width: 180, height: 150, marginBottom: 5, marginTop: 15 }}
           />
 
           <Text
@@ -280,6 +281,20 @@ export default function signup() {
           </View>
         </View>
       </ScrollView>
+      <View>
+        <Text
+          style={{
+            textAlign: "center",
+            backgroundColor: "green",
+            padding: 8,
+            color: "white",
+            fontSize: 15,
+            fontWeight: "bold",
+          }}
+        >
+          Morning Star Coop Society © {mydate}
+        </Text>
+      </View>
     </>
   );
 

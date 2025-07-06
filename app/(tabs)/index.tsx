@@ -37,6 +37,7 @@ export default function indextabs() {
   const [loanBalance, setLoanBalance] = useState<any | null>(null);
   /////
   const [menuModal, setMenuModal] = useState(false);
+  const [confirmModal, setConfirmModal] = useState(false);
   const { user } = useUser();
   /////
   const nav = useNavigation<any>();
@@ -195,6 +196,110 @@ export default function indextabs() {
                 >
                   <ScrollView>
                     <View style={{ marginLeft: 20, marginTop: 20 }}>
+                      <Modal
+                        visible={confirmModal}
+                        transparent
+                        animationType="slide"
+                        onRequestClose={() => setConfirmModal(true)}
+                        // style={{
+                        //   backgroundColor: "white",
+                        //   width: 300,
+                        // }}
+                      >
+                        <View
+                          style={{
+                            backgroundColor: "lightgreen",
+                            width: 250,
+                            marginTop: 280,
+                            marginRight: "auto",
+                            marginLeft: "auto",
+                            borderRadius: 10,
+                          }}
+                        >
+                          <Text
+                            style={{
+                              textAlign: "center",
+                              marginTop: 15,
+                              marginBottom: 2,
+
+                              color: "grey",
+                            }}
+                          >
+                            Morning Star Says...
+                          </Text>
+                          <Text
+                            style={{
+                              textAlign: "center",
+                              marginTop: 5,
+                              marginBottom: 15,
+                              fontWeight: "bold",
+                            }}
+                          >
+                            Are You Sure To Logout?
+                          </Text>
+                          <View
+                            style={{
+                              display: "flex",
+                              flexDirection: "row",
+                              marginRight: "auto",
+                              marginLeft: "auto",
+                              gap: 10,
+                              marginBottom: 10,
+                            }}
+                          >
+                            <TouchableOpacity
+                              style={{
+                                padding: 5,
+                                borderColor: "red",
+                                borderStyle: "solid",
+                                borderWidth: 2,
+                                borderRadius: 5,
+                                width: 80,
+                                backgroundColor: "white",
+                              }}
+                              onPress={() => {
+                                router.replace("(auth)");
+                              }}
+                            >
+                              <Text
+                                style={{
+                                  color: "black",
+                                  textAlign: "center",
+                                  fontWeight: "bold",
+                                }}
+                              >
+                                Yes
+                              </Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                              style={{
+                                padding: 5,
+                                borderColor: "green",
+                                borderStyle: "solid",
+                                borderWidth: 2,
+                                borderRadius: 5,
+                                width: 80,
+                                backgroundColor: "white",
+                              }}
+                              onPress={() => {
+                                setMenuModal(false);
+                                setConfirmModal(false);
+                              }}
+                            >
+                              <Text
+                                style={{
+                                  color: "black",
+                                  textAlign: "center",
+                                  fontWeight: "bold",
+                                }}
+                              >
+                                No
+                              </Text>
+                            </TouchableOpacity>
+                          </View>
+                        </View>
+                      </Modal>
+
                       <Link
                         href={"(tabs)/team"}
                         style={styles2.menuBtnTop}
@@ -202,9 +307,8 @@ export default function indextabs() {
                           setMenuModal(false);
                         }}
                       >
-                        <Text style={{}}>Meet Our Team</Text>
+                        <Text style={styles2.menuBtnText}>Meet Our Team</Text>
                       </Link>
-
                       <Link
                         href={"(tabs)/finance"}
                         style={styles2.menuBtn}
@@ -212,7 +316,9 @@ export default function indextabs() {
                           setMenuModal(false);
                         }}
                       >
-                        <Text style={{}}>Personal Finance</Text>
+                        <Text style={styles2.menuBtnText}>
+                          Personal Finance
+                        </Text>
                       </Link>
 
                       <Link
@@ -222,9 +328,8 @@ export default function indextabs() {
                           setMenuModal(false);
                         }}
                       >
-                        <Text style={{}}>News</Text>
+                        <Text style={styles2.menuBtnText}>News</Text>
                       </Link>
-
                       <Link
                         href={"#"}
                         style={styles2.menuBtn}
@@ -232,9 +337,8 @@ export default function indextabs() {
                           setMenuModal(false);
                         }}
                       >
-                        <Text style={{}}>Advertisements</Text>
+                        <Text style={styles2.menuBtnText}>Advertisements</Text>
                       </Link>
-
                       <Link
                         href={"#"}
                         style={styles2.menuBtn}
@@ -242,9 +346,8 @@ export default function indextabs() {
                           setMenuModal(false);
                         }}
                       >
-                        <Text style={{}}>Apply for Loan</Text>
+                        <Text style={styles2.menuBtnText}>Apply for Loan</Text>
                       </Link>
-
                       <Link
                         href={"#"}
                         style={styles2.menuBtn}
@@ -252,9 +355,8 @@ export default function indextabs() {
                           setMenuModal(false);
                         }}
                       >
-                        <Text style={{}}>Photo Gallery</Text>
+                        <Text style={styles2.menuBtnText}>Photo Gallery</Text>
                       </Link>
-
                       <Link
                         href={"#"}
                         style={styles2.menuBtn}
@@ -262,9 +364,8 @@ export default function indextabs() {
                           setMenuModal(false);
                         }}
                       >
-                        <Text style={{}}>AGM</Text>
+                        <Text style={styles2.menuBtnText}>AGM</Text>
                       </Link>
-
                       <Link
                         href={"#"}
                         style={styles2.menuBtn}
@@ -272,17 +373,25 @@ export default function indextabs() {
                           setMenuModal(false);
                         }}
                       >
-                        <Text style={{}}>Suggestion</Text>
+                        <Text style={styles2.menuBtnText}>Suggestion</Text>
                       </Link>
-
                       <TouchableOpacity
                         style={styles2.menuBtnBottom}
                         onPress={() => {
-                          router.replace("(auth)");
+                          // setMenuModal(false);
+                          setConfirmModal(true);
                         }}
                       >
-                        <Text style={{ color: "red" }}>Logout</Text>
+                        <Text style={[{ color: "red" }, styles2.menuBtnText]}>
+                          Logout
+                        </Text>
                       </TouchableOpacity>
+                      {/*  */}
+
+                      {/* ModalcloseBtn */}
+                      {/* <View style={{ flex: 1, marginTop: 60 }}> */}
+
+                      {/* </View> */}
                     </View>
                   </ScrollView>
                 </View>
@@ -498,5 +607,8 @@ const styles2 = StyleSheet.create({
     borderRadius: 10,
     marginBottom: 20,
     elevation: 5,
+  },
+  menuBtnText: {
+    fontWeight: "bold",
   },
 });

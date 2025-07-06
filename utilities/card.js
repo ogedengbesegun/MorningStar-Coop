@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 const Card = ({ children, style }) => {
   return <View style={[styles.card, style]}>{children}</View>;
@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 16,
     marginVertical: 10,
-    
+
     // iOS shadow
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -20,6 +20,7 @@ const styles = StyleSheet.create({
 
     // Android shadow
     elevation: 5,
+
   },
 });
 
