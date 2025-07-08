@@ -442,7 +442,7 @@ export default function indextabs() {
             </Card>
 
             <Card style={[]}>
-              <Text style={{ fontSize: 15, color: "green" }}>
+              <Text style={{ fontSize: 16, color: "green" }}>
                 Soft Loan Balance:{" "}
                 <Text style={{ fontSize: 17, color: "green" }}>
                   {softloanBalance}

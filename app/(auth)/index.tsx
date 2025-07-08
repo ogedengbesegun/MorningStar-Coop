@@ -181,7 +181,7 @@ export default function loginindex() {
               //   toggleMenuIcon(); // switch icon back
               // }}
             >
-               <ModalContent
+              <ModalContent
                 setDialogMenu={setDialogMenu}
                 toggleMenuIcon={toggleMenuIcon}
               />
@@ -213,9 +213,7 @@ export default function loginindex() {
                   size={35}
                   color="rgba(243, 34, 34, 0.5)"
                 />
-                
               </TouchableOpacity>
-             
             </View>
           </Modal>
         </View>
@@ -713,7 +711,9 @@ export default function loginindex() {
         // alert(response.message);
         // Set the user context with the user's name and password
         setUser({
-          name: response.user.full_name.split(" ")[1],
+          name:
+            response.user.full_name.split(" ")[1] ??
+            response.user.full_name.split(" ")[0],
           oracle: response.user.oracle,
         });
 
