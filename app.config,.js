@@ -36,7 +36,7 @@ export default {
     },
     web: {
       bundler: "metro",
-      favicon: "./assets/images/d_img/logo.png",
+      favicon: "../assets/images/d_img/logo.png",
       output: "export"
     },
     plugins: [
@@ -55,7 +55,7 @@ export default {
       typedRoutes: true,
     },
     extra: {
-      API_URL: process.env.API_URL || "https://morningstar-coop-backend.onrender.com" 
+      API_URL: process.env.API_URL || "https://morningstar-coop-backend.onrender.com"
     },
   },
 };
