@@ -1,10 +1,11 @@
 import { API_URL as ENV_API_URL } from "@env";
 import { useNavigation } from "@react-navigation/native";
 import { Link } from "expo-router"; // Ensure you have expo-router installed
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useUser } from "../../context/UserContext";
 // import CustomModal from "../../utilities/CustomModal";
 import { Ionicons } from "@expo/vector-icons";
+import { Alert, BackHandler } from "react-native";
 import ReusableModal from "../../utilities/ReusableModal";
 import Card from "../../utilities/card";
 import { lastMonth } from "../../utilities/mydate";
@@ -26,10 +27,7 @@ import {
   View,
 } from "react-native";
 import styles from "../../styles/dstyles"; // Adjust the path as necessary
-import ModalContent from '../../utilities/menuModal';
-// useEffect(()=>{
-// FetchExample
-// },[])
+import ModalContent from "../../utilities/menuModal";
 
 export default function loginindex() {
   const API_URL =
@@ -74,8 +72,8 @@ export default function loginindex() {
     setIsPasswordVisible(!isPasswordVisible);
   };
   /////////
-  const menuIcon = <Ionicons name="menu" size={30} color="black" />;
-  const menuIcon2 = <Ionicons name="close" size={30} color="red" />;
+  const menuIcon = <Ionicons name="menu" size={35} color="black" />;
+  const menuIcon2 = <Ionicons name="close" size={35} color="red" />;
   const [menuDialog, setMenuDialog] = useState(false);
   const toggleMenuIcon = () => setMenuDialog(!menuDialog);
   ////////////
@@ -88,118 +86,37 @@ export default function loginindex() {
   const scrollRef = useRef(null);
   const refVision = useRef(null);
   const refMission = useRef(null);
+  // ///////
 
-  //   const modalContent = (
-  //     <View
-  //       style={{
-  //         marginTop: 25, // offset to appear below header
-  //         marginLeft: 30,
-  //         width: 200,
-  //         backgroundColor: "white",
-  //         // opacity: 0.75,
-  //         borderRadius: 6,
+  useEffect(() => {
+    const backAction = () => {
+      Alert.alert("Hold on!", "Are you sure you want to exit?", [
+        {
+          text: "Cancel",
+          onPress: () => null,
+          style: "cancel",
+        },
+        { text: "YES", onPress: () => BackHandler.exitApp() },
+      ]);
+      // toggleMenuIcon()
+      return true; // prevents default back action
+    };
 
-  //         padding: 10,
-  //         elevation: 5, // Android shadow
-  //         shadowColor: "#000", // iOS shadow
-  //         shadowOpacity: 0.2,
-  //         shadowOffset: { width: 0, height: 2 },
-  //       }}
-  //     >
-  //       <Text
-  //         style={{
-  //           textAlign: "center",
-  //           backgroundColor: "grey",
-  //           marginBottom: 10,
-  //           padding: 10,
-  //           color: "white",
-  //           fontWeight: "bold",
-  //         }}
-  //       >
-  //         Menu
-  //       </Text>
-  //       <View style={{ alignSelf: "center" }}>
-  //         <Link
-  //           href={"#"}
-  //           onPress={() => {
-  //             setDialogMenu(false);
-  //             toggleMenuIcon(); // switch icon back
-  //           }}
-  //           style={{ color: "green", fontWeight: "bold" }}
-  //         >
-  //           <Text
-  //             style={{
-  //               color: "green",
-  //               fontSize: 20,
-  //               textDecorationLine: "underline",
-  //               padding: 8,
-  //             }}
-  //           >
-  //             Admin Login
-  //           </Text>
-  //         </Link>
-  //         <Link
-  //           href={"#"}
-  //           onPress={() => {
-  //             setDialogMenu(false);
-  //             toggleMenuIcon(); // switch icon back
-  //           }}
-  //           style={{ color: "green", fontWeight: "bold", marginTop: 20 }}
-  //         >
-  //           <Text style={{ color: "green", fontSize: 15 }}>
-  //             Why Morning Star?
-  //           </Text>
-  //         </Link>
-  //         <Link
-  //           href={"#"}
-  //           onPress={() => {
-  //             setDialogMenu(false);
-  //             toggleMenuIcon(); // switch icon back
-  //           }}
-  //           style={{ color: "green", fontWeight: "bold", marginTop: 20 }}
-  //         >
-  //           <Text style={{ color: "green", fontSize: 15 }}>🍀 Our Vision</Text>
-  //         </Link>
-  //        <TouchableOpacity
-  //           style={{  marginTop: 20 }}
-  //   onPress={() => {
-  //     setDialogMenu(false);
-  //     toggleMenuIcon();
-  //     // refVision.current?.measureLayout(scrollRef.current,
-  //     //   (x, y) => {
-  //     //     scrollRef.current?.scrollTo({ y, animated: true });
-  //     //   }
-  //     // );
-  //   }}
-  // >
-  //           <Text style={{ color: "green", fontSize: 15 }}>🌴 Our Mission</Text>
-  //        </TouchableOpacity>
-  //         <Link
-  //           href={"#"}
-  //           onPress={() => {
-  //             setDialogMenu(false);
-  //             toggleMenuIcon(); // switch icon back
-  //           }}
-  //           style={{ color: "green", fontWeight: "bold", marginTop: 20 }}
-  //         >
-  //           <Text style={{ color: "green", fontSize: 15 }}>🌱 Join Us Now</Text>
-  //         </Link>
-  //         <Link
-  //           href={"(auth)/callus"}
-  //           onPress={() => {
-  //             setDialogMenu(false);
-  //             toggleMenuIcon(); // switch icon back
-  //           }}
-  //           style={{ color: "green", fontWeight: "bold", marginTop: 20 }}
-  //         >
-  //           <Text style={{ color: "green", fontSize: 15 }}>
-  //             📞 Call Us for Inquiries
-  //           </Text>
-  //         </Link>
-  //       </View>
-  //     </View>
-  //   );
-  // const server = process.env.SERVER_API as string | null;
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    const toggle = BackHandler.addEventListener("hardwareBackPress", () => {
+      toggleMenuIcon();
+      return true;
+    });
+
+    return () => {
+      toggle.remove();
+      backHandler.remove();
+    }; // cleanup
+  }, []);
 
   return (
     <>
@@ -226,7 +143,7 @@ export default function loginindex() {
               setDialogMenu(true);
             }}
           >
-            {menuDialog ? menuIcon2 : menuIcon}
+            {menuDialog ? menuIcon : menuIcon}
 
             {/* {dialogMenu ? menuModal : null} */}
           </TouchableOpacity>
@@ -253,21 +170,52 @@ export default function loginindex() {
             onRequestClose={() => setDialogMenu(false)}
             // style={{ marginTop: 70, width: 15 }}
           >
-            <View style={{backgroundColor:'rgba(0, 0, 0, 0.5)',
-              height:"100%"}}>
-            <TouchableOpacity
-              style={{ alignSelf: "flex-start", marginTop: 20, marginLeft: 25 }}
-              onPress={() => {
-                setDialogMenu(false);
-                toggleMenuIcon(); // switch icon back
+            <View
+              style={{
+                backgroundColor: "rgba(0, 0, 0, 0.7)",
+                marginTop: 0,
+                height: "100%",
               }}
+              // onResponderGrant={()=>{
+              //   setDialogMenu(false);
+              //   toggleMenuIcon(); // switch icon back
+              // }}
             >
-              <Text style={{ fontSize: 20, color: "red" }}>✕</Text>
-            </TouchableOpacity>
-            <ModalContent
-              setDialogMenu={setDialogMenu}
-              toggleMenuIcon={toggleMenuIcon}
-            />
+               <ModalContent
+                setDialogMenu={setDialogMenu}
+                toggleMenuIcon={toggleMenuIcon}
+              />
+              <TouchableOpacity
+                style={{
+                  alignSelf: "center",
+                  marginTop: 20,
+                  borderStyle: "solid",
+                  borderColor: "white",
+                  borderWidth: 1,
+                  borderRadius: 50,
+                  height: 50,
+                  width: 50,
+
+                  // marginLeft: 25,
+                }}
+                onPress={() => {
+                  setDialogMenu(false);
+                  toggleMenuIcon(); // switch icon back
+                }}
+              >
+                <Ionicons
+                  style={{
+                    textAlign: "center",
+                    margin: "auto",
+                    // marginBottom: "auto",
+                  }}
+                  name="close"
+                  size={35}
+                  color="rgba(243, 34, 34, 0.5)"
+                />
+                
+              </TouchableOpacity>
+             
             </View>
           </Modal>
         </View>

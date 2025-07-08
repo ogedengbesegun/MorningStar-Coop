@@ -12,22 +12,15 @@ export default function _layout() {
       <Stack.Screen
         name="index"
         
-        options={({navigation})=>({
+        options={{
 
           title: "Menu",
           headerTitleAlign: "center",
           headerTintColor: "white",
           headerShown:false,
-          headerLeft:()=>(<TouchableOpacity
-          style={{marginLeft:15}}>
-            <Ionicons 
-            name="menu" size={30} color='black'
-            />
-
-            
-          </TouchableOpacity>)
+          // 
           
-        })}
+        }}
       />
       {/* </menuStack.Navigator> */}
 

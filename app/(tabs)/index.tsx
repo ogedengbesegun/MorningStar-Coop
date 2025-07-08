@@ -11,6 +11,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Link, useRouter } from "expo-router";
 import React, { useEffect, useRef, useState } from "react";
 import {
+  Alert,
   Image,
   Modal,
   ScrollView,
@@ -35,7 +36,11 @@ export default function indextabs() {
   const [saving, setSaving] = useState<any | null>(null);
   const [retirement, setRetirement] = useState<any | null>(null);
   const [loanBalance, setLoanBalance] = useState<any | null>(null);
+  const [softloanBalance, setSoftloanBalance] = useState<any | null>(null);
+  const [interestBalance, setInterestBalance] = useState<any | null>(null);
   /////
+
+  ///////
   const [menuModal, setMenuModal] = useState(false);
   const [confirmModal, setConfirmModal] = useState(false);
   const { user } = useUser();
@@ -112,7 +117,7 @@ export default function indextabs() {
         >
           <Text style={{ fontSize: 15, marginTop: 16, color: "green" }}>
             {" "}
-            Welcome,
+            Welcome,{" "}
             <Text
               style={{
                 fontSize: 22,
@@ -438,6 +443,18 @@ export default function indextabs() {
             </Card>
 
             <Card style={[]}>
+              <Text style={{ fontSize: 17, color: "green" }}>
+                Soft Loan Balance: {softloanBalance}
+              </Text>
+            </Card>
+
+            <Card style={[]}>
+              <Text style={{ fontSize: 17, color: "red" }}>
+                Interest Balance: {interestBalance}
+              </Text>
+            </Card>
+
+            <Card style={[]}>
               <Text style={{ marginTop: 20 }}>
                 {c_year} Dividends:
                 <Text style={{ color: "red", fontSize: 15 }}> XXX</Text>
@@ -464,8 +481,8 @@ export default function indextabs() {
 
   async function msc_index_finance() {
     // Fetch financial data from the API
-    console.log(lastMonth);
-    console.log(thisMonth);
+    // console.log(lastMonth);
+    // console.log(thisMonth);
     try {
       const financialData = await fetch(`${API_URL}/api/msc_monthly_2025`, {
         method: "POST",
@@ -484,25 +501,40 @@ export default function indextabs() {
       const lastDeduct = response?.acct.deduction;
       const newDeduct = response?.acct2.deduction
         ? response.acct2.deduction
-        : response.acct2;
+        : response.acct2 ?? "0";
 
       const savings =
         response?.acct2.savings > "0"
           ? response?.acct2.savings
-          : response?.acct.savings;
+          : response?.acct.savings ?? "0";
 
       //////
       const retirement =
         response?.acct2.retirement > "0"
           ? response?.acct2.retirement
-          : response?.acct.retirement;
+          : response?.acct.retirement ?? "0";
 
       //////
       const loan_balance =
         response?.acct2.loan_balance > "0"
           ? response?.acct2.loan_balance
-          : response?.acct.loan_balance;
+          : response?.acct.loan_balance ?? "0";
       ///////////
+
+      // ? response?.acct2.soft_loanBal
+      // : response?.acct.soft_loanBal ?? "500";
+
+      const interest_balance =
+        response?.acct2.interest_bal > "0"
+          ? response?.acct2.interest_bal
+          : response?.acct.interest_bal;
+
+      const soft_loan =
+        response?.acct2.soft_loanBal > "0"
+          ? response?.acct2.soft_loanBal
+          : response?.acct.soft_loanBal;
+
+      console.log(soft_loan);
 
       if (response.success === true) {
         ///////////
@@ -515,6 +547,15 @@ export default function indextabs() {
           })
         );
 
+        ///////
+        setThis_deduct(
+          Number(newDeduct).toLocaleString("en-NG", {
+            style: "currency",
+            currency: "NGN",
+          })
+        );
+        ////////////
+        ////////
         setSaving(
           Number(savings).toLocaleString("en-NG", {
             style: "currency",
@@ -533,14 +574,24 @@ export default function indextabs() {
             currency: "NGN",
           })
         );
-        //////
-        setThis_deduct(
-          Number(newDeduct).toLocaleString("en-NG", {
+
+        ///////
+        setSoftloanBalance(
+          Number(soft_loan).toLocaleString("en-NG", {
             style: "currency",
             currency: "NGN",
           })
         );
-        ////////////
+        //////
+        //////
+        setInterestBalance(
+          Number(interest_balance).toLocaleString("en-NG", {
+            style: "currency",
+            currency: "NGN",
+          })
+        );
+
+        Alert.alert("MorningStar Says..", response?.acct2.soft_loanBal);
       } else {
         const Tonum = Number("0").toLocaleString("en-NG", {
           style: "currency",

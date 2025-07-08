@@ -1,6 +1,6 @@
-import React from "react";
-import { View, Text, TouchableOpacity } from "react-native";
 import { Link } from "expo-router";
+import React from "react";
+import { Text, TouchableOpacity, View } from "react-native";
 
 type Props = {
   setDialogMenu: (val: boolean) => void;
@@ -9,12 +9,11 @@ type Props = {
 
 const ModalContent: React.FC<Props> = ({ setDialogMenu, toggleMenuIcon }) => {
   return (
-    
     <View
       style={{
-        marginTop: 25,
-        marginLeft: 30,
-        width: 250,
+        marginTop: 9,
+        marginLeft: 9,
+        width: 300,
         backgroundColor: "white",
         borderRadius: 6,
         padding: 10,
@@ -38,17 +37,16 @@ const ModalContent: React.FC<Props> = ({ setDialogMenu, toggleMenuIcon }) => {
       </Text>
 
       {/* Links */}
-      <View style={{ alignSelf: "center" }}>
+      <View style={{ alignSelf: "flex-start", marginLeft: 5 }}>
         {[
-          { label: "Admin Login", href: "#" },
-          { label: "Why Morning Star?", href: "#" },
-          { label: "🍀 Our Vision", href: "#" },
-          { label: "🌱 Join Us Now", href: "#" },
-          { label: "📞 Call Us for Inquiries", href: "(auth)/callus" },
+          { label: "🔐 Admin Login" },
+          { label: "❓ Why Morning Star?" },
+          { label: "🍀 Our Vision" },
+          { label: "🌴 Our Mission" },
+          { label: "🌱 Join Us Now" },
         ].map((item, i) => (
-          <Link
+          <TouchableOpacity
             key={item.label}
-            href={item.href}
             onPress={() => {
               setDialogMenu(false);
               toggleMenuIcon();
@@ -58,25 +56,30 @@ const ModalContent: React.FC<Props> = ({ setDialogMenu, toggleMenuIcon }) => {
             <Text
               style={{
                 color: "green",
-                fontSize: 17,
+                fontSize: 20,
                 // textDecorationLine: "underline",
               }}
             >
               {item.label}
             </Text>
-          </Link>
+          </TouchableOpacity>
         ))}
 
         {/* Extra Mission item with TouchableOpacity */}
-        <TouchableOpacity
-          style={{ marginTop: 20 }}
+        <Link
+          href={"(auth)/callus"}
+          style={{ marginTop: 20, marginBottom: 20 }}
           onPress={() => {
-            setDialogMenu(false);
-            toggleMenuIcon();
+            setTimeout(() => {
+              setDialogMenu(false);
+              toggleMenuIcon();
+            }, 500);
           }}
         >
-          <Text style={{ color: "green", fontSize: 15 }}>🌴 Our Mission</Text>
-        </TouchableOpacity>
+          <Text style={{ color: "green", fontSize: 20 }}>
+            📞 Call Us for Inquiries
+          </Text>
+        </Link>
       </View>
     </View>
   );
