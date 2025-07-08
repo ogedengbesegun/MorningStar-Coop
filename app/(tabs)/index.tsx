@@ -11,7 +11,6 @@ import { useNavigation } from "@react-navigation/native";
 import { Link, useRouter } from "expo-router";
 import React, { useEffect, useRef, useState } from "react";
 import {
-  Alert,
   Image,
   Modal,
   ScrollView,
@@ -443,8 +442,11 @@ export default function indextabs() {
             </Card>
 
             <Card style={[]}>
-              <Text style={{ fontSize: 17, color: "green" }}>
-                Soft Loan Balance: {softloanBalance}
+              <Text style={{ fontSize: 15, color: "green" }}>
+                Soft Loan Balance:{" "}
+                <Text style={{ fontSize: 17, color: "green" }}>
+                  {softloanBalance}
+                </Text>
               </Text>
             </Card>
 
@@ -534,7 +536,7 @@ export default function indextabs() {
           ? response?.acct2.soft_loanBal
           : response?.acct.soft_loanBal;
 
-      console.log(soft_loan);
+      // console.log(soft_loan);
 
       if (response.success === true) {
         ///////////
@@ -590,8 +592,6 @@ export default function indextabs() {
             currency: "NGN",
           })
         );
-
-        Alert.alert("MorningStar Says..", response?.acct2.soft_loanBal);
       } else {
         const Tonum = Number("0").toLocaleString("en-NG", {
           style: "currency",
