@@ -134,24 +134,19 @@ export default function signup() {
               maxLength={50}
               keyboardType="default"
               value={fullname}
-              onEndEditing={(event) => {
-                const onlyLetters = event.nativeEvent.text.replace(
-                  /[^A-Za-z ]/g,
-                  ""
-                );
-                if (onlyLetters !== event.nativeEvent.text) {
+              onEndEditing={(event) =>
+                setFullname(event.nativeEvent.text.trim())
+              } // }}
+              onChangeText={(text) => {
+                const onlyLetters = text.replace(/[^A-Za-z ]/g, "");
+                if (onlyLetters !== text) {
                   setOnlyAphabets("Alphabets Only please");
                   setFullname("");
                 } else {
                   setOnlyAphabets("");
-                  setFullname(event.nativeEvent.text.trim());
+                  setFullname(text);
                 }
               }}
-              onChangeText={
-                //  const onlyLetters = value.replace(/[^A-Za-z]/g, '');
-                // Alphabets Only please
-                setFullname
-              }
             />
 
             {/*  */}
@@ -377,3 +372,4 @@ export default function signup() {
     }
   }
 }
+/////
