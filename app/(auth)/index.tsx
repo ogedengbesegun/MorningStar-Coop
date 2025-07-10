@@ -720,6 +720,7 @@ export default function loginindex() {
         const timer = setTimeout(() => {
           nav.replace("(tabs)"); // Navigate to the tabs screen after login
         }, 3000);
+
         //////////////////
 
         refPword.current?.clear();

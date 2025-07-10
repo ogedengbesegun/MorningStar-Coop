@@ -22,7 +22,7 @@ export default function signup() {
   ////navigation
   const [modalVisible, setModalVisible] = useState(false);
   const [modalText, setmodalText] = useState("");
-
+  const [onlyAphabets, setOnlyAphabets] = useState("");
   //////
   const nav = useNavigation() as any;
 
@@ -103,7 +103,10 @@ export default function signup() {
                 { marginBottom: 0, marginLeft: 30, marginTop: 10 },
               ]}
             >
-              Enter Full Name
+              Enter Full Name{" "}
+              <Text style={{ marginLeft: 8, color: "red", fontSize: 10 }}>
+                {onlyAphabets}
+              </Text>
             </Text>
             <ReusableModal
               visible={modalVisible}
@@ -131,11 +134,24 @@ export default function signup() {
               maxLength={50}
               keyboardType="default"
               value={fullname}
-              onEndEditing={(event) =>
-                setFullname(event.nativeEvent.text.trim())
+              onEndEditing={(event) => {
+                const onlyLetters = event.nativeEvent.text.replace(
+                  /[^A-Za-z ]/g,
+                  ""
+                );
+                if (onlyLetters !== event.nativeEvent.text) {
+                  setOnlyAphabets("Alphabets Only please");
+                  setFullname("");
+                } else {
+                  setOnlyAphabets("");
+                  setFullname(event.nativeEvent.text.trim());
+                }
+              }}
+              onChangeText={
+                //  const onlyLetters = value.replace(/[^A-Za-z]/g, '');
+                // Alphabets Only please
+                setFullname
               }
-              onChangeText={setFullname}
-              // onFocus={focusme}
             />
 
             {/*  */}
