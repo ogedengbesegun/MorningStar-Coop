@@ -48,13 +48,18 @@ export default function indextabs() {
   const router = useRouter();
   // Provide a default value to complete the expression
   ///////useEffect(() => {
+  ///////localStorage
+ 
+  
+  /////////
   useEffect(() => {
+    // if (!user?.oracle) return; // wait until user is loaded
     msc_index_finance();
 
     // console.log("New Month:", nMonth);
     // console.log(user?.oracle, "User Oracle");
   }),
-    [];
+    []; // dependencies
 
   /////////
   return (

@@ -89,35 +89,7 @@ export default function login() {
   const refMission = useRef(null);
   // ///////
 
-  useEffect(() => {
-    const backAction = () => {
-      Alert.alert("Hold on!", "Are you sure you want to exit?", [
-        {
-          text: "Cancel",
-          onPress: () => null,
-          style: "cancel",
-        },
-        { text: "YES", onPress: () => BackHandler.exitApp() },
-      ]);
-      // toggleMenuIcon()
-      return true; // prevents default back action
-    };
-
-    const backHandler = BackHandler.addEventListener(
-      "hardwareBackPress",
-      backAction
-    );
-
-    const toggle = BackHandler.addEventListener("hardwareBackPress", () => {
-      toggleMenuIcon();
-      return true;
-    });
-
-    return () => {
-      toggle.remove();
-      backHandler.remove();
-    }; // cleanup
-  }, []);
+  
 
   return (
     <>
