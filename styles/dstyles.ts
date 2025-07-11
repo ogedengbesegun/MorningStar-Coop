@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
   },
   input: {
     width: "80%",
-    height: 50,
+    height: 53,
     position: "relative",
     marginRight: "auto",
     marginLeft: "auto",

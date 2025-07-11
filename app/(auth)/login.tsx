@@ -1,6 +1,6 @@
 import { API_URL as ENV_API_URL } from "@env";
 import { useNavigation } from "@react-navigation/native";
-import { Link } from "expo-router"; // Ensure you have expo-router installed
+import { Link, useRouter } from "expo-router"; // Ensure you have expo-router installed
 import React, { useEffect, useRef, useState } from "react";
 import { useUser } from "../../context/UserContext";
 // import CustomModal from "../../utilities/CustomModal";
@@ -29,7 +29,7 @@ import {
 import styles from "../../styles/dstyles"; // Adjust the path as necessary
 import ModalContent from "../../utilities/menuModal";
 
-export default function loginindex() {
+export default function login() {
   const API_URL =
     ENV_API_URL || "https://morningstar-coop-backend.onrender.com";
 
@@ -79,6 +79,7 @@ export default function loginindex() {
   ////////////
   ///for Navigation btw screens
   const nav = useNavigation<any>(); // Ensure you have the correct type for navigation
+  const router=useRouter();
   /////////////////////
   const { setUser } = useUser();
   //////////////////
@@ -718,7 +719,7 @@ export default function loginindex() {
         });
 
         const timer = setTimeout(() => {
-          nav.replace("(tabs)"); // Navigate to the tabs screen after login
+          router.replace("/indextab"); // Navigate to the tabs screen after login
         }, 3000);
 
         //////////////////

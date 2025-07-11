@@ -10,7 +10,7 @@ export default function _layout() {
     <Stack screenOptions={{ headerStyle: { backgroundColor: "green" } }}>
       {/* <menuStack.Navigator> */}
       <Stack.Screen
-        name="index"
+        name="login"
         
         options={{
 

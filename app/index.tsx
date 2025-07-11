@@ -1,6 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 // import * as SecureStore from "expo-secure-store";
 import { MaterialIcons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 import React from "react";
 import { Image, Text, View } from "react-native";
 import {
@@ -11,23 +12,23 @@ import {
 export default function index() {
   //for
   const myNavigation = useNavigation<any>();
-
-  //////to auto get user's Oracle Number
-  const onSingleTap = () => {
-    ////Early Call on the backend url for quick response
-    backme();
-    async function backme() {
-      try {
-        await fetch("https://morningstar-coop-backend.onrender.com/api/login");
-      } catch (err) {
-        console.warn("Backend wake-up failed:", err);
-      }
+  const router=useRouter()
+  ////Early Call on the backend url for quick response
+  backme();
+  async function backme() {
+    try {
+      await fetch("https://morningstar-coop-backend.onrender.com/api/login");
+    } catch (err) {
+      console.warn("Backend wake-up failed:", err);
     }
+  }
+  //////
+  const onSingleTap = () => {
     /////////////////
     const timer = setTimeout(() => {
       //can also say
       // myNavigation.navigate("(auth)");
-      myNavigation.replace("(auth)");
+      router.replace("/login");
     }, 400);
     return () => clearTimeout(timer); // cleanup if component unmounts
   };
@@ -54,7 +55,6 @@ export default function index() {
             <Image
               source={require("../assets/images/d_img/mscKnittedHands.png")}
               style={{
-                
                 marginRight: "auto",
                 marginLeft: "auto",
                 // marginTop: 15,
