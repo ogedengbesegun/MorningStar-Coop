@@ -179,12 +179,15 @@ export default function indextabs() {
                 >
                   <Text
                     style={{
-                      // fontSize: 10,
+                      fontSize: 18,
                       fontWeight: "bold",
                       color: "red",
 
-                      textAlign: "center",
-                      padding: 5,
+                      // textAlign: "center",
+                      padding: "auto",
+                      margin:"auto",
+                      // marginBottom:"auto"
+
                     }}
                   >
                     X
@@ -331,7 +334,7 @@ export default function indextabs() {
                       </Link>
 
                       <Link
-                        href={"#"}
+                        href={"(tabs)"}
                         style={styles2.menuBtn}
                         onPress={() => {
                           setMenuModal(false);
@@ -340,7 +343,7 @@ export default function indextabs() {
                         <Text style={styles2.menuBtnText}>News</Text>
                       </Link>
                       <Link
-                        href={"#"}
+                        href={"(tabs)"}
                         style={styles2.menuBtn}
                         onPress={() => {
                           setMenuModal(false);
@@ -349,7 +352,7 @@ export default function indextabs() {
                         <Text style={styles2.menuBtnText}>Advertisements</Text>
                       </Link>
                       <Link
-                        href={"#"}
+                        href={"(tabs)"}
                         style={styles2.menuBtn}
                         onPress={() => {
                           setMenuModal(false);
@@ -358,7 +361,7 @@ export default function indextabs() {
                         <Text style={styles2.menuBtnText}>Apply for Loan</Text>
                       </Link>
                       <Link
-                        href={"#"}
+                        href={"(tabs)"}
                         style={styles2.menuBtn}
                         onPress={() => {
                           setMenuModal(false);
@@ -367,7 +370,7 @@ export default function indextabs() {
                         <Text style={styles2.menuBtnText}>Photo Gallery</Text>
                       </Link>
                       <Link
-                        href={"#"}
+                        href={"(tabs)"}
                         style={styles2.menuBtn}
                         onPress={() => {
                           setMenuModal(false);
@@ -376,7 +379,7 @@ export default function indextabs() {
                         <Text style={styles2.menuBtnText}>AGM</Text>
                       </Link>
                       <Link
-                        href={"#"}
+                        href={"(tabs)"}
                         style={styles2.menuBtn}
                         onPress={() => {
                           setMenuModal(false);

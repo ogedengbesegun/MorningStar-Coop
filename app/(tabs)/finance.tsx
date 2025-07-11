@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import {
   Button,
   Image,
@@ -10,10 +10,11 @@ import {
 } from "react-native";
 import { useUser } from "../../context/UserContext";
 // import { FlatList } from "react-native-gesture-handler";
-
+import styles from "@/styles/dstyles";
 export default function finance() {
   const { user } = useUser();
   const mayRef = useRef();
+  const [naira, setNaira] = useState(""); // State to hold the Naira amount
   return (
     <>
       <ScrollView>
@@ -51,6 +52,45 @@ export default function finance() {
           >
             Loan Calculator
           </Text>
+          {/* <TextInput
+            value={naira}
+            // keyboardType="numeric"
+            // maxLength={10}
+            placeholder="Enter Amount"
+            onChangeText={(text) => {
+              // const onlyNumbers = text.replace(/[^0-9]/g, ""); // keep digits only
+
+              if ( !text) {
+                // Invalid characters entered, so clear the formatted value
+                setNaira("");
+                // return;
+              } else {
+                // Format the number as Naira currency
+                // const amount = Number(onlyNumbers);
+                  const amount = Number(text.replace(/[^0-9]/g, ""));
+                  setNaira(
+                   amount.toLocaleString("en-NG", {
+                          style: "currency",
+                          currency: "NGN",
+                        })
+                      
+                  );
+                }
+            }}
+            // onEndEditing={(e) => {
+            //   const value = e.nativeEvent.text;
+
+            //   setNaira(
+            //     Number(value).toLocaleString("en-NG", {
+            //       style: "currency",
+            //       currency: "NGN",
+            //     })
+            //   );
+            // }}
+            style={styles.input}
+          /> */}
+
+          
           <View style={{ display: "none" }}>
             <View
               style={{
