@@ -104,7 +104,7 @@ export default function signup() {
               ]}
             >
               Enter Full Name{" "}
-              <Text style={{ marginLeft: 8, color: "red", fontSize: 10 }}>
+              <Text style={{ marginLeft: 8, color: "red", fontSize: 12 }}>
                 {onlyAphabets}
               </Text>
             </Text>
@@ -140,7 +140,7 @@ export default function signup() {
               onChangeText={(text) => {
                 const onlyLetters = text.replace(/[^A-Za-z ]/g, "");
                 if (onlyLetters !== text) {
-                  setOnlyAphabets("Alphabets Only please");
+                  setOnlyAphabets("Alphabets Only");
                   setFullname("");
                 } else {
                   setOnlyAphabets("");
