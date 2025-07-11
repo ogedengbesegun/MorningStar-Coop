@@ -262,7 +262,7 @@ export default function indextabs() {
                                 backgroundColor: "white",
                               }}
                               onPress={() => {
-                                router.replace("(auth)");
+                                router.replace("/login");
                               }}
                             >
                               <Text
