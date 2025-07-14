@@ -7,9 +7,11 @@ import {
   thisMonth,
 } from "@/utilities/mydate";
 import { API_URL as ENV_API_URL } from "@env";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { Link, useRouter } from "expo-router";
 import React, { useEffect, useRef, useState } from "react";
+
 import {
   Image,
   Modal,
@@ -49,17 +51,46 @@ export default function indextabs() {
   // Provide a default value to complete the expression
   ///////useEffect(() => {
   ///////localStorage
- 
-  
+  //  const localName = localStorage.setItem("name", user?.name ?? "Guest");
+  //   const localOracle = localStorage.setItem("oracle", user?.oracle ?? "Guest Oracle");
+  //   const localLastMonth = localStorage.setItem("lastMonth", lastMonth);
+  //   const localThisMonth = localStorage.setItem("thisMonth", thisMonth);
   /////////
-  useEffect(() => {
-    // if (!user?.oracle) return; // wait until user is loaded
-    msc_index_finance();
 
+  // async function oracle() {
+  //   await AsyncStorage.setItem("oracle", JSON.stringify(user?.oracle));
+  // }
+  // async function getOracle() {
+  //   const Oracle = await AsyncStorage.getItem("oracle");
+  //   if (!Oracle) return null; // Handle missing case safely
+  //   const ResOracle = JSON.parse(Oracle);
+  //   return ResOracle;
+  // }
+  // async function last() {
+  //   await AsyncStorage.setItem("last", JSON.stringify(lastMonth));
+  //   const Last = await AsyncStorage.getItem("last");
+  //   const ResLast = JSON.parse(Last ?? "");
+  //   return ResLast;
+  // }
+  // async function thiss() {
+  //   await AsyncStorage.setItem("this", JSON.stringify(thisMonth));
+  //   const Thiss = await AsyncStorage.getItem("this");
+  //   const ResThis = JSON.parse(Thiss ?? "");
+  //   return ResThis;
+  // }
+  useEffect(() => {
+    if (user && user.oracle && lastMonth && thisMonth) {
+      const timer = setTimeout(async () => {
+       
+          msc_index_finance();
+      }, 100); // slight delay
+
+      return () => clearTimeout(timer);
+    }
     // console.log("New Month:", nMonth);
     // console.log(user?.oracle, "User Oracle");
   }),
-    []; // dependencies
+    [user, lastMonth, thisMonth]; // dependencies
 
   /////////
   return (
@@ -185,9 +216,8 @@ export default function indextabs() {
 
                       // textAlign: "center",
                       padding: "auto",
-                      margin:"auto",
+                      margin: "auto",
                       // marginBottom:"auto"
-
                     }}
                   >
                     X
@@ -432,36 +462,39 @@ export default function indextabs() {
               Balances as at: {c_year}/{c_month}/{c_day}
             </Text>
             <Card style={[]}>
-              <Text style={{ fontSize: 17, color: "green" }}>
-                Savings: {saving}
+              <Text style={{ fontSize: 15, color: "green" }}>
+                Savings:
+                <Text style={{ fontSize: 20, color: "green" }}> {saving}</Text>
               </Text>
             </Card>
 
             <Card style={[]}>
-              <Text style={{ fontSize: 17, color: "green" }}>
-                Retirement: {retirement}
-              </Text>
+              <Text style={{ fontSize: 15, color: "green" }}>Retirement:
+              <Text style={{ fontSize: 20, color: "green" }}> {retirement}
+              </Text></Text>
             </Card>
 
             <Card style={[]}>
-              <Text style={{ fontSize: 17, color: "green" }}>
-                Loan Balance: {loanBalance}
-              </Text>
+              <Text style={{ fontSize: 15, color: "green" }}>
+                Loan Balance: 
+              <Text style={{ fontSize: 20, color: "green" }}> {loanBalance}
+              </Text></Text>
             </Card>
 
             <Card style={[]}>
-              <Text style={{ fontSize: 16, color: "green" }}>
+              <Text style={{ fontSize: 15, color: "green" }}>
                 Soft Loan Balance:{" "}
-                <Text style={{ fontSize: 17, color: "green" }}>
-                  {softloanBalance}
+                <Text style={{ fontSize: 20, color: "green" }}> {softloanBalance}
                 </Text>
               </Text>
             </Card>
 
             <Card style={[]}>
-              <Text style={{ fontSize: 17, color: "red" }}>
-                Interest Balance: {interestBalance}
-              </Text>
+              <Text style={{ fontSize: 15, color: "green" }}>
+                Interest Balance:{' '}
+              <Text style={{ fontSize: 20, color: "red" }}>
+                {interestBalance}
+              </Text></Text>
             </Card>
 
             <Card style={[]}>
@@ -487,11 +520,14 @@ export default function indextabs() {
     </>
   );
 
-  ////////
-
   async function msc_index_finance() {
+    // await AsyncStorage.setItem("last", JSON.stringify(lastMonth));
+    // await AsyncStorage.setItem("this", JSON.stringify(thisMonth));
+    // const Last = await AsyncStorage.getItem("last");
+    // const Thiss = await AsyncStorage.getItem("this");
+
     // Fetch financial data from the API
-    // console.log(lastMonth);
+    // console.log(Oracle);
     // console.log(thisMonth);
     try {
       const financialData = await fetch(`${API_URL}/api/msc_monthly_2025`, {

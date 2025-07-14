@@ -1,11 +1,10 @@
 import { API_URL as ENV_API_URL } from "@env";
 import { useNavigation } from "@react-navigation/native";
 import { Link, useRouter } from "expo-router"; // Ensure you have expo-router installed
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { useUser } from "../../context/UserContext";
 // import CustomModal from "../../utilities/CustomModal";
 import { Ionicons } from "@expo/vector-icons";
-import { Alert, BackHandler } from "react-native";
 import ReusableModal from "../../utilities/ReusableModal";
 import Card from "../../utilities/card";
 import { lastMonth } from "../../utilities/mydate";
@@ -79,7 +78,7 @@ export default function login() {
   ////////////
   ///for Navigation btw screens
   const nav = useNavigation<any>(); // Ensure you have the correct type for navigation
-  const router=useRouter();
+  const router = useRouter();
   /////////////////////
   const { setUser } = useUser();
   //////////////////
@@ -88,9 +87,7 @@ export default function login() {
   const refVision = useRef(null);
   const refMission = useRef(null);
   // ///////
-
-  
-
+ 
   return (
     <>
       {/* <ImageBackground
@@ -578,7 +575,7 @@ export default function login() {
               Are you a Civil Servant in Lagos?
             </Text>
             <Link
-              href={"#"}
+              href={"(auth)"}
               style={{
                 color: "purple",
                 elevation: 5,
@@ -593,7 +590,7 @@ export default function login() {
               </Text>
               {joinUsMsg}
             </Text>
-            <Link href={"#"} style={styles2.joinUs}>
+            <Link href={"(auth)"} style={styles2.joinUs}>
               <Text style={styles2.joinUsText}>Join Us Now 🌱</Text>
             </Link>
             <Link href={"(auth)/callus"} style={styles2.joinUs}>
@@ -691,7 +688,7 @@ export default function login() {
         });
 
         const timer = setTimeout(() => {
-          router.replace("/indextab"); // Navigate to the tabs screen after login
+          router.replace("/indextab"); // route to the tabs screen after login
         }, 3000);
 
         //////////////////
