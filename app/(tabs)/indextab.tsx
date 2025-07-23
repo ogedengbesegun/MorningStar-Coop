@@ -7,7 +7,6 @@ import {
   thisMonth,
 } from "@/utilities/mydate";
 import { API_URL as ENV_API_URL } from "@env";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { Link, useRouter } from "expo-router";
 import React, { useEffect, useRef, useState } from "react";
@@ -56,7 +55,7 @@ export default function indextabs() {
   //   const localLastMonth = localStorage.setItem("lastMonth", lastMonth);
   //   const localThisMonth = localStorage.setItem("thisMonth", thisMonth);
   /////////
-
+ useEffect(() => {
   // async function oracle() {
   //   await AsyncStorage.setItem("oracle", JSON.stringify(user?.oracle));
   // }
@@ -78,6 +77,10 @@ export default function indextabs() {
   //   const ResThis = JSON.parse(Thiss ?? "");
   //   return ResThis;
   // }
+ },[]);
+
+
+
   useEffect(() => {
     if (user && user.oracle && lastMonth && thisMonth) {
       const timer = setTimeout(async () => {
@@ -409,7 +412,7 @@ export default function indextabs() {
                         <Text style={styles2.menuBtnText}>AGM</Text>
                       </Link>
                       <Link
-                        href={"(tabs)"}
+                        href={"(tabs)/agm"}
                         style={styles2.menuBtn}
                         onPress={() => {
                           setMenuModal(false);

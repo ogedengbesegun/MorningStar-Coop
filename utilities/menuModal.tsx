@@ -1,18 +1,81 @@
-import { Link } from "expo-router";
+import { Link, useRouter } from "expo-router";
 import React from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import {
+  findNodeHandle,
+  Platform,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  UIManager,
+  View,
+} from "react-native";
 
 type Props = {
+  scrollRef: React.RefObject<ScrollView>;
+  refWhy: React.RefObject<View>;
+  refVision: React.RefObject<View>;
+  refMission: React.RefObject<View>;
   setDialogMenu: (val: boolean) => void;
   toggleMenuIcon: () => void;
 };
 
-const ModalContent: React.FC<Props> = ({ setDialogMenu, toggleMenuIcon }) => {
+const ModalContent: React.FC<Props> = ({
+  scrollRef,
+  refWhy,
+  refVision,
+  refMission,
+  setDialogMenu,
+  toggleMenuIcon,
+}) => {
+  const router = useRouter();
+  ///
+  const scrollToRef = (ref: React.RefObject<View>) => {
+    if (ref.current && scrollRef.current) {
+      const scrollHandle = findNodeHandle(scrollRef.current);
+      const targetHandle = findNodeHandle(ref.current);
+
+      if (targetHandle && scrollHandle) {
+        UIManager.measureLayout(
+          targetHandle,
+          scrollHandle,
+          () => console.warn("measure failed"),
+          (x, y) => {
+            scrollRef.current?.scrollTo({ y, animated: true });
+          }
+        );
+      }
+    }
+  };
+
+
+  // const scrollToRef = async () => {
+  //   if (Platform.OS === "web") {
+  //     refVision.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  //   } else {
+  //     const scrollHandle = findNodeHandle(scrollRef.current);
+  //     const targetHandle = findNodeHandle(refVision.current);
+
+  //     if (targetHandle && scrollHandle) {
+  //       try {
+  //         const { x, y } = await UIManager.measureLayoutRelativeToParent(
+  //           targetHandle
+  //         );
+  //         scrollRef.current?.scrollTo({ y, animated: true });
+  //       } catch (error) {
+  //         console.warn("measure failed", error);
+  //       }
+  //     }
+  //   }
+  // };
+  // const scrollRef = useRef<null | ScrollView>(null);
+  // const refVision = useRef<null | View>(null);
+  // const refMission = useRef<null | View>(null);
   return (
     <View
       style={{
-        marginTop: 9,
-        marginLeft: 9,
+        marginTop: 70,
+        marginRight: "auto",
+        marginLeft: "auto",
         width: 300,
         backgroundColor: "white",
         borderRadius: 6,
@@ -50,6 +113,15 @@ const ModalContent: React.FC<Props> = ({ setDialogMenu, toggleMenuIcon }) => {
             onPress={() => {
               setDialogMenu(false);
               toggleMenuIcon();
+              if (i === 0) {
+                router.navigate("adminlogin");
+              } else if (i === 1) {
+                scrollToRef(refWhy);
+              } else if (i === 2) {
+                scrollToRef(refVision);
+              } else if (i === 3) {
+                scrollToRef(refMission);
+              }
             }}
             style={{ marginTop: i !== 0 ? 20 : 0 }}
           >
@@ -73,7 +145,7 @@ const ModalContent: React.FC<Props> = ({ setDialogMenu, toggleMenuIcon }) => {
             setTimeout(() => {
               setDialogMenu(false);
               toggleMenuIcon();
-            }, 500);
+            }, 100);
           }}
         >
           <Text style={{ color: "green", fontSize: 20 }}>

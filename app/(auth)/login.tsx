@@ -10,7 +10,7 @@ import Card from "../../utilities/card";
 import { lastMonth } from "../../utilities/mydate";
 // import Constants from 'expo-constants';
 //
-
+import Hr from '../../utilities/hr'
 // import * as SecureStore from "expo-secure-store";
 // import Constants from "expo-constants";
 import {
@@ -84,6 +84,7 @@ export default function login() {
   //////////////////
   const [dialogMenu, setDialogMenu] = useState(false);
   const scrollRef = useRef(null);
+  const refWhy = useRef(null);
   const refVision = useRef(null);
   const refMission = useRef(null);
   // ///////
@@ -105,6 +106,7 @@ export default function login() {
             flexDirection: "row",
             justifyContent: "center",
           }}
+          ref={scrollRef}
         >
           <TouchableOpacity
             style={{ marginLeft: 15, alignSelf: "center" }}
@@ -152,6 +154,10 @@ export default function login() {
               // }}
             >
               <ModalContent
+                scrollRef={scrollRef}
+                refWhy={refWhy}
+                refVision={refVision}
+                refMission={refMission}
                 setDialogMenu={setDialogMenu}
                 toggleMenuIcon={toggleMenuIcon}
               />
@@ -584,12 +590,14 @@ export default function login() {
               <Text style={{ textAlign: "center" }}>Join Us Now 🌱</Text>
             </Link>
 
-            <Text style={styles2.joinUsMsgStyle}>
-              <Text style={{ fontSize: 23 }}>
+           <View ref={refWhy}> 
+             <Text style={styles2.joinUsMsgStyle}>
+              <Text style={{ fontSize: 23 }} >
                 Why Morning Star Cooperative Society?
               </Text>
               {joinUsMsg}
             </Text>
+           </View>
             <Link href={"(auth)"} style={styles2.joinUs}>
               <Text style={styles2.joinUsText}>Join Us Now 🌱</Text>
             </Link>
@@ -608,20 +616,24 @@ export default function login() {
               {/* Vision Statement */}
               <View
                 style={{ width: 290, marginRight: "auto", marginLeft: "auto" }}
+              ref={refVision}
               >
                 <Card style={[, { backgroundColor: "white" }]}>
-                  <Text style={styles2.vmHeader} ref={refVision}>
+                  <Text style={styles2.vmHeader} >
                     Our Vision 🍀
                   </Text>
                   <Text style={styles2.vmStatement}>{vision}</Text>
                 </Card>
+               
               </View>
+              {/* <Hr color='red' thickness={4} /> */}
               {/* Mission Statement */}
               <View
                 style={{ width: 290, marginRight: "auto", marginLeft: "auto" }}
+              ref={refMission}
               >
                 <Card style={[, { backgroundColor: "white", marginTop: 1 }]}>
-                  <Text style={styles2.vmHeader} ref={refMission}>
+                  <Text style={styles2.vmHeader} >
                     Our Mission 🌴
                   </Text>
                   <Text style={styles2.vmStatement}>{mission}</Text>
@@ -678,13 +690,14 @@ export default function login() {
       if (response.success === true) {
         setModalVisible(true);
         setmodalText(response.message);
-        // alert(response.message);
+        
         // Set the user context with the user's name and password
         setUser({
           name:
             response.user.full_name.split(" ")[1] ??
             response.user.full_name.split(" ")[0],
           oracle: response.user.oracle,
+          password: response.user.password, // Store the password securely if needed
         });
 
         const timer = setTimeout(() => {

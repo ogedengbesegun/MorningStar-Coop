@@ -42,6 +42,23 @@ export default function _layout() {
           headerTintColor: "white",
         }}
       />
+
+      <Stack.Screen
+        name="adminlogin"
+        options={{
+          title: "MorningStar Admin Login",
+          headerTitleAlign: "center",
+          headerTintColor: "white",
+        }}
+      />
+      <Stack.Screen
+        name="dashboard"
+        options={{
+          title: "Admin Dashboard",
+          headerTitleAlign: "center",
+          headerTintColor: "white",
+        }}
+      />
       
     </Stack>
   );

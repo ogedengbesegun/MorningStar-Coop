@@ -3,6 +3,7 @@ import { createContext, useContext, useState, ReactNode } from 'react';
 type User = {
   name: string;
   oracle: string;
+  password: string;
   // Add other user fields if needed
 };
 
