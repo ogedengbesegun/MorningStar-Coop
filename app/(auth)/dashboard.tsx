@@ -240,9 +240,7 @@ export default function dashboard() {
                       onPress={() => {
                         if (inputRef.current) {
                           (inputRef.current as HTMLInputElement).click();
-                          //    setTimeout(() => {
-                          //   parseCSV(csvText as string);
-                          // }, 1000);
+                          
                           setDisable(false);
                         }
                       }}

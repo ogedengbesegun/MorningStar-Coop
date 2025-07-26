@@ -581,7 +581,7 @@ export default function login() {
               Are you a Civil Servant in Lagos?
             </Text>
             <Link
-              href={"(auth)"}
+              href={"(auth)/joinus"}
               style={{
                 color: "purple",
                 elevation: 5,
@@ -598,7 +598,7 @@ export default function login() {
               {joinUsMsg}
             </Text>
            </View>
-            <Link href={"(auth)"} style={styles2.joinUs}>
+            <Link href={"(auth)/joinus"} style={styles2.joinUs}>
               <Text style={styles2.joinUsText}>Join Us Now 🌱</Text>
             </Link>
             <Link href={"(auth)/callus"} style={styles2.joinUs}>

@@ -28,7 +28,7 @@ export default function _layout() {
         name="callus"
         
         options={{
-          title: "Call Us ☎️",
+          title: "Call or Chat Us ☎️",
           headerTitleAlign: "center",
           headerTintColor: "white",
           headerShown:true,
@@ -55,6 +55,14 @@ export default function _layout() {
         name="dashboard"
         options={{
           title: "Admin Dashboard",
+          headerTitleAlign: "center",
+          headerTintColor: "white",
+        }}
+      />
+      <Stack.Screen
+        name="joinus"
+        options={{
+          title: "Membership Form ",
           headerTitleAlign: "center",
           headerTintColor: "white",
         }}

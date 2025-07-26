@@ -32,12 +32,16 @@ export default function Finance() {
   useEffect(() => {
     const rimeber = async () => {
       if (user?.oracle) {
-        await AsyncStorage.setItem("myoracle", JSON.stringify(user?.oracle));
+        await AsyncStorage.setItem("myoracle", user?.oracle);
         setkiporacle(user.oracle);
         // setkiporacle(AsyncStorage.getItem("myoracle"));
       } else {
         const savedOracle = await AsyncStorage.getItem("myoracle");
-        if (savedOracle) setkiporacle(savedOracle);
+        if (savedOracle) {
+          // const convertToNum = Number(savedOracle);
+
+          setkiporacle(savedOracle);
+        }
       }
     };
 
@@ -238,9 +242,16 @@ export default function Finance() {
               {/* <Text style={{ marginTop: 1, textAlign: "self" }}>
                 Deduction:
               </Text> */}
-              <Text style={{ marginTop: 1, textAlign: "center",
-                color:"grey",fontStyle:"italic",paddingRight:20,
-                paddingLeft:20 }}>
+              <Text
+                style={{
+                  marginTop: 1,
+                  textAlign: "center",
+                  color: "grey",
+                  fontStyle: "italic",
+                  paddingRight: 20,
+                  paddingLeft: 20,
+                }}
+              >
                 {userInfo}
               </Text>
               <View
@@ -276,36 +287,90 @@ export default function Finance() {
                 <Text
                   style={{ marginTop: 15, marginRight: 30, marginLeft: 10 }}
                 >
-                  Deduction: {deduction}
+                  Deduction: ₦
+                  <Text
+                    style={{ color: "green", fontWeight: "bold", fontSize: 20 }}
+                  >
+                    {" "}
+                    {Number(deduction).toLocaleString("en-NG", {
+                      // style: "currency",
+                      currency: "NGN",
+                    })}
+                  </Text>
                 </Text>
                 <Text
                   style={{ marginTop: 15, marginRight: 30, marginLeft: 10 }}
                 >
-                  Savings: {savings}
+                  Savings: ₦
+                  <Text
+                    style={{ color: "green", fontWeight: "bold", fontSize: 20 }}
+                  >
+                    {" "}
+                    {Number(savings).toLocaleString("en-NG", {
+                      // style: "currency",
+                      currency: "NGN",
+                    })}
+                  </Text>
                 </Text>
 
                 {/*  */}
                 <Text
                   style={{ marginTop: 15, marginRight: 30, marginLeft: 10 }}
                 >
-                  Retirement: {retirement}
+                  Retirement: ₦
+                  <Text
+                    style={{ color: "green", fontWeight: "bold", fontSize: 20 }}
+                  >
+                    {" "}
+                    {Number(retirement).toLocaleString("en-NG", {
+                      // style: "currency",
+                      currency: "NGN",
+                    })}
+                  </Text>
                 </Text>
 
                 {/*  */}
                 <Text
                   style={{ marginTop: 15, marginRight: 30, marginLeft: 10 }}
                 >
-                  Loan Balance: {loanBalance}
+                  Loan Balance: ₦
+                  <Text
+                    style={{ color: "green", fontWeight: "bold", fontSize: 20 }}
+                  >
+                    {" "}
+                    {Number(loanBalance).toLocaleString("en-NG", {
+                      // style: "currency",
+                      currency: "NGN",
+                    })}
+                  </Text>
                 </Text>
                 <Text
                   style={{ marginTop: 15, marginRight: 30, marginLeft: 10 }}
                 >
-                  Interest Balance: {interestBalance}
+                  Interest Balance: ₦
+                  <Text
+                    style={{ color: "red", fontWeight: "bold", fontSize: 20 }}
+                  >
+                    {" "}
+                    {Number(interestBalance).toLocaleString("en-NG", {
+                      // style: "currency",
+                      currency: "NGN",
+                    })}
+                  </Text>
                 </Text>
                 <Text
                   style={{ marginTop: 15, marginRight: 30, marginLeft: 10 }}
                 >
-                  Soft Loan Balance: {softLoanBalance}
+                  Soft Loan Balance: ₦
+                   <Text
+                    style={{ color: "green", fontWeight: "bold", fontSize: 20 }}
+                  >
+                    {" "}
+                    {Number(softLoanBalance).toLocaleString("en-NG", {
+                      // style: "currency",
+                      currency: "NGN",
+                    })}
+                  </Text>
                 </Text>
               </View>
               <Hr />

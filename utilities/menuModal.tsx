@@ -122,6 +122,9 @@ const ModalContent: React.FC<Props> = ({
               } else if (i === 3) {
                 scrollToRef(refMission);
               }
+              else if(i===4){
+                router.navigate('joinus')
+              }
             }}
             style={{ marginTop: i !== 0 ? 20 : 0 }}
           >

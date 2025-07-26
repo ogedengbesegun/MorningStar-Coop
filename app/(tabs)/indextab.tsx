@@ -7,6 +7,7 @@ import {
   thisMonth,
 } from "@/utilities/mydate";
 import { API_URL as ENV_API_URL } from "@env";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { Link, useRouter } from "expo-router";
 import React, { useEffect, useRef, useState } from "react";
@@ -32,8 +33,12 @@ export default function indextabs() {
   const refText = useRef<Text>(null);
   const [last_deduct, setLast_deduct] = useState<any | null>(null);
   const [this_deduct, setThis_deduct] = useState<any | null>(null);
-
+  /////////
+  const [userName, setUserName] = useState<string | null>(null);
+  const [userOracle, setUserOracle] = useState<string | null>(null);
+  ////////////
   const [saving, setSaving] = useState<any | null>(null);
+  const [savingStored,setSavingStored]=useState<any | null>(null)
   const [retirement, setRetirement] = useState<any | null>(null);
   const [loanBalance, setLoanBalance] = useState<any | null>(null);
   const [softloanBalance, setSoftloanBalance] = useState<any | null>(null);
@@ -47,45 +52,53 @@ export default function indextabs() {
   /////
   const nav = useNavigation<any>();
   const router = useRouter();
-  // Provide a default value to complete the expression
-  ///////useEffect(() => {
-  ///////localStorage
-  //  const localName = localStorage.setItem("name", user?.name ?? "Guest");
-  //   const localOracle = localStorage.setItem("oracle", user?.oracle ?? "Guest Oracle");
-  //   const localLastMonth = localStorage.setItem("lastMonth", lastMonth);
-  //   const localThisMonth = localStorage.setItem("thisMonth", thisMonth);
-  /////////
- useEffect(() => {
-  // async function oracle() {
-  //   await AsyncStorage.setItem("oracle", JSON.stringify(user?.oracle));
-  // }
-  // async function getOracle() {
-  //   const Oracle = await AsyncStorage.getItem("oracle");
-  //   if (!Oracle) return null; // Handle missing case safely
-  //   const ResOracle = JSON.parse(Oracle);
-  //   return ResOracle;
-  // }
-  // async function last() {
-  //   await AsyncStorage.setItem("last", JSON.stringify(lastMonth));
-  //   const Last = await AsyncStorage.getItem("last");
-  //   const ResLast = JSON.parse(Last ?? "");
-  //   return ResLast;
-  // }
-  // async function thiss() {
-  //   await AsyncStorage.setItem("this", JSON.stringify(thisMonth));
-  //   const Thiss = await AsyncStorage.getItem("this");
-  //   const ResThis = JSON.parse(Thiss ?? "");
-  //   return ResThis;
-  // }
- },[]);
+ //////////////////////////////
+ 
+  // useEffect(() => {
+  //   const getUserName = async () => {
+  //     if (user?.name && user?.oracle) {
+  //       await AsyncStorage.setItem("name", user?.name);
+  //       await AsyncStorage.setItem("oracle", user?.oracle);
+  //       await AsyncStorage.setItem("lastDeduct", last_deduct);
+  //       await AsyncStorage.setItem("thisDeduct", this_deduct);
+  //       await AsyncStorage.setItem("saving", savingStored);
+  //       await AsyncStorage.setItem("retirement", retirement);
+  //       await AsyncStorage.setItem("loanBalance", loanBalance);
+  //       await AsyncStorage.setItem("softloanBalance", softloanBalance);
+  //       await AsyncStorage.setItem("interestBalance", interestBalance);
 
+  //       setUserName(user?.name);
+  //       setUserOracle(user?.oracle);
+  //     } else {
+  //       const storedName = await AsyncStorage.getItem("name");
+  //       const storedOracle = await AsyncStorage.getItem("oracle");
+  //       const storedLast = await AsyncStorage.getItem("lastDeduct");
+  //       const storedThis = await AsyncStorage.getItem("thisDeduct");
+  //       const storedSaving = await AsyncStorage.getItem("saving");
+  //       const storedRetirement = await AsyncStorage.getItem("retirement");
+  //       const storedloan = await AsyncStorage.getItem("loanBalance");
+  //       const storedSoft = await AsyncStorage.getItem("softloanBalance");
+  //       const storedInterest = await AsyncStorage.getItem("interestBalance");
+
+  //       setUserName(storedName || "Guest");
+  //       setUserOracle(storedOracle || "Guest Oracle");
+  //       setLast_deduct(storedLast);
+  //       setLast_deduct(storedThis);
+  //       setSaving(storedSaving);
+  //       setRetirement(storedRetirement);
+  //       setLoanBalance(storedloan);
+  //       setSoftloanBalance(storedSoft);
+  //       setInterestBalance(storedInterest);
+  //     }
+  //   };
+  //   getUserName();
+  // }, [user?.name, user?.oracle]);
 
 
   useEffect(() => {
     if (user && user.oracle && lastMonth && thisMonth) {
       const timer = setTimeout(async () => {
-       
-          msc_index_finance();
+        msc_index_finance();
       }, 100); // slight delay
 
       return () => clearTimeout(timer);
@@ -382,7 +395,7 @@ export default function indextabs() {
                           setMenuModal(false);
                         }}
                       >
-                        <Text style={styles2.menuBtnText}>Advertisements</Text>
+                        <Text style={styles2.menuBtnText}>Sales Advertisements</Text>
                       </Link>
                       <Link
                         href={"(tabs)"}
@@ -412,7 +425,7 @@ export default function indextabs() {
                         <Text style={styles2.menuBtnText}>AGM</Text>
                       </Link>
                       <Link
-                        href={"(tabs)/agm"}
+                        href={"(auth)/callus"}
                         style={styles2.menuBtn}
                         onPress={() => {
                           setMenuModal(false);
@@ -467,37 +480,50 @@ export default function indextabs() {
             <Card style={[]}>
               <Text style={{ fontSize: 15, color: "green" }}>
                 Savings:
-                <Text style={{ fontSize: 20, color: "green" }}> {saving}</Text>
+                <Text style={{ fontSize: 20, color: "green" }}
+                
+                > {saving} {()=>setSavingStored(saving)}
+                  </Text>
               </Text>
             </Card>
 
             <Card style={[]}>
-              <Text style={{ fontSize: 15, color: "green" }}>Retirement:
-              <Text style={{ fontSize: 20, color: "green" }}> {retirement}
-              </Text></Text>
-            </Card>
-
-            <Card style={[]}>
               <Text style={{ fontSize: 15, color: "green" }}>
-                Loan Balance: 
-              <Text style={{ fontSize: 20, color: "green" }}> {loanBalance}
-              </Text></Text>
-            </Card>
-
-            <Card style={[]}>
-              <Text style={{ fontSize: 15, color: "green" }}>
-                Soft Loan Balance:{" "}
-                <Text style={{ fontSize: 20, color: "green" }}> {softloanBalance}
+                Retirement:
+                <Text style={{ fontSize: 20, color: "green" }}>
+                  {" "}
+                  {retirement}
                 </Text>
               </Text>
             </Card>
 
             <Card style={[]}>
               <Text style={{ fontSize: 15, color: "green" }}>
-                Interest Balance:{' '}
-              <Text style={{ fontSize: 20, color: "red" }}>
-                {interestBalance}
-              </Text></Text>
+                Loan Balance:
+                <Text style={{ fontSize: 20, color: "green" }}>
+                  {" "}
+                  {loanBalance}
+                </Text>
+              </Text>
+            </Card>
+
+            <Card style={[]}>
+              <Text style={{ fontSize: 15, color: "green" }}>
+                Soft Loan Balance:{" "}
+                <Text style={{ fontSize: 20, color: "green" }}>
+                  {" "}
+                  {softloanBalance}
+                </Text>
+              </Text>
+            </Card>
+
+            <Card style={[]}>
+              <Text style={{ fontSize: 15, color: "green" }}>
+                Interest Balance:{" "}
+                <Text style={{ fontSize: 20, color: "red" }}>
+                  {interestBalance}
+                </Text>
+              </Text>
             </Card>
 
             <Card style={[]}>
