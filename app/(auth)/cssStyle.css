@@ -10,7 +10,8 @@
   padding: 8;
   margin-left: 276;
   justify-self: center;
-  /* opacity: 0; */
+  opacity: 0;
+  z-index: -1;
   /* position:absolute; */
   border: none;
   background-color: rgb(184, 202, 212);
