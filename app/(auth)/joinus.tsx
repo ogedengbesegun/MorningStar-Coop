@@ -100,7 +100,7 @@ export default function MembershipForm() {
         title={form.dob.toDateString()}
         onPress={() => {
           if (Platform.OS === "web" && refDate.current) {
-            refDate.current.style.opacity='0.8';
+            refDate.current.click();
           } else {
             setShowDate(true);
           }
