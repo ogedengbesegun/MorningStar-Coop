@@ -1,5 +1,4 @@
 import DateTimePicker from "@react-native-community/datetimepicker";
-// import * as Print from "expo-print";
 import React, { useRef, useState } from "react";
 import {
   Alert,
@@ -20,7 +19,7 @@ export default function MembershipForm() {
     amount: "",
   });
   const [showDate, setShowDate] = useState(false);
-  const refDate = useRef(null);
+  const refDate = useRef<HTMLInputElement | null>(null);
 
   const [isAmount, setIsAmount] = useState("");
   const [isLetter, setIsLetter] = useState("");
@@ -99,7 +98,13 @@ export default function MembershipForm() {
       <Button
         // ref={refDate}
         title={form.dob.toDateString()}
-        onPress={() => setShowDate(true)}
+        onPress={() => {
+          if (Platform.OS === "web" && refDate.current) {
+            refDate.current.style.opacity='0.8';
+          } else {
+            setShowDate(true);
+          }
+        }}
       />
 
       {Platform.OS === "web" ? (
@@ -172,8 +177,9 @@ export default function MembershipForm() {
             if (Platform.OS === "web") {
               print();
               // await Print.printAsync()
-            // handleSubmit
-          }}}
+              // handleSubmit
+            }
+          }}
           color="green"
         />
       </View>

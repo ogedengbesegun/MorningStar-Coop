@@ -482,7 +482,7 @@ export default function indextabs() {
                 Savings:
                 <Text style={{ fontSize: 20, color: "green" }}
                 
-                > {saving} {()=>setSavingStored(saving)}
+                > {saving}
                   </Text>
               </Text>
             </Card>

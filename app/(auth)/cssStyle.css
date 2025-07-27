@@ -1,12 +1,17 @@
 .hiddenFileInput {
   display: none;
 }
-.dateInput{
-  position:relative;
-  top:-33;
-  width:18;
-  padding:5;
+.dateInput {
+  position: relative;
+  top: -35;
+  /* width: 18; */
+  margin-top:auto;
+  margin-bottom: auto;
+  padding: 9;
   margin-left: 276;
- 
- background-color: 'blue';
+  justify-self: center;
+  opacity: 0;
+  /* position:absolute; */
+  border: none;
+  background-color: rgb(184, 202, 212);
 }

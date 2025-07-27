@@ -10,7 +10,6 @@ import Card from "../../utilities/card";
 import { lastMonth } from "../../utilities/mydate";
 // import Constants from 'expo-constants';
 //
-import Hr from '../../utilities/hr'
 // import * as SecureStore from "expo-secure-store";
 // import Constants from "expo-constants";
 import {
@@ -88,7 +87,7 @@ export default function login() {
   const refVision = useRef(null);
   const refMission = useRef(null);
   // ///////
- 
+
   return (
     <>
       {/* <ImageBackground
@@ -146,6 +145,7 @@ export default function login() {
               style={{
                 backgroundColor: "rgba(0, 0, 0, 0.7)",
                 marginTop: 0,
+                // width: "70%",
                 height: "100%",
               }}
               // onResponderGrant={()=>{
@@ -172,7 +172,10 @@ export default function login() {
                   height: 50,
                   width: 50,
 
-                  // marginLeft: 25,
+                  // position: "relative",
+                  // top: -420,
+                  // marginLeft: 13,
+                  // alignItems:"flex-start",
                 }}
                 onPress={() => {
                   setDialogMenu(false);
@@ -183,11 +186,12 @@ export default function login() {
                   style={{
                     textAlign: "center",
                     margin: "auto",
+
                     // marginBottom: "auto",
                   }}
                   name="close"
                   size={35}
-                  color="rgba(243, 34, 34, 0.5)"
+                  color="rgba(247, 19, 19, 0.73)"
                 />
               </TouchableOpacity>
             </View>
@@ -590,14 +594,14 @@ export default function login() {
               <Text style={{ textAlign: "center" }}>Join Us Now 🌱</Text>
             </Link>
 
-           <View ref={refWhy}> 
-             <Text style={styles2.joinUsMsgStyle}>
-              <Text style={{ fontSize: 23 }} >
-                Why Morning Star Cooperative Society?
+            <View ref={refWhy}>
+              <Text style={styles2.joinUsMsgStyle}>
+                <Text style={{ fontSize: 23 }}>
+                  Why Morning Star Cooperative Society?
+                </Text>
+                {joinUsMsg}
               </Text>
-              {joinUsMsg}
-            </Text>
-           </View>
+            </View>
             <Link href={"(auth)/joinus"} style={styles2.joinUs}>
               <Text style={styles2.joinUsText}>Join Us Now 🌱</Text>
             </Link>
@@ -616,26 +620,21 @@ export default function login() {
               {/* Vision Statement */}
               <View
                 style={{ width: 290, marginRight: "auto", marginLeft: "auto" }}
-              ref={refVision}
+                ref={refVision}
               >
                 <Card style={[, { backgroundColor: "white" }]}>
-                  <Text style={styles2.vmHeader} >
-                    Our Vision 🍀
-                  </Text>
+                  <Text style={styles2.vmHeader}>Our Vision 🍀</Text>
                   <Text style={styles2.vmStatement}>{vision}</Text>
                 </Card>
-               
               </View>
               {/* <Hr color='red' thickness={4} /> */}
               {/* Mission Statement */}
               <View
                 style={{ width: 290, marginRight: "auto", marginLeft: "auto" }}
-              ref={refMission}
+                ref={refMission}
               >
                 <Card style={[, { backgroundColor: "white", marginTop: 1 }]}>
-                  <Text style={styles2.vmHeader} >
-                    Our Mission 🌴
-                  </Text>
+                  <Text style={styles2.vmHeader}>Our Mission 🌴</Text>
                   <Text style={styles2.vmStatement}>{mission}</Text>
                 </Card>
               </View>
@@ -690,7 +689,7 @@ export default function login() {
       if (response.success === true) {
         setModalVisible(true);
         setmodalText(response.message);
-        
+
         // Set the user context with the user's name and password
         setUser({
           name:
