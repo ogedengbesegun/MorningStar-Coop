@@ -209,18 +209,7 @@ export default function login() {
               backgroundColor: "white",
             }}
           >
-            <Image
-              //https://reactnative.dev/img/tiny_logo.png
-              // onLoad={() => dialog("Welcome to Egbe Alajeseku")}
-              source={require("../../assets/images/d_img/money-graphic-3d.jpg")}
-              // source={{ uri:"https://reactnative.dev/img/tiny_logo.png" }}
-              style={{
-                width: 320,
-                height: 250,
-                marginBottom: 10,
-                marginTop: 5,
-              }}
-            />
+            
 
             {/* login Details */}
             {/* <ImageBackground

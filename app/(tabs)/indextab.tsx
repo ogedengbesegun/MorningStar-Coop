@@ -7,7 +7,7 @@ import {
   thisMonth,
 } from "@/utilities/mydate";
 import { API_URL as ENV_API_URL } from "@env";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { useNavigation } from "@react-navigation/native";
 import { Link, useRouter } from "expo-router";
 import React, { useEffect, useRef, useState } from "react";
@@ -38,7 +38,7 @@ export default function indextabs() {
   const [userOracle, setUserOracle] = useState<string | null>(null);
   ////////////
   const [saving, setSaving] = useState<any | null>(null);
-  const [savingStored,setSavingStored]=useState<any | null>(null)
+  const [savingStored, setSavingStored] = useState<any | null>(null);
   const [retirement, setRetirement] = useState<any | null>(null);
   const [loanBalance, setLoanBalance] = useState<any | null>(null);
   const [softloanBalance, setSoftloanBalance] = useState<any | null>(null);
@@ -52,8 +52,8 @@ export default function indextabs() {
   /////
   const nav = useNavigation<any>();
   const router = useRouter();
- //////////////////////////////
- 
+  //////////////////////////////
+
   // useEffect(() => {
   //   const getUserName = async () => {
   //     if (user?.name && user?.oracle) {
@@ -93,7 +93,6 @@ export default function indextabs() {
   //   };
   //   getUserName();
   // }, [user?.name, user?.oracle]);
-
 
   useEffect(() => {
     if (user && user.oracle && lastMonth && thisMonth) {
@@ -395,7 +394,9 @@ export default function indextabs() {
                           setMenuModal(false);
                         }}
                       >
-                        <Text style={styles2.menuBtnText}>Sales Advertisements</Text>
+                        <Text style={styles2.menuBtnText}>
+                          Sales Advertisements
+                        </Text>
                       </Link>
                       <Link
                         href={"(tabs)"}
@@ -480,10 +481,7 @@ export default function indextabs() {
             <Card style={[]}>
               <Text style={{ fontSize: 15, color: "green" }}>
                 Savings:
-                <Text style={{ fontSize: 20, color: "green" }}
-                
-                > {saving}
-                  </Text>
+                <Text style={{ fontSize: 20, color: "green" }}> {saving}</Text>
               </Text>
             </Card>
 
@@ -542,6 +540,32 @@ export default function indextabs() {
               Our Members are treasures and we value all of your input for the
               advancement of this great cooperative Society.
               {"\n\n"}
+              <Card
+                style={{
+                  backgroundColor: "#fff",
+                  shadowOpacity: 0.3,
+                  shadowRadius: 4,
+                }}
+              >
+                <Text
+                  style={{
+                    color: "red",
+                  }}
+                >
+                  Note:{" "}
+                  <Text style={{ marginTop: 0, color: "grey" }}>
+                    This Page can only display Records NOT older than two Months.
+                    Please, click on
+                    <Text style={{ color: "green" }}> Finance Icon</Text>
+                    <MaterialCommunityIcons
+                      name="finance"
+                      size={30}
+                      color={"green"}
+                    />
+                    to see all Previous Records Older than two(2) months Thanks.{" "}
+                  </Text>
+                </Text>
+              </Card>
             </Text>
           </View>
         </View>

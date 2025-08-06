@@ -3,6 +3,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Picker } from "@react-native-picker/picker";
 import React, { useEffect, useRef, useState } from "react";
 import {
+  ActivityIndicator,
   Button,
   Image,
   ScrollView,
@@ -28,6 +29,9 @@ export default function Finance() {
   const [loanBalance, setLoanBalance] = useState("");
   const [interestBalance, setInterestBalance] = useState("");
   const [softLoanBalance, setSoftLoanBalance] = useState("");
+
+  //////// loading indicator
+  const [loading, setLoading] = useState(false);
   //////////////
   useEffect(() => {
     const rimeber = async () => {
@@ -238,6 +242,7 @@ export default function Finance() {
                   onPress={() => setSelectMonth("December")}
                 />
               </View>
+              {loading && <ActivityIndicator size="large" color="#007bff" />}
               <Hr />
               {/* <Text style={{ marginTop: 1, textAlign: "self" }}>
                 Deduction:
@@ -261,7 +266,7 @@ export default function Finance() {
                   borderStyle: "dotted",
                   borderRadius: 10,
                   marginTop: 2,
-                  marginBottom: 20,
+                  marginBottom: 10,
                   marginRight: 10,
                   marginLeft: 10,
                   padding: 10,
@@ -362,7 +367,7 @@ export default function Finance() {
                   style={{ marginTop: 15, marginRight: 30, marginLeft: 10 }}
                 >
                   Soft Loan Balance: ₦
-                   <Text
+                  <Text
                     style={{ color: "green", fontWeight: "bold", fontSize: 20 }}
                   >
                     {" "}
@@ -378,7 +383,7 @@ export default function Finance() {
                 style={{
                   fontStyle: "italic",
                   color: "grey",
-                  marginTop: 15,
+                  marginTop: 0,
                   padding: 15,
                 }}
               >
@@ -400,6 +405,10 @@ export default function Finance() {
 
   async function monthlyDeduct() {
     const API_URL = "https://morningstar-coop-backend.onrender.com"; // Replace with your actual API URL
+    setLoading(true); // Show spinner
+    const delay = (m:any) => new Promise((resolve) => setTimeout(resolve, m));
+    await delay(3000);
+    /////////////////
     try {
       const eachMonth = await fetch(`${API_URL}/api/monthly`, {
         method: "POST",
@@ -428,7 +437,10 @@ export default function Finance() {
         setInterestBalance("");
         setSoftLoanBalance("");
       }
-    } catch (error) {}
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
   }
 }
 

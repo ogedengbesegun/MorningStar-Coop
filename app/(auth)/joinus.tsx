@@ -1,17 +1,34 @@
 import DateTimePicker from "@react-native-community/datetimepicker";
+import * as FileSystem from "expo-file-system";
+import * as ImagePicker from "expo-image-picker";
+import * as Print from "expo-print";
+// import html2canvas from "html2canvas"; //for web
+// import jsPDF from "jspdf"; // for web
+// import { membershipHtml } from "../../utilities/html";
+
 import React, { useRef, useState } from "react";
 import {
   Alert,
   Button,
+  Image,
+  Linking,
   Platform,
+  ScrollView,
   StyleSheet,
+  Switch,
   Text,
   TextInput,
+  TouchableOpacity,
   View,
 } from "react-native";
+// import {  } from "react-native-gesture-handler";
+import { c_day, c_month, c_year } from "@/utilities/mydate";
 import "./cssStyle.css";
 export default function MembershipForm() {
+  // const setMax = document.querySelector(".dateInput")?.setAttribute("max", `${c_year}-${c_month}-${c_date}`);
+
   const [form, setForm] = useState({
+    picture: "",
     name: "",
     oracle: "",
     phone: "",
@@ -20,170 +37,451 @@ export default function MembershipForm() {
   });
   const [showDate, setShowDate] = useState(false);
   const refDate = useRef<HTMLInputElement | null>(null);
+  const refButton = useRef<any>(null);
+  const refAgree = useRef<any>(null);
 
   const [isAmount, setIsAmount] = useState("");
   const [isLetter, setIsLetter] = useState("");
+  const [isChecked, setIsChecked] = useState(false);
+  const [imageUri, setImageUri] = useState(
+    "https://media.istockphoto.com/id/1495088043/vector/user-profile-icon-avatar-or-person-icon-profile-picture-portrait-symbol-default-portrait.jpg?s=612x612&w=0&k=20&c=dhV2p1JwmloBTOaGAtaA3AW1KSnjsdMt7-U_3EZElZ0="
+  );
 
+  /////
+  const refImage = useRef<any>(imageUri);
+  ///////
+  const [isColored, setIsColored] = useState("");
   //   type Props={
-
+  // const checkedRef = useRef(null);
   //   }
   const handleChange = (field: string, value: any) => {
     setForm((prev) => ({ ...prev, [field]: value }));
   };
+  ///////////
+
+  const pickImage = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      if (Platform.OS === "web") {
+        setImageUri(result.assets[0].uri);
+      } else {
+        const uri = result.assets[0].uri;
+        const base64 = await FileSystem.readAsStringAsync(uri, {
+          encoding: FileSystem.EncodingType.Base64,
+        });
+        setImageUri(`data:image/jpeg;base64,${base64}`);
+        // return result.assets[0].uri
+      }
+    }
+  };
+
+  ///////////
+  const html = `
+<html>
+<body style="font-family: Arial; text-align: center;margin:20px;
+border:1;border-style:solid;border-color:green; padding:10px;border-radius:15px;
+" id="print-area">
+<h1 style="color:green;font-size:40px;text-decoration:underline;">Morning Star Cooperative Society</h1>
+<h1 style="color:green;font-size:40;text-decoration:underline;">Membership Form</h1>
+<div style="text-align:start;margin-left:40;margin-right:40;">
+${
+  imageUri
+    ? `<img src="${imageUri}" width="200" height="200" style="border-radius: 10px;"/>`
+    : ""
+}
+<h2>Full Name:</h2>
+<text style="text-decoration:underline;" ><text style="font-size:30px;">${
+    form.name
+  }</text></text>
+<h2>Oracle Number:<text style="font-size:30px;"> ${form.oracle}</text></h2>
+<h2>Phone Number:<text style="font-size:30px;"> ${form.phone}</text></h2>
+<h2>Date of Birth:<text style="font-size:30px;"> ${form.dob.toLocaleDateString(
+    "en-NG",
+    {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    }
+  )}</text></h2>
+<h2>Monthly Contribution:<text style="font-size:30px;">${
+    form.amount
+  }</text> </h2>
+<p style="font-size:25px;margin-top:15px;color:grey;font-style:italic;">
+I understand that by signing up, I become a member of Morning
+Star Cooperative Society and agree to its terms and conditions.
+</p>
+</div>
+<footer style="bottom:-85px; position:relative;background-color:green;">
+<p style="color:white;font-size:25px;font-weight:larger;
+padding:7px
+">Morning Star Coop Society © ${new Date().getFullYear()}</>
+</footer>
+</body>
+</html>`;
+
+  const handlePrint = async () => {
+    if (
+      !form.name ||
+      !form.oracle ||
+      !form.phone ||
+      !form.amount ||
+      isChecked === false ||
+      refButton.current === form.dob ||
+      // form.dob === new Date()
+      !imageUri
+    ) {
+      return Platform.OS === "web"
+        ? alert("Please fill all required fields.")
+        : Alert.alert("Please fill all required fields.");
+    }
+    if (Platform.OS === "web") {
+      // const html = membershipHtml(form, imageUri);
+      // const element = document.querySelector("#print-area");
+      // const canvas = await html2canvas(html);
+      // const imgData = canvas.toDataURL("image/png");
+      // const pdf = new jsPDF("p", "pt", "a4");
+      // pdf.addImage(imgData, "PNG", 20, 20);
+      // pdf.save("document.pdf");
+      await Print.printAsync({
+        html,
+        width: 150, //612 8.5 inches * 72
+        height: 792, // 11 inches * 72
+      });
+    } else {
+      await Print.printAsync({
+        html,
+        width: 350, //612 8.5 inches * 72
+        height: 792, // 11 inches * 72
+      });
+    }
+  };
 
   const handleSubmit = async () => {
-    if (!form.name || !form.oracle || !form.phone || !form.amount) {
-      return (
-        Alert.alert("Please fill all required fields.") ??
-        alert("Please fill all required fields.")
-      );
+    if (
+      !form.name ||
+      !form.oracle ||
+      !form.phone ||
+      !form.amount ||
+      isChecked === false ||
+      refButton.current === form.dob
+      // form.dob === new Date()
+      // !imageUri
+    ) {
+      return Platform.OS === "web"
+        ? alert("Please fill all required fields.")
+        : Alert.alert("Please fill all required fields.");
     }
-    Alert.alert("Submitted", JSON.stringify(form, null, 2)) ??
-      alert(`Submitted, ${JSON.stringify(form, null, 2)}`);
+    // Alert.alert("Submitted", JSON.stringify(form, null, 2)) ??
+    //   alert(`Submitted, ${JSON.stringify(form, null, 2)}`);
     // Submit to backend logic here
+    Linking.openURL(
+      `https://wa.me/2347036214834?text=${encodeURIComponent(
+        JSON.stringify(form, null, 2)
+      )}`
+    );
   };
 
   return (
-    <View
-      style={{
-        padding: 20,
-        width: 350,
-        marginRight: "auto",
-        marginLeft: "auto",
-      }}
-    >
-      <Text style={styles.label}>
-        Full Name
-        <Text style={{ color: "red", fontSize: 12, fontStyle: "italic" }}>
-          {" "}
-          {isLetter}
-        </Text>
-      </Text>
-      <TextInput
-        placeholder="Enter full name"
-        style={styles.input}
-        value={form.name}
-        onChangeText={(text) => {
-          const onlyLetters = text.replace(/[^A-Za-z ]/g, "");
-          if (onlyLetters !== text) {
-            setIsLetter("Alphabets Only");
-            handleChange("name", "");
-          } else {
-            setIsLetter("");
-            handleChange("name", text);
-          }
-        }}
-      />
-
-      <Text style={styles.label}>Oracle Number</Text>
-
-      <TextInput
-        placeholder="Enter oracle number"
-        style={styles.input}
-        keyboardType="numeric"
-        value={form.oracle}
-        onChangeText={(text) => handleChange("oracle", text)}
-      />
-
-      <Text style={styles.label}>Phone Number</Text>
-      <TextInput
-        placeholder="Enter phone number"
-        style={styles.input}
-        keyboardType="phone-pad"
-        value={form.phone}
-        onChangeText={(text) => handleChange("phone", text)}
-      />
-
-      <Text style={styles.label}>Date of Birth</Text>
-      <Button
-        // ref={refDate}
-        title={form.dob.toDateString()}
-        onPress={() => {
-          if (Platform.OS === "web" && refDate.current) {
-            refDate.current.click();
-          } else {
-            setShowDate(true);
-          }
-        }}
-      />
-
-      {Platform.OS === "web" ? (
-        //  showDate &&
-        <input
-          type="date"
-          //  accept=".csv"
-          ref={refDate}
-          //  onChange={handleWebUpload}
-          title={form.dob.toDateString()}
-          placeholder="Select a Date"
-          className="dateInput"
-          onChange={(e) => {
-            const selectedDate = new Date(e.target.value);
-            if (!isNaN(selectedDate.getTime())) {
-              handleChange("dob", selectedDate);
-            }
-            setShowDate(false);
+    <>
+      <ScrollView>
+        <View
+          style={{
+            // flex: 1,
+            padding: 20,
+            width: 350,
+            // height: "100%",
+            marginRight: "auto",
+            marginLeft: "auto",
           }}
-        />
-      ) : (
-        showDate && (
-          <DateTimePicker
-            value={form.dob}
-            mode="date"
-            display="default"
-            onChange={(_, selectedDate) => {
-              setShowDate(false);
-              if (selectedDate) handleChange("dob", selectedDate);
+        >
+          <Text
+            style={{
+              fontFamily: "times NewRoman",
+              fontWeight: "bold",
+              marginBottom: 5,
+              color: "green",
+              fontSize: 20,
+              textAlign: "left",
+              width: 400,
+            }}
+          >
+            Morning Star Membership Form
+          </Text>
+          {imageUri && (
+            <Image
+              ref={refImage}
+              source={{
+                uri: imageUri
+                  ? imageUri
+                  : "https://media.istockphoto.com/id/1495088043/vector/user-profile-icon-avatar-or-person-icon-profile-picture-portrait-symbol-default-portrait.jpg?s=612x612&w=0&k=20&c=dhV2p1JwmloBTOaGAtaA3AW1KSnjsdMt7-U_3EZElZ0=",
+              }}
+              resizeMode="stretch"
+              style={{
+                width: 200,
+                height: 200,
+                padding: 15,
+                borderRadius: 10,
+                marginBottom: 0,
+              }}
+            />
+          )}
+
+          <View
+            style={{ marginTop: 5, flexDirection: "row", alignItems: "center" }}
+          >
+            <Button
+              title={"Upload Picture"}
+              color={"green"}
+              onPress={() => {
+                pickImage();
+              }}
+            />
+            <TouchableOpacity
+              onPress={() => {
+                setImageUri(
+                  "https://media.istockphoto.com/id/1495088043/vector/user-profile-icon-avatar-or-person-icon-profile-picture-portrait-symbol-default-portrait.jpg?s=612x612&w=0&k=20&c=dhV2p1JwmloBTOaGAtaA3AW1KSnjsdMt7-U_3EZElZ0="
+                );
+              }}
+            >
+              <Text style={{ color: "red", marginLeft: 5 }}>Remove</Text>
+            </TouchableOpacity>
+          </View>
+          <Text style={styles.label}>
+            Full Name
+            <Text style={{ color: "red", fontSize: 12, fontStyle: "italic" }}>
+              {" "}
+              {isLetter}
+            </Text>
+          </Text>
+          <TextInput
+            placeholder="Enter full name"
+            style={[styles.input, { textTransform: "capitalize" }]}
+            value={form.name}
+            onChangeText={(text) => {
+              const onlyLetters = text.replace(/[^A-Za-z ]/g, "");
+              if (onlyLetters !== text) {
+                setIsLetter("Alphabets Only");
+                handleChange("name", "");
+              } else {
+                setIsLetter("");
+                handleChange("name", text);
+              }
+            }}
+            onEndEditing={(e) => {
+              handleChange("name", e.nativeEvent.text.trim());
             }}
           />
-        )
-      )}
 
-      <Text style={styles.label}>Monthly Contribution (₦)</Text>
-      <TextInput
-        placeholder="Enter amount"
-        style={styles.input}
-        keyboardType="numeric"
-        value={form.amount}
-        onChangeText={(text) => {
-          const minimumAmount = 15000;
-          const enteredAmount = Number(text);
+          <Text style={styles.label}>Oracle Number</Text>
 
-          if (!isNaN(enteredAmount) && enteredAmount < minimumAmount) {
-            handleChange("amount", text);
-            setIsAmount("Required Minimum is (₦)15000");
-          } else if (!isNaN(enteredAmount)) {
-            handleChange("amount", text);
-            setIsAmount(""); // Clear error if valid
-          } else {
-            setIsAmount("Please enter a valid number");
-          }
-        }}
-        // onEndEditing={(text) => {
-        //   const minimumAmount = 15000;
-        //   const enteredAmount = Number(text);
-        //   if (!isNaN(enteredAmount) && enteredAmount < minimumAmount) {
-        //     handleChange("amount", "");
-        //   }
-        // }}
-      />
-      <Text style={{ color: "red", fontSize: 12, fontStyle: "italic" }}>
-        {isAmount}
-      </Text>
-      <View style={{ marginTop: 20 }}>
-        <Button
-          title="Submit"
-          onPress={() => {
-            if (Platform.OS === "web") {
-              print();
-              // await Print.printAsync()
-              // handleSubmit
+          <TextInput
+            placeholder="Enter oracle number"
+            style={styles.input}
+            keyboardType="numeric"
+            value={form.oracle}
+            onChangeText={(text) => {
+              // const OnlyNumber = /^(?:\+234|0)(7|8|9)(0|1)\d{8}$/;
+              // const textTrue = OnlyNumber.test(text);
+              // if (!textTrue) {
+              //   alert("Invalid phone number");
+              // } else {
+              handleChange("oracle", text);
+              // }
+            }}
+          />
+
+          <Text style={styles.label}>Phone Number</Text>
+          <TextInput
+            placeholder="Enter phone number"
+            style={styles.input}
+            keyboardType="phone-pad"
+            value={form.phone}
+            onChangeText={(text) => handleChange("phone", text)}
+          />
+
+          <Text style={styles.label}>Date of Birth</Text>
+          <Button
+            ref={refButton}
+            title={form.dob.toLocaleDateString("en-NG", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })}
+            onPress={() => {
+              if (Platform.OS === "web" && refDate.current) {
+                // const inputClick = document.querySelector(".dateInput");
+                // inputClick.style.color = "green";
+                refDate.current.click();
+              } else {
+                setShowDate(true);
+              }
+            }}
+          />
+
+          {Platform.OS === "web" ? (
+            //  showDate &&
+            <input
+              type="date"
+              //  accept=".csv"
+
+              ref={refDate}
+              max={`${c_year}-${c_month}-${c_day}`}
+              title={form.dob.toDateString()}
+              placeholder="Select a Date"
+              className="dateInput"
+              onChange={(e) => {
+                // document.querySelector('.dateInput')
+                const selectedInputDate = new Date(e.target.value);
+                if (!isNaN(selectedInputDate.getTime())) {
+                  handleChange("dob", selectedInputDate);
+                }
+                setShowDate(false);
+              }}
+            />
+          ) : (
+            showDate && (
+              <DateTimePicker
+                value={form.dob}
+                mode="date"
+                maximumDate={new Date()}
+                display="default"
+                onChange={(_, selectedDate) => {
+                  setShowDate(false);
+                  if (selectedDate) handleChange("dob", selectedDate);
+                }}
+              />
+            )
+          )}
+
+          <Text style={styles.label}>Monthly Contribution (₦)</Text>
+          <TextInput
+            placeholder="Enter amount"
+            style={styles.input}
+            keyboardType="numeric"
+            value={form.amount}
+            onChangeText={(text) => {
+              const minimumAmount = 15000;
+              const enteredAmount = Number(text);
+
+              if (!isNaN(enteredAmount) && enteredAmount < minimumAmount) {
+                handleChange("amount", text);
+                setIsAmount("Required Minimum is (₦)15000");
+
+                // {(onEndEditing={handleChange("amount","")})};
+              } else if (!isNaN(enteredAmount)) {
+                handleChange("amount", text);
+                setIsAmount(""); // Clear error if valid
+              } else {
+                setIsAmount("Please enter a valid number");
+              }
+            }}
+            onEndEditing={(e) => {
+              const entered = Number(e.nativeEvent.text);
+              if (entered < 15000) {
+                handleChange("amount", ""); // Clear input if less than 15000
+              }
+            }}
+          />
+          <Text style={{ color: "red", fontSize: 12, fontStyle: "italic" }}>
+            {isAmount}
+          </Text>
+          <View
+            style={{
+              marginBottom: 5,
+              flexDirection: "row",
+              width: 250,
+              alignItems: "center",
+            }}
+          >
+            <Switch
+              value={isChecked}
+              thumbColor={isChecked ? "#ffffff" : "#f4f3f4"}
+              trackColor={{ false: "red", true: "green" }}
+              onValueChange={(value) => {
+                setIsChecked(value);
+                setIsColored(value ? "green" : "red");
+              }}
+            />
+            <Text
+              style={{ textAlign: "left", padding: 10, color: "grey" }}
+              ref={refAgree}
+            >
+              "I understand that by signing up, I become a member of Morning
+              Star Cooperative Society and agree to its terms and conditions."
+            </Text>
+          </View>
+          <Text
+            style={{ marginLeft: 8, marginBottom: 5, color: isColored }}
+            // ref={checkedRef}
+          >
+            {
+              isChecked ? "Agreed" : "Not Agreed"
+              // isChecked ? setIsColored('green')
             }
+          </Text>
+          <View
+            style={{
+              flexDirection: "row",
+              marginRight: "auto",
+              marginLeft: "auto",
+              gap: 5,
+              width: 300,
+            }}
+          >
+            <TouchableOpacity
+              style={{ backgroundColor: "grey", width: 150, padding: 7 }}
+              // title="Print"
+              onPress={() => {
+                // handlePrint();
+                if (Platform.OS === "web") {
+                  handlePrint();
+                } else {
+                  handlePrint();
+                }
+              }}
+            >
+              <Text style={{ textAlign: "center", color: "#fff" }}>Print</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              disabled
+              style={{ backgroundColor: "green", width: 150, padding: 7 }}
+              // title="Submit"
+              onPress={() => {
+                if (Platform.OS === "web") {
+                  // print();
+                  // await Print.printAsync()
+                  handleSubmit();
+                } else {
+                  handleSubmit();
+                }
+              }}
+            >
+              <Text style={{ textAlign: "center", color: "#fff" }}>Submit</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </ScrollView>
+      <View>
+        <Text
+          style={{
+            textAlign: "center",
+            backgroundColor: "green",
+            padding: 8,
+            color: "white",
+            fontSize: 15,
+            fontWeight: "bold",
           }}
-          color="green"
-        />
+        >
+          Morning Star Coop Society © {new Date().getFullYear()}
+        </Text>
       </View>
-    </View>
+    </>
   );
 }
 
@@ -198,5 +496,6 @@ const styles = StyleSheet.create({
     borderColor: "#ccc",
     borderRadius: 5,
     padding: 10,
+    height: 45,
   },
 });

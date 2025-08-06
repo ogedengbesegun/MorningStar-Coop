@@ -2,17 +2,24 @@
   display: none;
 }
 .dateInput {
-  position: relative;
+  position:relative;
   top: -34;
   width: 18;
-  /* margin-top:auto;
-  margin-bottom: auto; */
+ 
   padding: 8;
   margin-left: 276;
   justify-self: center;
-  opacity: 0;
-  z-index: -1;
-  /* position:absolute; */
+  opacity: 0.2;
+  /* z-index: -1; */
   border: none;
-  background-color: rgb(184, 202, 212);
+  /* background-color: rgb(184, 202, 212); */
+}
+text{
+  display: block;
+  font-size: medium;
+  font-weight: bold;
+  
+}
+.body{
+  margin-left: 50;
 }
