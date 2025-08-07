@@ -2,9 +2,7 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import * as FileSystem from "expo-file-system";
 import * as ImagePicker from "expo-image-picker";
 import * as Print from "expo-print";
-// import html2canvas from "html2canvas"; //for web
-// import jsPDF from "jspdf"; // for web
-// import { membershipHtml } from "../../utilities/html";
+import { MembershipHtml } from "../../utilities/html";
 
 import React, { useRef, useState } from "react";
 import {
@@ -67,6 +65,7 @@ export default function MembershipForm() {
     });
 
     if (!result.canceled) {
+      //////
       if (Platform.OS === "web") {
         setImageUri(result.assets[0].uri);
       } else {
@@ -75,55 +74,14 @@ export default function MembershipForm() {
           encoding: FileSystem.EncodingType.Base64,
         });
         setImageUri(`data:image/jpeg;base64,${base64}`);
-        // return result.assets[0].uri
+        // setImageUri(result.assets[0].uri)
       }
     }
   };
 
   ///////////
-  const html = `
-<html>
-<body style="font-family: Arial; text-align: center;margin:20px;
-border:1;border-style:solid;border-color:green; padding:10px;border-radius:15px;
-" id="print-area">
-<h1 style="color:green;font-size:40px;text-decoration:underline;">Morning Star Cooperative Society</h1>
-<h1 style="color:green;font-size:40;text-decoration:underline;">Membership Form</h1>
-<div style="text-align:start;margin-left:40;margin-right:40;">
-${
-  imageUri
-    ? `<img src="${imageUri}" width="200" height="200" style="border-radius: 10px;"/>`
-    : ""
-}
-<h2>Full Name:</h2>
-<text style="text-decoration:underline;" ><text style="font-size:30px;">${
-    form.name
-  }</text></text>
-<h2>Oracle Number:<text style="font-size:30px;"> ${form.oracle}</text></h2>
-<h2>Phone Number:<text style="font-size:30px;"> ${form.phone}</text></h2>
-<h2>Date of Birth:<text style="font-size:30px;"> ${form.dob.toLocaleDateString(
-    "en-NG",
-    {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    }
-  )}</text></h2>
-<h2>Monthly Contribution:<text style="font-size:30px;">${
-    form.amount
-  }</text> </h2>
-<p style="font-size:25px;margin-top:15px;color:grey;font-style:italic;">
-I understand that by signing up, I become a member of Morning
-Star Cooperative Society and agree to its terms and conditions.
-</p>
-</div>
-<footer style="bottom:-85px; position:relative;background-color:green;">
-<p style="color:white;font-size:25px;font-weight:larger;
-padding:7px
-">Morning Star Coop Society © ${new Date().getFullYear()}</>
-</footer>
-</body>
-</html>`;
-
+ const html = MembershipHtml(form, imageUri);
+///////////////////////////////////////////////
   const handlePrint = async () => {
     if (
       !form.name ||
@@ -140,25 +98,27 @@ padding:7px
         : Alert.alert("Please fill all required fields.");
     }
     if (Platform.OS === "web") {
-      // const html = membershipHtml(form, imageUri);
-      // const element = document.querySelector("#print-area");
-      // const canvas = await html2canvas(html);
-      // const imgData = canvas.toDataURL("image/png");
-      // const pdf = new jsPDF("p", "pt", "a4");
-      // pdf.addImage(imgData, "PNG", 20, 20);
-      // pdf.save("document.pdf");
-      await Print.printAsync({
-        html,
-        width: 150, //612 8.5 inches * 72
-        height: 792, // 11 inches * 72
-      });
-    } else {
-      await Print.printAsync({
-        html,
-        width: 350, //612 8.5 inches * 72
-        height: 792, // 11 inches * 72
-      });
-    }
+      // const html2 = MembershipHtml(form, imageUri);
+
+      const printWindow = window.open("", "_blank");
+      if (printWindow) {
+        printWindow.document.open();
+        printWindow.document.write(html);
+        printWindow.document.close();
+
+        printWindow.onload = () => {
+          printWindow.focus();
+          printWindow.print();
+        };
+      } 
+    }else {
+        await Print.printAsync({
+
+          html,
+          width: 612, //612 8.5 inches * 72
+          height: 792, // 11 inches * 72
+        });
+      }
   };
 
   const handleSubmit = async () => {
@@ -167,7 +127,7 @@ padding:7px
       !form.oracle ||
       !form.phone ||
       !form.amount ||
-      isChecked === false ||
+      // isChecked === false ||
       refButton.current === form.dob
       // form.dob === new Date()
       // !imageUri
@@ -189,6 +149,7 @@ padding:7px
   return (
     <>
       <ScrollView>
+        {/* <MembershipHtml></MembershipHtml> */}
         <View
           style={{
             // flex: 1,
@@ -232,7 +193,11 @@ padding:7px
           )}
 
           <View
-            style={{ marginTop: 5, flexDirection: "row", alignItems: "center" }}
+            style={{
+              marginTop: 5,
+              flexDirection: "row",
+              alignItems: "center",
+            }}
           >
             <Button
               title={"Upload Picture"}
@@ -325,6 +290,8 @@ padding:7px
 
           {Platform.OS === "web" ? (
             //  showDate &&
+            // <MembershipHtml></MembershipHtml>,
+
             <input
               type="date"
               //  accept=".csv"
