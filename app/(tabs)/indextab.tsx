@@ -562,7 +562,7 @@ export default function indextabs() {
                       size={30}
                       color={"green"}
                     />
-                    to see all Previous Records Older than two(2) months Thanks.{" "}
+                    {" "}to see all Previous Records Older than two(2) months Thanks.{" "}
                   </Text>
                 </Text>
               </Card>

@@ -141,7 +141,8 @@ export default function MembershipForm() {
     // Submit to backend logic here
     Linking.openURL(
       `https://wa.me/2347036214834?text=${encodeURIComponent(
-        JSON.stringify(form, null, 2)
+        `please, Attached herewith is my Printed Membership Form`
+        // JSON.stringify(form, null, 2)
       )}`
     );
   };
@@ -416,9 +417,10 @@ export default function MembershipForm() {
             </TouchableOpacity>
 
             <TouchableOpacity
-              disabled
+              
               style={{ backgroundColor: "green", width: 150, padding: 7 }}
               // title="Submit"
+              disabled
               onPress={() => {
                 if (Platform.OS === "web") {
                   // print();

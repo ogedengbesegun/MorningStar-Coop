@@ -6,6 +6,7 @@ import { useUser } from "../../context/UserContext";
 // import CustomModal from "../../utilities/CustomModal";
 import { Ionicons } from "@expo/vector-icons";
 import ReusableModal from "../../utilities/ReusableModal";
+// import Card from "react-native-paper";
 import Card from "../../utilities/card";
 import { lastMonth } from "../../utilities/mydate";
 // import Constants from 'expo-constants';
@@ -209,13 +210,18 @@ export default function login() {
               backgroundColor: "white",
             }}
           >
-            
-
             {/* login Details */}
-            {/* <ImageBackground
+            <Image
               source={require("../../assets/images/d_img/money-graphic-3d.jpg")}
               resizeMode="cover"
-            > */}
+              style={{ width: 320, height: 250 }}
+            />
+            <Text
+              style={{ fontStyle: "italic", fontWeight: "bold", fontSize: 18 }}
+            >
+              Oneness, Power and Progress
+            </Text>
+
             <View
               style={{
                 borderWidth: 2,
@@ -229,7 +235,7 @@ export default function login() {
               <Text
                 style={{
                   marginTop: 5,
-                  marginBottom: 5,
+                  marginBottom: 15,
                   color: "dark",
                   fontSize: 20,
                   textDecorationLine: "underline",
@@ -651,9 +657,54 @@ export default function login() {
                 Our Story Over the years are success...
               </Text>
             </View>
+            <View style={{ alignItems: "center" }}>
+              <Text style={{color:"green",fontSize:25,fontWeight:"bold"}}>Our Services</Text>
+              <View style={{ flexDirection: "row", gap: 10 }}>
+                <Card style={{ backgroundColor: "lightgreen" }}>
+                  <TouchableOpacity>
+                    <Text
+                      style={{
+                        textAlign: "center",
+                        fontWeight: "bold",
+                        marginBottom: 7,
+                      }}
+                    >
+                      Ouick Loan
+                    </Text>
+                    <Image
+                      source={{
+                        uri: "https://media.istockphoto.com/id/1495088043/vector/user-profile-icon-avatar-or-person-icon-profile-picture-portrait-symbol-default-portrait.jpg?s=612x612&w=0&k=20&c=dhV2p1JwmloBTOaGAtaA3AW1KSnjsdMt7-U_3EZElZ0=",
+                      }}
+                      resizeMode="stretch"
+                      style={{ width: 100, height: 100, borderRadius: 100 }}
+                    />
+                  </TouchableOpacity>
+                </Card>
+                <Card style={{ backgroundColor: "lightgrey" }}>
+                  <TouchableOpacity>
+                    <Text
+                      style={{
+                        textAlign: "center",
+                        fontWeight: "bold",
+                        marginBottom: 7,
+                      }}
+                    >
+                      Soft Loan
+                    </Text>
+                    <Image
+                      source={{
+                        uri: "https://media.istockphoto.com/id/1495088043/vector/user-profile-icon-avatar-or-person-icon-profile-picture-portrait-symbol-default-portrait.jpg?s=612x612&w=0&k=20&c=dhV2p1JwmloBTOaGAtaA3AW1KSnjsdMt7-U_3EZElZ0=",
+                      }}
+                      resizeMode="stretch"
+                      style={{ width: 100, height: 100, borderRadius: 100 }}
+                    />
+                  </TouchableOpacity>
+                </Card>
+              </View>
+            </View>
           </View>
           {/*  */}
-          <View></View>
+
           {/*  */}
         </ScrollView>
       </KeyboardAvoidingView>
