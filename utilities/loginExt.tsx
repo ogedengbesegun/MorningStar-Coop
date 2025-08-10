@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import {
   Platform,
   ScrollView,
+  StyleSheet,
   Text,
   TouchableOpacity,
   View,
-  StyleSheet,
 } from "react-native";
 import Card from "./card";
 // import { useRouter } from "expo-router";
@@ -64,33 +64,32 @@ export default function loginExt() {
     <View>
       <View style={{ marginLeft: 10, marginRight: 10 }}>
         <ScrollView
-        //   //   ref={refServices}
-        //   horizontal={Platform.OS !== "web"}
-        //   // Horizontal scroll for mobile/native
-        //   showsHorizontalScrollIndicator={Platform.OS === "web" ? true : false}
-        //   contentContainerStyle={{
-        //     flexDirection: "row",
-        //     ...(Platform.OS === "web"
-        //       ? {
-        //           flexDirection: "row",
-        //           //   flexWrap: "wrap", // allow wrapping into next row
+          //   //   ref={refServices}
+          //   horizontal={Platform.OS !== "web"}
+          //   // Horizontal scroll for mobile/native
+          //   showsHorizontalScrollIndicator={Platform.OS === "web" ? true : false}
+          //   contentContainerStyle={{
+          //     flexDirection: "row",
+          //     ...(Platform.OS === "web"
+          //       ? {
+          //           flexDirection: "row",
+          //           //   flexWrap: "wrap", // allow wrapping into next row
 
-        //           //   alignItems: "center",
-        //         }
-        //       : {}), // web-specific
-        //   }}
-        //   style={{
-        //     marginTop: 1,
-        //     ...(Platform.OS === "web"
-        //       ? { overflowY: "visible", scrollBehavior: "smooth" }
-        //       : {}), // web scroll behavior
-        //   }}
-         horizontal
-      showsHorizontalScrollIndicator={Platform.OS !== "web"} // works on mobile
-      contentContainerStyle={styles.contentContainer}
-      style={Platform.OS === "web" ? styles.webScroll : null}
-    >
-        
+          //           //   alignItems: "center",
+          //         }
+          //       : {}), // web-specific
+          //   }}
+          //   style={{
+          //     marginTop: 1,
+          //     ...(Platform.OS === "web"
+          //       ? { overflowY: "visible", scrollBehavior: "smooth" }
+          //       : {}), // web scroll behavior
+          //   }}
+          horizontal
+          showsHorizontalScrollIndicator={Platform.OS !== "web"} // works on mobile
+          contentContainerStyle={styles.contentContainer}
+          style={Platform.OS === "web" ? styles.webScroll : null}
+        >
           {CardItems.map((usecard, index) => (
             <Card
               key={index}
@@ -99,8 +98,15 @@ export default function loginExt() {
                 margin: 5,
                 // marginBottom: 10,
                 // gap: 2,
-                width: 120,
-                height: 140,
+                ...(Platform.OS === "web"
+                  ? {
+                      width: 70,
+                      height: 100,
+                    }
+                  : {
+                      width: 120,
+                      height: 140,
+                    }),
                 justifyContent: "center",
                 alignItems: "center",
               }}
@@ -118,9 +124,17 @@ export default function loginExt() {
               >
                 <Text
                   style={{
-                    textAlign: "center",
-                    fontWeight: "bold",
-                    marginBottom: 7,
+                    ...(Platform.OS === "web"
+                      ? {
+                          textAlign: "center",
+                          fontWeight: "300",
+                          marginBottom: 7,
+                        }
+                      : {
+                          textAlign: "center",
+                          fontWeight: "bold",
+                          marginBottom: 7,
+                        }),
                   }}
                 >
                   {usecard.text}
@@ -128,16 +142,27 @@ export default function loginExt() {
                 <Text
                   //   source={require(usecard.require)}
                   style={{
-                    width: 80,
-                    height: 80,
-                    borderRadius: 80,
                     borderStyle: "solid",
-                    borderWidth: 4,
                     borderColor: "#fff",
                     textAlign: "center",
-                    fontSize: 35,
                     alignSelf: "center",
-                    lineHeight: 60,
+                    ...(Platform.OS === "web"
+                      ? {
+                          width: 40,
+                          height: 40,
+                          borderRadius: 40,
+                          fontSize: 25,
+                          lineHeight: 25,
+                          borderWidth: 2,
+                        }
+                      : {
+                          width: 80,
+                          height: 80,
+                          borderRadius: 80,
+                          fontSize: 35,
+                          lineHeight: 60,
+                          borderWidth: 4,
+                        }), // web-specific styles
                   }}
                 >
                   {usecard.require}
