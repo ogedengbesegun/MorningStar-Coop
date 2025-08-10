@@ -148,11 +148,11 @@ export default function loginExt() {
                     alignSelf: "center",
                     ...(Platform.OS === "web"
                       ? {
-                          width: 40,
-                          height: 40,
-                          borderRadius: 40,
+                          width: 50,
+                          height: 50,
+                          borderRadius: 50,
                           fontSize: 25,
-                          lineHeight: 25,
+                          lineHeight: 37,
                           borderWidth: 2,
                         }
                       : {
