@@ -15,6 +15,7 @@ type Props = {
   refWhy: React.RefObject<View>;
   refVision: React.RefObject<View>;
   refMission: React.RefObject<View>;
+  refServices: React.RefObject<View>;
   setDialogMenu: (val: boolean) => void;
   toggleMenuIcon: () => void;
 };
@@ -24,6 +25,7 @@ const ModalContent: React.FC<Props> = ({
   refWhy,
   refVision,
   refMission,
+  refServices,
   setDialogMenu,
   toggleMenuIcon,
 }) => {
@@ -31,22 +33,28 @@ const ModalContent: React.FC<Props> = ({
   ///
   const scrollToRef = (ref: React.RefObject<View>) => {
     if (ref.current && scrollRef.current) {
-      const scrollHandle = findNodeHandle(scrollRef.current);
-      const targetHandle = findNodeHandle(ref.current);
+      if (Platform.OS === "web") {
+        // On web, ref.current should be an HTMLElement, not a React Native View
+        const htmlElement = ref.current as unknown as HTMLElement | null;
+        htmlElement?.scrollIntoView({ behavior: "smooth", block: "start" });
+        return;
+      } else {
+        const scrollHandle = findNodeHandle(scrollRef.current);
+        const targetHandle = findNodeHandle(ref.current);
 
-      if (targetHandle && scrollHandle) {
-        UIManager.measureLayout(
-          targetHandle,
-          scrollHandle,
-          () => console.warn("measure failed"),
-          (x, y) => {
-            scrollRef.current?.scrollTo({ y, animated: true });
-          }
-        );
+        if (targetHandle && scrollHandle) {
+          UIManager.measureLayout(
+            targetHandle,
+            scrollHandle,
+            () => console.warn("measure failed"),
+            (x, y) => {
+              scrollRef.current?.scrollTo({ y, animated: true });
+            }
+          );
+        }
       }
     }
   };
-
 
   // const scrollToRef = async () => {
   //   if (Platform.OS === "web") {
@@ -106,6 +114,7 @@ const ModalContent: React.FC<Props> = ({
           { label: "❓ Why Morning Star?" },
           { label: "🍀 Our Vision" },
           { label: "🌴 Our Mission" },
+          { label: "🛒 Our Services" },
           { label: "🌱 Join Us Now" },
         ].map((item, i) => (
           <TouchableOpacity
@@ -121,9 +130,10 @@ const ModalContent: React.FC<Props> = ({
                 scrollToRef(refVision);
               } else if (i === 3) {
                 scrollToRef(refMission);
-              }
-              else if(i===4){
-                router.navigate('joinus')
+              } else if (i === 4) {
+                scrollToRef(refServices);
+              } else if (i === 5) {
+                router.navigate("joinus");
               }
             }}
             style={{ marginTop: i !== 0 ? 20 : 0 }}

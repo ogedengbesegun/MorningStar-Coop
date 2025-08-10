@@ -67,7 +67,15 @@ export default function _layout() {
           headerTintColor: "white",
         }}
       />
-      
+      {/* <Stack.Screen
+        name=""
+        options={{
+          title: "Membership Form ",
+          headerTitleAlign: "center",
+          headerTintColor: "white",
+        }}
+      />
+       */}
     </Stack>
   );
 }

@@ -5,16 +5,18 @@
     "jsx": "react-native",
     "strict": true,
     "paths": {
-      "@/*": [
-        "./*"
-      ]
-    }
+      "@/*": ["./*"]
+    },
+    "skipLibCheck": true
   },
   "include": [
     "**/*.ts",
     "**/*.tsx",
     "backend/src/server.js",
     "context/UserContext.js",
-    "env.d.ts", "app", "src"
-  ]
+    "env.d.ts",
+    "app",
+    "src"
+  ],
+  "exclude": ["node_modules"]
 }

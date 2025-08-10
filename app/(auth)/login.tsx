@@ -8,6 +8,7 @@ import { Ionicons } from "@expo/vector-icons";
 import ReusableModal from "../../utilities/ReusableModal";
 // import Card from "react-native-paper";
 import Card from "../../utilities/card";
+import LoginExt from "../../utilities/loginExt"; // Adjust the path as necessary
 import { lastMonth } from "../../utilities/mydate";
 // import Constants from 'expo-constants';
 //
@@ -87,6 +88,8 @@ export default function login() {
   const refWhy = useRef(null);
   const refVision = useRef(null);
   const refMission = useRef(null);
+  const refServices = useRef(null);
+
   // ///////
 
   return (
@@ -159,6 +162,7 @@ export default function login() {
                 refWhy={refWhy}
                 refVision={refVision}
                 refMission={refMission}
+                refServices={refServices}
                 setDialogMenu={setDialogMenu}
                 toggleMenuIcon={toggleMenuIcon}
               />
@@ -658,9 +662,13 @@ export default function login() {
               </Text>
             </View>
             <View style={{ alignItems: "center" }}>
-              <Text style={{color:"green",fontSize:25,fontWeight:"bold"}}>Our Services</Text>
+              <Text
+                style={{ color: "green", fontSize: 25, fontWeight: "bold" }}
+              >
+                Our Services
+              </Text>
               <View style={{ flexDirection: "row", gap: 10 }}>
-                <Card style={{ backgroundColor: "lightgreen" }}>
+                {/* <Card style={{ backgroundColor: "lightgreen" }}>
                   <TouchableOpacity>
                     <Text
                       style={{
@@ -699,7 +707,13 @@ export default function login() {
                       style={{ width: 100, height: 100, borderRadius: 100 }}
                     />
                   </TouchableOpacity>
-                </Card>
+                </Card> */}
+                <View ref={refServices} style={{ marginTop: 1 }}>
+                  <LoginExt />
+                  <Link href={"(auth)/joinus"} style={styles2.joinUs}>
+                    <Text style={[styles2.joinUsText,{color:"orange",width:350}]}>Join Us Now 🌱</Text>
+                  </Link>
+                </View>
               </View>
             </View>
           </View>
@@ -707,6 +721,20 @@ export default function login() {
 
           {/*  */}
         </ScrollView>
+        <View>
+          <Text
+            style={{
+              textAlign: "center",
+              backgroundColor: "green",
+              padding: 8,
+              color: "white",
+              fontSize: 15,
+              fontWeight: "bold",
+            }}
+          >
+            Morning Star Coop Society © {new Date().getFullYear()}
+          </Text>
+        </View>
       </KeyboardAvoidingView>
     </>
   );
@@ -896,3 +924,5 @@ trusted platform for growth—fostering a cooperative community where
 wealth is built, opportunities are shared, and success is multiplied.`;
 const vision = `To be a beacon of financial empowerment, where every member achieves
  financial independence, prosperity, and the collective strength to thrive.`;
+
+//  const Loanstype=[{label:"Major Loan","Soft Loan"]

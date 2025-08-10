@@ -48,8 +48,9 @@ export default function dashboard() {
         const target = e.target as FileReader | null;
         if (target && target.result) {
           setFilename(file.name);
-          setCsvText(target.result as string);
           console.log("Web CSV content:", target.result);
+
+           return setCsvText(target.result as string);
         }
       };
 
@@ -89,20 +90,18 @@ export default function dashboard() {
     }
   };
 
-
   const userFields = [
-  { label: "Year", key: "yr" },
-  { label: "Month", key: "month" },
-  { label: "Name", key: "name" },
-  { label: "Oracle", key: "oracle" },
-  { label: "Deduction", key: "deduction" },
-  { label: "Savings", key: "savings" },
-  { label: "Retirement", key: "retirement" },
-  { label: "Loan Balance", key: "loan_balance" },
-  { label: "Interest Balance", key: "interest_bal" },
-  { label: "Soft Loan Balance", key: "soft_loanBal" },
-
-];
+    { label: "Year", key: "yr" },
+    { label: "Month", key: "month" },
+    { label: "Name", key: "name" },
+    { label: "Oracle", key: "oracle" },
+    { label: "Deduction", key: "deduction" },
+    { label: "Savings", key: "savings" },
+    { label: "Retirement", key: "retirement" },
+    { label: "Loan Balance", key: "loan_balance" },
+    { label: "Interest Balance", key: "interest_bal" },
+    { label: "Soft Loan Balance", key: "soft_loanBal" },
+  ];
   ////////////////
   //   let array= parseData
   // for (let i = 0; i < array.length; i++) {
@@ -217,8 +216,8 @@ export default function dashboard() {
                 <Picker.Item label="November" value="November" />
                 <Picker.Item label="December" value="December" />
               </Picker>
-              <Text>
-                Total Document <Text>{}</Text>
+              <Text style={{ color: "purple", fontSize: 20 }}>
+                Total Document: {parseData.length} <Text>{}</Text>
               </Text>
               <Hr />
               <Text>{filename}</Text>
@@ -240,7 +239,7 @@ export default function dashboard() {
                       onPress={() => {
                         if (inputRef.current) {
                           (inputRef.current as HTMLInputElement).click();
-                          
+
                           setDisable(false);
                         }
                       }}
@@ -253,7 +252,7 @@ export default function dashboard() {
                           },
                         ]}
                       >
-                        Upload CSV
+                        Fetch CSV
                       </Text>
                     </TouchableOpacity>
                   </>
@@ -270,7 +269,7 @@ export default function dashboard() {
                         },
                       ]}
                     >
-                      Upload CSV
+                      Fetch CSV
                     </Text>
                   </TouchableOpacity>
                 )}
@@ -307,144 +306,125 @@ export default function dashboard() {
                   View
                 </Text>
               </TouchableOpacity>
+              <TouchableOpacity
+                disabled={disabled}
+                // onPress={() => parseCSV(csvText as string)}
+                style={[style.touchable, { width: "100%", marginTop: 5 }]}
+              >
+                <Text
+                  style={[
+                    style.textStyle,
+                    {
+                      color: "purple",
+                    },
+                  ]}
+                >
+                  Upload csvDocument
+                </Text>
+              </TouchableOpacity>
             </View>
           </Card>
-          {/* <View style={{ flexDirection: "row", gap: 5, alignSelf: "center" }}>
-            <Text style={style.yearMonth}>{yearly}</Text>
-            <Text style={style.yearMonth}>{monthly}</Text>
-          </View> */}
-          {/* usersMap(eachUser => ) */}
-          {/* <Card style={{ width: 330, marginRight: "auto", marginLeft: "auto" }}>
-            <View
-              style={{
-                flexDirection: "column",
-                alignSelf: "flex-start",
-                gap: 5,
-                padding: 5,
-                marginTop: 0,
-              }}
-            >
-              <Text>{parseData.length}</Text>
-              <Text>
-                Name:
-                <Text style={{ marginLeft: 5 }}>
-                  {parseData[0]?.name ?? "Guest"}{" "}
-                </Text>
-              </Text>
-              <Text>
-                Oracle:
-                <Text style={{ marginLeft: 5 }}>{parseData[0]?.oracle} </Text>
-              </Text>
-              <Text>
-                Deduction:
-                <Text style={{ marginLeft: 5 }}>
-                  {parseData[0]?.deduction}{" "}
-                </Text>
-              </Text>
-              <Text>
-                Savings:
-                <Text style={{ marginLeft: 5 }}>{parseData[0]?.savings} </Text>
-              </Text>
-              <Text>
-                Retirement:
-                <Text style={{ marginLeft: 5 }}> </Text>
-              </Text>
-              <Text>
-                Loan Balance:
-                <Text style={{ marginLeft: 5 }}> </Text>
-              </Text>
-              <Text>
-                Interest Balance:
-                <Text style={{ marginLeft: 5 }}> </Text>
-              </Text>
-            </View>
-          </Card> */}
-          {parseData.map((user, index) => (
-        <Card
-          key={index}
-          style={{
-            width: 330,
-            marginRight: "auto",
-            marginLeft: "auto",
-            marginBottom: 10,
-          }}
-        >
-          <View
-            style={{
-              flexDirection: "column",
-              alignSelf: "flex-start",
-              gap: 5,
-              padding: 5,
-              marginTop: 0,
-            }}
-          >
-            {/* <View
-              style={{
-                flexDirection: "row",
-                gap: 5,
-                alignContent: "center",
-              }}
-            >
-              <Text style={style.yearMonth}>{yearly}</Text>
-              <Text style={style.yearMonth}>{monthly}</Text>
-            </View> */}
 
-            {userFields.map((field, i) => (
-              <Text key={i}>
-                {field.label}:
-                <Text style={{ marginLeft: 5 }}>
-                  {field.key ? user[field.key] ?? "—" : " "}
+          {parseData.map((user, index) => (
+            <Card
+              key={index}
+              style={{
+                width: 330,
+                marginRight: "auto",
+                marginLeft: "auto",
+                marginBottom: 10,
+                backgroundColor: "#f0f8ff",
+              }}
+            >
+              <View
+                style={{
+                  flexDirection: "column",
+                  alignSelf: "flex-start",
+                  gap: 5,
+                  padding: 5,
+                  marginTop: 0,
+                }}
+              >
+                <Text
+                  style={{
+                    color: "green",
+                    fontStyle: "italic",
+                    fontWeight: "bold",
+                    textAlign: "center",
+                  }}
+                >
+                  Serial No: {index + 1}
                 </Text>
-              </Text>
-            ))}
-          </View>
-        </Card>
-      ))}
+                {userFields.map((field, i) => (
+                  <Text key={i} style={{ color: "grey" }}>
+                    {field.label}:
+                    <Text
+                      style={{
+                        marginLeft: 5,
+                        color: "black",
+                        fontSize: 12,
+                        fontWeight: "bold",
+                      }}
+                    >
+                      {field.key ? user[field.key] ?? "" : " "}
+                    </Text>
+                  </Text>
+                ))}
+              </View>
+            </Card>
+          ))}
         </View>
       </ScrollView>
     </>
   );
+  ///////
+ async function handleUpload(){
+  try {
+    // const res = await DocumentPicker.pickSingle({
+    //   type: [DocumentPicker.types.plainText], // csv is text/csv or plainText
+    // });
+
+    // const fileUri = res.uri;
+
+    // Read file content (depends on platform: content:// vs file://)
+    // const content = await RNFS.readFile(fileUri, "utf8");
+ // You need to pass a valid event object here, or remove this line if not needed.
+ // Example: ;
+ // If you don't have an event, you should not call handleWebUpload here.
+// const getcsv = await handleWebUpload(event)
+if (!csvText) {
+  throw new Error("No CSV data available to upload.");
 }
-///////
-//  const handleUpload = async () => {
-//     try {
-//       const res = await DocumentPicker.pickSingle({
-//         type: [DocumentPicker.types.plainText], // csv is text/csv or plainText
-//       });
+const results = Papa.parse(csvText, {
+  header: true, // Converts to JSON using first row as keys
+  skipEmptyLines: true,
+});
 
-//       const fileUri = res.uri;
+    const response = await fetch("/api/upload", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        data: results.data,
+        // monthly,
+        // yearly,
+      }),
+    });
+    // Send to backend
+    // Uncomment and replace with your backend URL
+    // const response = await axios.post('https://your-backend/upload-csv', {
+    //   data: results.data,
+    // });
 
-//       // Read file content (depends on platform: content:// vs file://)
-//       const content = await RNFS.readFile(fileUri, "utf8");
+    // Alert.alert('Success', 'CSV uploaded successfully');
+  } catch (err) {
+    console.error(err);
+    // Alert.alert("Error", "Failed to upload CSV");
+  }
+   };
+}
 
-//       const results = Papa.parse(content, {
-//         header: true, // Converts to JSON using first row as keys
-//         skipEmptyLines: true,
-//       });
-
-//       const response = await fetch("/api/upload", {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify({
-//           data: results.data,
-//           // monthly,
-//           // yearly,
-//         }),
-//       });
-//       // Send to backend
-//       // Uncomment and replace with your backend URL
-//       // const response = await axios.post('https://your-backend/upload-csv', {
-//       //   data: results.data,
-//       // });
-
-//       // Alert.alert('Success', 'CSV uploaded successfully');
-//     } catch (err) {
-//       console.error(err);
-//       Alert.alert("Error", "Failed to upload CSV");
-//     }
-//   };
 
 const style = StyleSheet.create({
   touchable: {
