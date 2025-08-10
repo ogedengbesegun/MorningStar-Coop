@@ -5,6 +5,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  StyleSheet,
 } from "react-native";
 import Card from "./card";
 // import { useRouter } from "expo-router";
@@ -61,13 +62,35 @@ export default function loginExt() {
   //////////////////////////
   return (
     <View>
-      <View style={{ flexDirection: "row", marginLeft: 10, marginRight: 10 }}>
+      <View style={{ marginLeft: 10, marginRight: 10 }}>
         <ScrollView
-          //   ref={refServices}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          style={{ marginTop: 1 }}
-        >
+        //   //   ref={refServices}
+        //   horizontal={Platform.OS !== "web"}
+        //   // Horizontal scroll for mobile/native
+        //   showsHorizontalScrollIndicator={Platform.OS === "web" ? true : false}
+        //   contentContainerStyle={{
+        //     flexDirection: "row",
+        //     ...(Platform.OS === "web"
+        //       ? {
+        //           flexDirection: "row",
+        //           //   flexWrap: "wrap", // allow wrapping into next row
+
+        //           //   alignItems: "center",
+        //         }
+        //       : {}), // web-specific
+        //   }}
+        //   style={{
+        //     marginTop: 1,
+        //     ...(Platform.OS === "web"
+        //       ? { overflowY: "visible", scrollBehavior: "smooth" }
+        //       : {}), // web scroll behavior
+        //   }}
+         horizontal
+      showsHorizontalScrollIndicator={Platform.OS !== "web"} // works on mobile
+      contentContainerStyle={styles.contentContainer}
+      style={Platform.OS === "web" ? styles.webScroll : null}
+    >
+        
           {CardItems.map((usecard, index) => (
             <Card
               key={index}
@@ -75,7 +98,7 @@ export default function loginExt() {
                 backgroundColor: usecard.backgroundColor,
                 margin: 5,
                 // marginBottom: 10,
-                gap: 2,
+                // gap: 2,
                 width: 120,
                 height: 140,
                 justifyContent: "center",
@@ -84,15 +107,13 @@ export default function loginExt() {
             >
               <TouchableOpacity
                 onPress={() => {
-                  
-                    for (let i = 0; i < CardItems.length; i++) {
-                      // const element = array[i];
-                      setTextImage(usecard.require);
-                      setTitle(usecard.text);
-                      setTextBody(usecard.body);
-                      setBackground(usecard.backgroundColor);
-                    }
-               
+                  for (let i = 0; i < CardItems.length; i++) {
+                    // const element = array[i];
+                    setTextImage(usecard.require);
+                    setTitle(usecard.text);
+                    setTextBody(usecard.body);
+                    setBackground(usecard.backgroundColor);
+                  }
                 }}
               >
                 <Text
@@ -155,6 +176,7 @@ export default function loginExt() {
             style={{
               textAlign: "center",
               fontWeight: "300",
+              fontSize: 15,
               marginBottom: 7,
               //   width: 200,
               marginRight: 5,
@@ -168,3 +190,27 @@ export default function loginExt() {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  contentContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  webScroll: {
+    overflow: "scroll", // enable scrollbar on web
+  },
+  box: {
+    width: 100,
+    height: 100,
+    backgroundColor: "#4cafef",
+    marginHorizontal: 10,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 8,
+  },
+  text: {
+    color: "#fff",
+    fontWeight: "bold",
+  },
+});
+// }
