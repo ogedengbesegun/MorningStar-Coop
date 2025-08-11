@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import {
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
+    Platform,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
 } from "react-native";
 import Card from "./card";
 // import { useRouter } from "expo-router";
@@ -13,7 +13,7 @@ import Card from "./card";
 export default function loginExt() {
   const CardItems = [
     {
-      text: "Major Loan",
+      text: `Major_Loan`,
       //   uri: "https://media.istockphoto.com/id/1495088043/vector/user-profile-icon-avatar-or-person-icon-profile-picture-portrait-symbol-default-portrait.jpg?s=612x612&w=0&k=20&c=dhV2p1JwmloBTOaGAtaA3AW1KSnjsdMt7-U_3EZElZ0=",
       require: "💵",
       backgroundColor: "lightgreen",
@@ -95,17 +95,20 @@ export default function loginExt() {
               key={index}
               style={{
                 backgroundColor: usecard.backgroundColor,
-                margin: 5,
                 // marginBottom: 10,
                 // gap: 2,
                 ...(Platform.OS === "web"
                   ? {
                       width: 70,
                       height: 100,
+                margin: 4,
+
                     }
                   : {
                       width: 120,
                       height: 140,
+                margin: 5,
+
                     }),
                 justifyContent: "center",
                 alignItems: "center",
@@ -127,8 +130,10 @@ export default function loginExt() {
                     ...(Platform.OS === "web"
                       ? {
                           textAlign: "center",
-                          fontWeight: "300",
+                          fontWeight: "bold",
                           marginBottom: 7,
+                            fontSize: 11,
+                        flexWrap: "nowrap",
                         }
                       : {
                           textAlign: "center",
@@ -200,12 +205,19 @@ export default function loginExt() {
           <Text
             style={{
               textAlign: "center",
-              fontWeight: "300",
-              fontSize: 15,
               marginBottom: 7,
               //   width: 200,
               marginRight: 5,
               marginLeft: 5,
+              ...(Platform.OS === "web"
+                ? {
+                    fontSize: 15,
+                    fontWeight: "500",
+                  }
+                : {
+                    fontSize: 13,
+                    fontWeight: "400",
+                  }),
             }}
           >
             {textBody}
