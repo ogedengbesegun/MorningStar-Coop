@@ -177,7 +177,7 @@ export default function loginExt() {
           ))}
         </ScrollView>
       </View>
-      <View style={{ alignItems: "center", marginTop: 10, padding: 5 }}>
+      <View style={{ alignItems: "center", marginTop: -10, padding: 5 }}>
         <Card
           style={{
             // margin: 1,

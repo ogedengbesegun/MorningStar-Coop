@@ -2,17 +2,18 @@ import { useNavigation } from "@react-navigation/native";
 // import * as SecureStore from "expo-secure-store";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import React from "react";
+import React, { useEffect } from "react";
 import { Image, Text, View } from "react-native";
 import {
   GestureHandlerRootView,
   TapGestureHandler,
+  State,
 } from "react-native-gesture-handler";
 
 export default function index() {
   //for
   const myNavigation = useNavigation<any>();
-  const router=useRouter()
+  const router = useRouter();
   ////Early Call on the backend url for quick response
   backme();
   async function backme() {
@@ -23,6 +24,14 @@ export default function index() {
     }
   }
   //////
+  const effect = useEffect(() => {
+    const timer= setTimeout(() => {
+      router.replace("/login");
+    }, 4000);
+    return () => clearTimeout(timer); // cleanup if component unmounts
+
+  }, []);
+
   const onSingleTap = () => {
     /////////////////
     const timer = setTimeout(() => {
@@ -89,7 +98,15 @@ export default function index() {
           </Text>
         </View>
 
-        <TapGestureHandler onActivated={onSingleTap}>
+        <TapGestureHandler 
+        // onActivated={onSingleTap ?? effect}
+         onHandlerStateChange={({ nativeEvent }) => {
+    if (nativeEvent.state === State.ACTIVE) {
+      (onSingleTap ?? effect)?.();
+    }
+  }}
+        
+        >
           {/* <Text >
           👆 Tap Me
         </Text> */}
