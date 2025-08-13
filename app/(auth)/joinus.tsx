@@ -80,8 +80,8 @@ export default function MembershipForm() {
   };
 
   ///////////
- const html = MembershipHtml(form, imageUri);
-///////////////////////////////////////////////
+  const html = MembershipHtml(form, imageUri);
+  ///////////////////////////////////////////////
   const handlePrint = async () => {
     if (
       !form.name ||
@@ -110,15 +110,14 @@ export default function MembershipForm() {
           printWindow.focus();
           printWindow.print();
         };
-      } 
-    }else {
-        await Print.printAsync({
-
-          html,
-          width: 612, //612 8.5 inches * 72
-          height: 792, // 11 inches * 72
-        });
       }
+    } else {
+      await Print.printAsync({
+        html,
+        width: 612, //612 8.5 inches * 72
+        height: 792, // 11 inches * 72
+      });
+    }
   };
 
   const handleSubmit = async () => {
@@ -348,10 +347,18 @@ export default function MembershipForm() {
                 setIsAmount("Please enter a valid number");
               }
             }}
-            onEndEditing={(e) => {
-              const entered = Number(e.nativeEvent.text);
-              if (entered < 15000) {
+            onEndEditing={(text) => {
+              ///this is perfect for andr ios
+              const entered = Number(text.nativeEvent.text);
+              if (isNaN(entered) || entered < 15000) {
                 handleChange("amount", ""); // Clear input if less than 15000
+              }
+            }}
+            onBlur={(e) => {
+              ///this  works for web dep
+              const entered = Number(e.nativeEvent.text);
+              if (isNaN(entered) || entered < 15000) {
+                handleChange("amount", "");
               }
             }}
           />
@@ -417,7 +424,6 @@ export default function MembershipForm() {
             </TouchableOpacity>
 
             <TouchableOpacity
-              
               style={{ backgroundColor: "green", width: 150, padding: 7 }}
               // title="Submit"
               disabled
