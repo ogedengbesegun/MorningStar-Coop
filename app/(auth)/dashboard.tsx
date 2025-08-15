@@ -13,6 +13,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Alert,
 } from "react-native";
 import Hr from "../../utilities/hr";
 import "./cssStyle.css"; // This only works on we
@@ -50,7 +51,7 @@ export default function dashboard() {
           setFilename(file.name);
           console.log("Web CSV content:", target.result);
 
-           return setCsvText(target.result as string);
+          return setCsvText(target.result as string);
         }
       };
 
@@ -59,35 +60,47 @@ export default function dashboard() {
       alert("Please select a CSV file.");
     }
   };
+
+  //////////////////////
+  /////////////
+
+  const handleMobileUpload = async () => {
+    const result = await DocumentPicker.getDocumentAsync({
+      type: "*/*",
+      copyToCacheDirectory: true,
+      multiple: false,
+    });
+
+    if (result.assets && result.assets.length > 0) {
+      const file = result.assets[0];
+
+      // Check mimeType instead of file extension
+      if (
+        file.mimeType === "text/csv" ||
+        file.name.toLowerCase().endsWith(".csv")
+      ) {
+        setFilename(file.name);
+
+        const response = await fetch(file.uri);
+        const text = await response.text();
+        setCsvText(text);
+        // console.log("Mobile CSV content:", text);
+      } else {
+        alert("Selected file is not CSV");
+      }
+    } else {
+      console.log("No file selected");
+    }
+  };
+  /////
   const parseCSV = (csvText: string) => {
     const result = Papa.parse(csvText, {
       header: true,
       skipEmptyLines: false,
     });
     setParseData(result.data);
-    console.log("Parsed CSV data:", result.data); // Log the first row's name field
+    // console.log("Parsed CSV data:", result.data); // Log the first row's name field
     return result.data; // returns an array of objects
-  };
-  //////////////////////
-  /////////////
-  // const handleMobileUpload = async () => {
-  const handleMobileUpload = async () => {
-    const result = await DocumentPicker.getDocumentAsync({
-      // type: "text/pdf,text/csv,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-      type: "text/csv",
-      copyToCacheDirectory: true,
-    });
-
-    if (result.assets && result.assets.length > 0) {
-      const file = result.assets[0];
-      const uri = file.uri;
-      // setFilename(uri);
-
-      const response = await fetch(uri);
-      const text = await response.text();
-      setCsvText(text);
-      console.log("Mobile CSV content:", text);
-    }
   };
 
   const userFields = [
@@ -259,7 +272,11 @@ export default function dashboard() {
                 ) : (
                   <TouchableOpacity
                     style={style.touchable}
-                    onPress={handleMobileUpload}
+                    onPress={() => {
+                      handleMobileUpload();
+
+                      setDisable(false);
+                    }}
                   >
                     <Text
                       style={[
@@ -308,7 +325,7 @@ export default function dashboard() {
               </TouchableOpacity>
               <TouchableOpacity
                 disabled={disabled}
-                // onPress={() => parseCSV(csvText as string)}
+                onPress={() => Uploadcsv()}
                 style={[style.touchable, { width: "100%", marginTop: 5 }]}
               >
                 <Text
@@ -357,7 +374,7 @@ export default function dashboard() {
                 </Text>
                 {userFields.map((field, i) => (
                   <Text key={i} style={{ color: "grey" }}>
-                    {field.label}:
+                    {field.label}:{"  "}
                     <Text
                       style={{
                         marginLeft: 5,
@@ -369,7 +386,7 @@ export default function dashboard() {
                       {field.key ? user[field.key] ?? "" : " "}
                     </Text>
                   </Text>
-                ))}
+                  ))}
               </View>
             </Card>
           ))}
@@ -378,53 +395,66 @@ export default function dashboard() {
     </>
   );
   ///////
- async function handleUpload(){
-  try {
-    // const res = await DocumentPicker.pickSingle({
-    //   type: [DocumentPicker.types.plainText], // csv is text/csv or plainText
-    // });
+  async function Uploadcsv() {
+    try {
+      // const res = await DocumentPicker.pickSingle({
+      //   type: [DocumentPicker.types.plainText], // csv is text/csv or plainText
+      // });
 
-    // const fileUri = res.uri;
+      // const fileUri = res.uri;
 
-    // Read file content (depends on platform: content:// vs file://)
-    // const content = await RNFS.readFile(fileUri, "utf8");
- // You need to pass a valid event object here, or remove this line if not needed.
- // Example: ;
- // If you don't have an event, you should not call handleWebUpload here.
-// const getcsv = await handleWebUpload(event)
-if (!csvText) {
-  throw new Error("No CSV data available to upload.");
-}
-const results = Papa.parse(csvText, {
-  header: true, // Converts to JSON using first row as keys
-  skipEmptyLines: true,
-});
+      // Read file content (depends on platform: content:// vs file://)
+      // const content = await RNFS.readFile(fileUri, "utf8");
+      // You need to pass a valid event object here, or remove this line if not needed.
+      // Example: ;
+      // If you don't have an event, you should not call handleWebUpload here.
+      // const getcsv = await handleWebUpload(event)
+      // if (!csvText) {
+      //   // throw new Error("No CSV data available to upload.");
+      //   alert("No CSV data available to upload.")
+      // }
+      if (!csvText) {
+        Alert.alert("No CSV data available to upload.");
+        // return;
+      }
+      
+      const results = Papa.parse(typeof csvText === "string" ? csvText : "", {
+        header: true, // Converts to JSON using first row as keys
+        skipEmptyLines: true,
+      });
 
-    const response = await fetch("/api/upload", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        data: results.data,
-        // monthly,
-        // yearly,
-      }),
-    });
-    // Send to backend
-    // Uncomment and replace with your backend URL
-    // const response = await axios.post('https://your-backend/upload-csv', {
-    //   data: results.data,
-    // });
-
-    // Alert.alert('Success', 'CSV uploaded successfully');
-  } catch (err) {
-    console.error(err);
-    // Alert.alert("Error", "Failed to upload CSV");
+      const response = await fetch(
+        "https://morningstar-coop-backend.onrender.com/api/uploadcsv",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            data: results.data,
+            // monthly,
+            // yearly,
+          }),
+        }
+      );
+      // Send to backend
+      // Uncomment and replace with your backend URL
+      // const response = await axios.post('https://your-backend/upload-csv', {
+      //   data: results.data,
+      // });
+      const getRes = await response.json();
+      // Alert.alert('Success', 'CSV uploaded successfully');
+      if (getRes.success === true) {
+        alert(getRes.message);
+      } else {
+        alert(getRes.message);
+      }
+    } catch (err) {
+      console.error(err);
+      // Alert.alert("Error", "Failed to upload CSV");
+    }
   }
-   };
 }
-
 
 const style = StyleSheet.create({
   touchable: {
