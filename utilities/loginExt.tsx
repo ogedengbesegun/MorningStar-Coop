@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import {
-    Platform,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
 import Card from "./card";
 // import { useRouter } from "expo-router";
@@ -17,11 +17,9 @@ export default function loginExt() {
       //   uri: "https://media.istockphoto.com/id/1495088043/vector/user-profile-icon-avatar-or-person-icon-profile-picture-portrait-symbol-default-portrait.jpg?s=612x612&w=0&k=20&c=dhV2p1JwmloBTOaGAtaA3AW1KSnjsdMt7-U_3EZElZ0=",
       require: "💵",
       backgroundColor: "lightgreen",
-      body: `Major loans are long-term 
-        loans designed to provide immediate financial access for eligible members,
-        typically with a fast approval process and minimal documentation.
-        Repayment Plans of 12 to 24 months with 6% interest rate per annum.
-        `,
+      body: `Major loans are long-term loans designed to provide immediate financial access for eligible members, 
+typically with a fast approval process and minimal documentation.
+Repayment Plans of 12 to 24 months with 6% interest rate per annum.`,
     },
     {
       text: "Soft Loan",
@@ -30,8 +28,8 @@ export default function loginExt() {
 
       backgroundColor: "lightgrey",
       body: `Soft loans are emergency loans, they are low-interest loans 
-        typically with a fast approval process. The maximum amount is 100,000
-        and the repayment period is 6 months.`,
+typically with a fast approval process. The maximum amount is 100,000
+and the repayment period is 6 months.`,
     },
     {
       text: "Appliances",
@@ -39,9 +37,9 @@ export default function loginExt() {
       require: "🛒",
       backgroundColor: "lightblue",
       body: `Appliance loans are designed to
-        help members purchase essential household appliances, with flexible terms
-        and competitive interest rates. The maximum amount is set to the item's reflective cost and the
-        repayment period is 6 months.`,
+help members purchase essential household appliances, with flexible terms
+and competitive interest rates. The maximum amount is set to the item's reflective cost and the
+repayment period is 6 months.`,
     },
     {
       text: "Project",
@@ -49,8 +47,8 @@ export default function loginExt() {
       require: "🏠",
       backgroundColor: "skyblue",
       body: `Project loans are designed to
-        enable our esteemed members start, expand, or complete their House projects
-        with flexible terms and competitive interest rates.Repayment plan of 12-36 months.`,
+enable our esteemed members start, expand, or complete their House projects
+with flexible terms and competitive interest rates.Repayment plan of 12-36 months.`,
     },
   ];
   const [textImage, setTextImage] = useState("💵");
@@ -101,14 +99,12 @@ export default function loginExt() {
                   ? {
                       width: 70,
                       height: 100,
-                margin: 4,
-
+                      margin: 4,
                     }
                   : {
                       width: 120,
                       height: 140,
-                margin: 5,
-
+                      margin: 5,
                     }),
                 justifyContent: "center",
                 alignItems: "center",
@@ -132,8 +128,8 @@ export default function loginExt() {
                           textAlign: "center",
                           fontWeight: "bold",
                           marginBottom: 7,
-                            fontSize: 11,
-                        flexWrap: "nowrap",
+                          fontSize: 11,
+                          flexWrap: "nowrap",
                         }
                       : {
                           textAlign: "center",
@@ -204,7 +200,8 @@ export default function loginExt() {
           </Text>
           <Text
             style={{
-              textAlign: "center",
+              textAlign: "left",
+              
               marginBottom: 7,
               //   width: 200,
               marginRight: 5,
@@ -212,11 +209,11 @@ export default function loginExt() {
               ...(Platform.OS === "web"
                 ? {
                     fontSize: 15,
-                    fontWeight: "500",
+                    fontWeight: "700",
                   }
                 : {
                     fontSize: 13,
-                    fontWeight: "400",
+                    fontWeight: "600",
                   }),
             }}
           >

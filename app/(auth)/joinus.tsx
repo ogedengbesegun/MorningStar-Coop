@@ -1,3 +1,5 @@
+import { API_URL as ENV_API_URL } from "@env";
+
 import DateTimePicker from "@react-native-community/datetimepicker";
 import * as FileSystem from "expo-file-system";
 import * as ImagePicker from "expo-image-picker";
@@ -23,6 +25,8 @@ import {
 import { c_day, c_month, c_year } from "@/utilities/mydate";
 import "./cssStyle.css";
 export default function MembershipForm() {
+   const API_URL =
+      ENV_API_URL || "https://morningstar-coop-backend.onrender.com";
   // const setMax = document.querySelector(".dateInput")?.setAttribute("max", `${c_year}-${c_month}-${c_date}`);
 
   const [form, setForm] = useState({
@@ -412,12 +416,12 @@ export default function MembershipForm() {
               style={{ backgroundColor: "grey", width: 150, padding: 7 }}
               // title="Print"
               onPress={() => {
-                // handlePrint();
-                if (Platform.OS === "web") {
-                  handlePrint();
-                } else {
-                  handlePrint();
-                }
+                handlePrint();
+                // if (Platform.OS === "web") {
+                //   handlePrint();
+                // } else {
+                //   handlePrint();
+                // }
               }}
             >
               <Text style={{ textAlign: "center", color: "#fff" }}>Print</Text>
@@ -425,19 +429,20 @@ export default function MembershipForm() {
 
             <TouchableOpacity
               style={{ backgroundColor: "green", width: 150, padding: 7 }}
-              // title="Submit"
-              disabled
+              // disabled
               onPress={() => {
-                if (Platform.OS === "web") {
-                  // print();
-                  // await Print.printAsync()
-                  handleSubmit();
-                } else {
-                  handleSubmit();
-                }
+                joinusform()
+                // if (Platform.OS === "web") {
+                //   // print();
+                //   // await Print.printAsync()
+                //   handleSubmit();
+                // } else {
+                //   handleSubmit();
+                // }
               }}
             >
-              <Text style={{ textAlign: "center", color: "#fff" }}>Submit</Text>
+              <Text style={{ textAlign: "center", 
+                color: "#fff" }}>Submit</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -458,8 +463,38 @@ export default function MembershipForm() {
       </View>
     </>
   );
+
+  async function joinusform(){
+    try{
+    const response=await fetch(`${API_URL}/api/submitjoinus`,
+     { method:"POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body:JSON.stringify({
+        name: form.name,
+        oracle: form.oracle,
+        phone: form.phone,
+        dob: form.dob.toISOString().split("T")[0],
+        amount: form.amount,
+        picture: imageUri,})
+      }
+    );
+    const result = await response.json();
+    if (result.success === true) {
+      Alert.alert("Success", "Your membership form has been submitted successfully.");
+    }
+    }catch (error) {
+    // console.error("Error submitting form:", error);
+    Alert.alert("Error", "There was an error submitting your form. Please try again later.");
+    }
+  }
 }
 
+
+
+
+////////styling
 const styles = StyleSheet.create({
   label: {
     fontWeight: "bold",

@@ -67,15 +67,15 @@ export default function _layout() {
           headerTintColor: "white",
         }}
       />
-      {/* <Stack.Screen
-        name=""
+      <Stack.Screen
+        name="loanrequest"
         options={{
-          title: "Membership Form ",
+          title: "Loan Request Form ",
           headerTitleAlign: "center",
           headerTintColor: "white",
         }}
       />
-       */}
+      
     </Stack>
   );
 }

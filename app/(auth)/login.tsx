@@ -15,6 +15,7 @@ import { lastMonth } from "../../utilities/mydate";
 // import * as SecureStore from "expo-secure-store";
 // import Constants from "expo-constants";
 import {
+  ActivityIndicator,
   Image,
   KeyboardAvoidingView,
   Modal,
@@ -44,7 +45,9 @@ export default function login() {
 
   /////MainModal
   const [visible, setVisible] = React.useState(false);
-  const [textChange, setTextChange] = useState("Login");
+  const [textChange, setTextChange] = useState<string | React.ReactNode>(
+    "Login"
+  );
   ///MainModal
 
   ///to get value of the compo
@@ -60,8 +63,9 @@ export default function login() {
   //to get value for forgot comp
   const [oraclededuct, setOraclededuct] = useState("");
   const [pwordn, setPwordn] = useState("");
-  const [changeTextOraclededuct, setChangeTextOraclededuct] =
-    useState("Change Password");
+  const [changeTextOraclededuct, setChangeTextOraclededuct] = useState<
+    string | React.ReactNode
+  >("Change Password");
   ///make refrence to the compo
   const refOraclededuct = useRef<TextInput>(null);
   const refPwordn = useRef<TextInput>(null);
@@ -319,21 +323,19 @@ export default function login() {
                   },
                 ]}
                 onPress={async () => {
-                  setTextChange("Wait Loading...");
+                  setTextChange(
+                    <View style={{ flexDirection: "row" }}>
+                      <Text style={styles2.loginText}>Wait Loading...</Text>
+                      <ActivityIndicator color="green" size="small" />
+                    </View>
+                  );
+
                   await loginUser();
                   setTextChange("Login");
                 }}
               >
-                <Text
-                  style={{
-                    color: "green",
-                    //   width: 200,
-                    textAlign: "center",
-                    fontSize: 18,
-                  }}
-                >
-                  {textChange}
-                </Text>
+                <Text style={styles2.loginText}>{textChange}</Text>
+                {/* for Login button */}
               </TouchableOpacity>
 
               {/* Link */}
@@ -470,7 +472,12 @@ export default function login() {
                       {/*  */}
                       <TouchableOpacity
                         onPress={async () => {
-                          setChangeTextOraclededuct("Password Changing...");
+                          setChangeTextOraclededuct(
+                            <View style={{ flexDirection: "row" }}>
+                              <Text>Password Changing...</Text>
+                              <ActivityIndicator color="green" size="small" />
+                            </View>
+                          );
                           await changepword();
                           setChangeTextOraclededuct("Change Password");
                         }}
@@ -711,7 +718,14 @@ export default function login() {
                 <View ref={refServices} style={{ marginTop: 1 }}>
                   <LoginExt />
                   <Link href={"(auth)/joinus"} style={styles2.joinUs}>
-                    <Text style={[styles2.joinUsText,{color:"orange",width:350}]}>Join Us Now 🌱</Text>
+                    <Text
+                      style={[
+                        styles2.joinUsText,
+                        { color: "orange", width: 350 },
+                      ]}
+                    >
+                      Join Us Now 🌱
+                    </Text>
                   </Link>
                 </View>
               </View>
@@ -875,6 +889,12 @@ const styles2 = StyleSheet.create({
     color: "purple",
     fontWeight: "bold",
     fontSize: 25,
+  },
+  loginText: {
+    color: "green",
+    //   width: 200,
+    textAlign: "center",
+    fontSize: 18,
   },
   callUsText: {
     textTransform: "capitalize",

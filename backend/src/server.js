@@ -2,7 +2,7 @@
 
 
 
-
+import { c_month, c_year } from "../../utilities/mydate";
 
 import bcrypt from 'bcrypt';
 import cors from 'cors';
@@ -292,12 +292,55 @@ await client.connect().then(() => {
   /////
   app.post('/api/uploadcsv', async (req, res) => {
     const { data } = req.body;
-    const lookup = await msc_monthly_2025.findOne({ yr: data.yr, month: data.month })
+    const lookup = await msc_monthly_2025.findOne({ yr: '2025', month: 'july' })
     // if(lookup){
     if (!lookup) {
       return res.status(400).json({ success: false, message: `Please Upload, ${data.month} ${data.yr} does not exist ` })
     }
-res.status(200).json({success:true,message:`Records for ${data.month} ${data.yr} already exist`})
+    res.status(200).json({ success: true, message: `Records for ${lookup.yr} ${lookup.month} already exist` })
+  })
+
+  app.post('/api/submitjoinus', async (req, res) => {
+    const { name, oracle, phone, dob, amount, picture } = req.body
+    if (!name || !oracle || !phone || !dob || !amount || !picture) {
+      return res.status(400).json({ success: false, message: "Please fill in all fields" });
+    }
+    const joinus = await db.collection('joinus').insertOne({
+      name: capitalized(name.trim()),
+      oracle: oracle.trim(),
+      phone: phone.trim(),
+      dob: dob.trim(),
+      amount: amount.trim(),
+      picture: picture.trim(),
+      status: 'pending',
+      createdAt: new Date(),
+    });
+    res.json({
+      success: true,
+      message: `Thank you ${name?.split(' ')[0]}, Your request is being processed. We will get back to you soon.`,
+      id: joinus.insertedId
+    })
+  });
+  ////////
+  app.post('/api/savingLoanBal', async (req, res) => {
+    const { oracle } = req.body;
+    // if(!oracle || oracle.length<5){
+    //   return res.status(400).json({success:false,message:"Valid Oracle Number is required"})
+    // }
+    const findOracle = await msc_monthly_2025.findOne({ oracle: oracle, month: c_month, yr: c_year })
+    if (!findOracle) {
+      return res.status(404).json({ success: false, message: "No record found for this Oracle Number" })
+    }
+    res.status(200).json({
+      success: true,
+      message: `Record fetched Successfully for Oracle Number ${oracle}`,
+      data: {
+        total_savings: findOracle.savings ?? '0',
+        total_loan_balance: findOracle.loan_balance ?? '0',
+        total_soft_loanBal: findOracle.soft_loanBal ?? '0',
+        total_interest_bal: findOracle.interest_bal ?? '0',
+      }
+    })
   })
 
   app.listen(PORT, () => {

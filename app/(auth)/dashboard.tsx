@@ -3,26 +3,44 @@ import Papa from "papaparse";
 // import RNFS from "react-native-fs";
 ///////////////
 import Card from "@/utilities/card";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+// import {
+//   Appbar,
+//   BottomNavigation,
+//   Drawer,
+//   Modal,
+//   Portal,
+//   // Card,
+//   List,
+//   Menu,
+//   Dialog,
+//   DataTable,
+//   Banner,
+//   Snackbar,
+//   Tooltip,
+// } from "react-native-paper";
 import { Picker } from "@react-native-picker/picker";
 import * as DocumentPicker from "expo-document-picker";
 import React, { useRef, useState } from "react";
 import {
+  Alert,
   Platform,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
-  Alert,
 } from "react-native";
 import Hr from "../../utilities/hr";
 import "./cssStyle.css"; // This only works on we
+import { Link } from "expo-router";
 ///////////////////
+///////
 export default function dashboard() {
   const currentYear = new Date().getFullYear();
   ///////
   const inputRef = useRef(null);
-  const refView = useRef(true);
+  const refView = useRef<ScrollView>(null);
   ///////////////
   const [monthly, setMonthly] = useState("Select Month");
   const [yearly, setYearly] = useState("Select Year");
@@ -30,6 +48,13 @@ export default function dashboard() {
   const [parseData, setParseData] = useState<any[]>([]);
   const [filename, setFilename] = useState<any | null>(null);
   const [disabled, setDisable] = useState(true);
+
+  //////
+  const [show, setShow] = useState({
+    show1: true,
+    show2: false,
+    show3: false,
+  });
   //////////
   // const Hr = ({ color = "#ccc", thickness = 1, marginVertical = 10 }) => (
   //   <View
@@ -92,7 +117,8 @@ export default function dashboard() {
       console.log("No file selected");
     }
   };
-  /////
+
+  ///////////
   const parseCSV = (csvText: string) => {
     const result = Papa.parse(csvText, {
       header: true,
@@ -115,6 +141,15 @@ export default function dashboard() {
     { label: "Interest Balance", key: "interest_bal" },
     { label: "Soft Loan Balance", key: "soft_loanBal" },
   ];
+
+  const dashBtn = [
+    {
+      label: "Add csvDocs",
+      backColor: "lightgreen",
+    },
+    { label: " New Members", backColor: "lightgrey" },
+    { label: "Loan Request", backColor: "lightblue" },
+  ];
   ////////////////
   //   let array= parseData
   // for (let i = 0; i < array.length; i++) {
@@ -125,8 +160,90 @@ export default function dashboard() {
   ////////////////
   return (
     <>
-      <ScrollView>
-        <View>
+      <View
+        style={{
+          backgroundColor: "#fff",
+          flexDirection: "row",
+          marginRight: "auto",
+          marginLeft: "auto",
+          gap: 5,
+          // marginTop: 10,
+          padding: 5,
+        }}
+      >
+        {/* <Card 
+        style={{
+              alignSelf: "center",
+              backgroundColor: "#000",
+              marginTop: 10,
+
+            }}
+        > */}
+        {dashBtn.map((title, index) => (
+          <TouchableOpacity
+            key={index}
+            style={{
+              backgroundColor: `${title.backColor}`,
+              padding: 6,
+              borderRadius: 5,
+              width: 110,
+
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+            onPress={() => {
+              if (index === 0) {
+                setShow((show1) => ({
+                  ...show1,
+                  show1: !show1.show1,
+                }));
+              } else if (index === 1) {
+                setShow((show1) => ({
+                  ...show1,
+                  show2: !show1.show2,
+                }));
+              } else if (index === 2) {
+                setShow((show1) => ({
+                  ...show1,
+                  show3: !show1.show3,
+                }));
+              }
+            }}
+          >
+            <Text
+              style={{
+                textAlign: "center",
+                color: "dark",
+                fontWeight: "bold",
+              }}
+            >
+              {title.label}
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+      {/*  */}
+      <View>
+        <Hr color="green" thickness={1} />
+        <Text
+          style={{
+            color: "green",
+            fontSize: 28,
+            marginRight: "auto",
+            marginLeft: "auto",
+            marginTop: -10,
+            textAlign: "center",
+          }}
+        >
+          Executives' Dashboard
+        </Text>
+      </View>
+
+      {/* header btn end */}
+      <ScrollView ref={refView}>
+        {/* scroll entire  */}
+        <View style={{ display: show.show1 ? "flex" : "none" }}>
+          {/* */}
           <Card
             style={{
               alignSelf: "center",
@@ -138,23 +255,27 @@ export default function dashboard() {
             <Text
               style={{
                 color: "green",
-                fontSize: 24,
+                fontSize: 18,
                 marginRight: "auto",
                 marginLeft: "auto",
                 marginTop: 1,
                 textAlign: "center",
               }}
+             
             >
-              Executives' Dashboard
+              Upload csvMonthly Deductions
             </Text>
             <Hr color="green" thickness={2} />
+
+            {/* phase 1 */}
+
             <Text
               style={{
                 width: 250,
                 fontSize: 12,
                 fontWeight: "bold",
                 textAlign: "center",
-                marginTop: 5,
+                marginTop: -5,
                 marginBottom: 5,
                 marginRight: "auto",
                 marginLeft: "auto",
@@ -293,7 +414,8 @@ export default function dashboard() {
 
                 <TouchableOpacity
                   style={style.touchable}
-                  // onPress={}
+                onPress={() => parseCSV('')}
+                  
                 >
                   <Text
                     style={[
@@ -303,7 +425,7 @@ export default function dashboard() {
                       },
                     ]}
                   >
-                    Delete
+                    Delete Docs
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -320,7 +442,7 @@ export default function dashboard() {
                     },
                   ]}
                 >
-                  View
+                  View Docs
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
@@ -341,7 +463,6 @@ export default function dashboard() {
               </TouchableOpacity>
             </View>
           </Card>
-
           {parseData.map((user, index) => (
             <Card
               key={index}
@@ -370,7 +491,7 @@ export default function dashboard() {
                     textAlign: "center",
                   }}
                 >
-                  Serial No: {index + 1}
+                  No: {index + 1}
                 </Text>
                 {userFields.map((field, i) => (
                   <Text key={i} style={{ color: "grey" }}>
@@ -386,38 +507,117 @@ export default function dashboard() {
                       {field.key ? user[field.key] ?? "" : " "}
                     </Text>
                   </Text>
-                  ))}
+                ))}
               </View>
             </Card>
           ))}
         </View>
+
+        <View style={{ display: show.show2 ? "flex" : "none" }}>
+          {/* for New Members*/}
+          <Card
+            style={{
+              alignSelf: "center",
+              width: 330,
+              backgroundColor: "#fff",
+              marginTop: 10,
+            }}
+          >
+            <Text
+              style={{
+                color: "grey",
+                fontSize: 18,
+                marginRight: "auto",
+                marginLeft: "auto",
+                marginTop: 1,
+                textAlign: "center",
+              }}
+            >
+              View New Members
+            </Text>
+            <Hr color="grey" thickness={2} />
+            <TouchableOpacity style={{borderStyle: "solid", borderWidth: 1, padding: 5, borderColor: "grey", borderRadius: 5}}>
+              <Text
+                style={{
+                  textAlign: "center",
+                  color: "grey",
+                }}
+              >DownLoad List...</Text>
+            </TouchableOpacity>
+
+          </Card>
+        </View>
+        <View style={{ display: show.show3 ? "flex" : "none" }}>
+          {/* {" "} */}
+          {/* for Pics    */}
+          <Card
+            style={{
+              alignSelf: "center",
+              width: 330,
+              backgroundColor: "#fff",
+              marginTop: 10,
+            }}
+          >
+            <Text
+              style={{
+                color: "blue",
+                fontSize: 18,
+                marginRight: "auto",
+                marginLeft: "auto",
+                marginTop: 1,
+                textAlign: "center",
+              }}
+            >
+              Members' Loan Requests
+            </Text>
+            <Hr color="blue" thickness={2} />
+            <TouchableOpacity style={{borderStyle: "solid", borderWidth: 1, padding: 5, borderColor: "blue", borderRadius: 5}}>
+              <Text
+                style={{
+                  textAlign: "center",
+                  color: "blue",
+                }}
+              >DownLoad List...</Text>
+            </TouchableOpacity>
+          </Card>
+        </View>
       </ScrollView>
+      {/*  end entire  */}
+      <View
+        style={{
+          marginBottom: 5,
+          marginRight: 20,
+          alignItems: "flex-end",
+          position: "absolute",
+          bottom: 2,
+          right: 2,
+          zIndex: 1000,
+        }}
+      >
+       <TouchableOpacity style={{backgroundColor: "lightgrey", padding: 5, 
+        borderRadius: 50, elevation: 5}}
+        onPress={()=>{
+          refView.current?.scrollTo({ y: 0, animated: true });
+        }}
+        >
+         <MaterialCommunityIcons
+          name="arrow-up-bold"
+          //  refView.current?.scrollTo({ y: 0, animated: true })}};
+          size={40}
+          color={"grey"}
+        />
+       </TouchableOpacity>
+      </View>
     </>
   );
   ///////
   async function Uploadcsv() {
     try {
-      // const res = await DocumentPicker.pickSingle({
-      //   type: [DocumentPicker.types.plainText], // csv is text/csv or plainText
-      // });
-
-      // const fileUri = res.uri;
-
-      // Read file content (depends on platform: content:// vs file://)
-      // const content = await RNFS.readFile(fileUri, "utf8");
-      // You need to pass a valid event object here, or remove this line if not needed.
-      // Example: ;
-      // If you don't have an event, you should not call handleWebUpload here.
-      // const getcsv = await handleWebUpload(event)
-      // if (!csvText) {
-      //   // throw new Error("No CSV data available to upload.");
-      //   alert("No CSV data available to upload.")
-      // }
       if (!csvText) {
         Alert.alert("No CSV data available to upload.");
         // return;
       }
-      
+
       const results = Papa.parse(typeof csvText === "string" ? csvText : "", {
         header: true, // Converts to JSON using first row as keys
         skipEmptyLines: true,
@@ -443,6 +643,7 @@ export default function dashboard() {
       //   data: results.data,
       // });
       const getRes = await response.json();
+      // alert(getRes);
       // Alert.alert('Success', 'CSV uploaded successfully');
       if (getRes.success === true) {
         alert(getRes.message);
@@ -452,6 +653,7 @@ export default function dashboard() {
     } catch (err) {
       console.error(err);
       // Alert.alert("Error", "Failed to upload CSV");
+    } finally {
     }
   }
 }

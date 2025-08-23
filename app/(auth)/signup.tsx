@@ -4,6 +4,8 @@ import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import React, { useRef, useState } from "react";
 import {
+  StyleSheet,
+  ActivityIndicator,
   ImageBackground,
   ScrollView,
   Text,
@@ -33,7 +35,7 @@ export default function signup() {
   /////////////
   /////to set the button disabled after once click
   const [submitted, setSubmitted] = useState(false);
-  const [regText, setRegText] = useState("Register Now");
+  const [regText, setRegText] = useState<string | React.ReactNode>("Register Now");
   ///to set the value of the components
   const [fullname, setFullname] = useState("");
   const [oracleNum, setOracle] = useState("");
@@ -256,21 +258,19 @@ export default function signup() {
                 },
               ]}
               onPress={async () => {
-                setRegText("In Progress...");
+                setRegText(
+                  <View style={{flexDirection:"row"}}>
+                    <Text style={styles2.registerText}>In Progress...</Text>
+                  <ActivityIndicator color="green" size="small" />
+                  </View>
+                );
                 await handle_signup();
                 setRegText("Register Now");
               }}
               disabled={submitted}
             >
               <Text
-                style={{
-                  fontSize: 20,
-                  color: "darkgreen",
-                  textAlign: "center",
-                  marginRight: "auto",
-                  marginLeft: "auto",
-                  fontWeight: "bold",
-                }}
+                style={styles2.registerText}
               >
                 {regText}
               </Text>
@@ -373,3 +373,15 @@ export default function signup() {
   }
 }
 /////
+
+
+const styles2 = StyleSheet.create({
+  registerText: {
+    fontSize: 20,
+    color: "darkgreen",
+    textAlign: "center",
+    marginRight: "auto",
+    marginLeft: "auto",
+    fontWeight: "bold",
+  },
+});

@@ -399,7 +399,7 @@ export default function indextabs() {
                         </Text>
                       </Link>
                       <Link
-                        href={"(tabs)"}
+                        href={"(auth)/loanrequest"}
                         style={styles2.menuBtn}
                         onPress={() => {
                           setMenuModal(false);

@@ -6,6 +6,7 @@ type HrProps = {
   color?: string;
   thickness?: number;
   marginVertical?: number;
+  width?: number;
 };
 
 export default function Hr({

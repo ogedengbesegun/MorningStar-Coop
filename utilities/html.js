@@ -1,6 +1,6 @@
-import { c_day, c_month, c_year} from "../utilities/mydate"
+import { c_day, c_month, c_year } from "../utilities/mydate";
 export const MembershipHtml = (form, imageUri) => {
-    return `
+  return `
     <html>
       <body style="font-family: Arial; text-align: center; margin:20px;
                    border:1px solid green; padding:10px; border-radius:15px;" >
@@ -14,9 +14,9 @@ export const MembershipHtml = (form, imageUri) => {
 
           <div style="text-align:start;margin-left:40px;margin-right:40px;">
             ${imageUri
-            ? `<img src="${imageUri}" width="200" height="200" style="border-radius: 10px;"/>`
-            : ""
-        }
+      ? `<img src="${imageUri}" width="200" height="200" style="border-radius: 10px;"/>`
+      : ""
+    }
 
             <h2>Full Name:</h2>
             <span style="color:black; font-size:30px;">${form.name}</span>
@@ -24,10 +24,10 @@ export const MembershipHtml = (form, imageUri) => {
             <h2>Oracle Number: <span style="font-size:30px;">${form.oracle}</span></h2>
             <h2>Phone Number: <span style="font-size:30px;">${form.phone}</span></h2>
             <h2>Date of Birth: <span style="font-size:30px;">${new Date(form.dob).toLocaleDateString("en-NG", {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-        })}</span></h2>
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    })}</span></h2>
             <h2>Monthly Contribution: <span style="font-size:30px;">${form.amount}</span></h2>
 
             <p style="font-size:25px;margin-top:15px;color:grey;font-style:italic;">
@@ -45,6 +45,66 @@ export const MembershipHtml = (form, imageUri) => {
               Morning Star Coop Society © ${c_year}
             </span>
           </footer>
+        </div>
+      </body>
+    </html>
+  `;
+};
+
+
+
+export const LoanRequestHtml = (form, imageUri) => {
+  return `
+    <html>
+      <body style="font-family: Arial; text-align: center; margin:20px;
+                   border:1px solid green; padding:10px; border-radius:15px;" >
+        <div id="print-area">
+        <div style=" background-image: url("../assets/images/d_img/loanFormbg.png"); background-size: 20%; background-position: center;">
+        <h1 style="color:green;font-size:20px;text-decoration:underline;">
+            Morning Star Cooperative & Thrift Society
+          </h1>
+          <h3 style="font-size:15px">Address: GIRLS HIGH SCHOOL AGEGE</h3>
+          <h1 style="color:green;font-size:15px;text-decoration:underline;">
+            Members' Loan Form
+          </h1>
+
+          <div style="text-align:start;margin-left:40px;margin-right:40px;">
+            ${imageUri
+      ? `<img src="${imageUri}" width="120" height="120" style="border-radius: 10px;"/>`
+      : ""
+    }
+
+            <h4 >Full Name:
+            <span style="color:black;
+            border-width: 1px; border-color: grey; border-style: solid;"
+            >${form.name}</span></h4>
+
+            <h4>Oracle Number: <span style="font-size:20px;">${form.oracle}</span></h4>
+            <h4>Phone Number: <span style="font-size:20px;">${form.phone}</span></h4>
+            <h4>Date of Application: <span style="font-size:20px;">${new Date(form.dob).toLocaleDateString("en-NG", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    })}</span></h4>
+            <h4>Loan Amount Request (₦): <span style="font-size:20px;">${form.amount}</span></h4>
+            <h4>Bank Name / Branch Name: <span style="font-size:20px;">${form.bankName}</span></h4>
+            <h4>Bank Account Number: <span style="font-size:20px;">${form.bankNumber}</span></h4>
+            <h4>Bank Sort Code: <span style="font-size:20px;">${form.bankSort}</span></h4>
+            <p style="font-size:15px;margin-top:15px;color:grey;font-style:italic;">
+             I ${form.name}, hereby "e-signed" this Loan Application Form.
+            </p>
+            <div style="display:flex; font-size:20px;">
+            <h5><input type="checkbox" checked " /></h5><p>e-signed</p>
+            <p style="margin-left:10">${c_year}-${c_month}-${c_day}</p>
+            </div>
+          </div>
+
+          <footer style="padding:5px;">
+            <span style="color:lightgrey;font-size:20px;">
+              Morning Star Coop Society © ${c_year}
+            </span>
+          </footer>
+          </div>
         </div>
       </body>
     </html>

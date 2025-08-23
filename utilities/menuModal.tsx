@@ -140,7 +140,7 @@ const ModalContent: React.FC<Props> = ({
           >
             <Text
               style={{
-                color: "green",
+                color: "grey",
                 fontSize: 20,
                 // textDecorationLine: "underline",
               }}
@@ -161,7 +161,7 @@ const ModalContent: React.FC<Props> = ({
             }, 100);
           }}
         >
-          <Text style={{ color: "green", fontSize: 20 }}>
+          <Text style={{ color: "grey", fontSize: 20 }}>
             📞 Call Us for Inquiries
           </Text>
         </Link>
