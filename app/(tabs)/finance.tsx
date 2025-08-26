@@ -24,6 +24,8 @@ export default function Finance() {
   const [userInfo, setUserInfo] = useState("");
 
   const [deduction, setDeduction] = useState("");
+  const [bank, setBank] = useState("");
+
   const [savings, setSavings] = useState("");
   const [retirement, setRetirement] = useState("");
   const [loanBalance, setLoanBalance] = useState("");
@@ -303,6 +305,20 @@ export default function Finance() {
                     })}
                   </Text>
                 </Text>
+                 <Text
+                  style={{ marginTop: 15, marginRight: 30, marginLeft: 10 }}
+                >
+                  Bank Deposit: ₦
+                  <Text
+                    style={{ color: "green", fontWeight: "bold", fontSize: 20 }}
+                  >
+                    {" "}
+                    {Number(bank).toLocaleString("en-NG", {
+                      // style: "currency",
+                      currency: "NGN",
+                    })}
+                  </Text>
+                </Text>
                 <Text
                   style={{ marginTop: 15, marginRight: 30, marginLeft: 10 }}
                 >
@@ -422,6 +438,7 @@ export default function Finance() {
       const response = await eachMonth.json();
       if (response.success === true) {
         setDeduction(response.data.deduction);
+        setBank(response.data.bank ?? "0")
         setSavings(response.data.savings);
         setRetirement(response.data.retirement);
         setLoanBalance(response.data.loan_balance);
@@ -431,6 +448,7 @@ export default function Finance() {
       } else {
         setUserInfo(response.message);
         setDeduction("");
+        setBank("");
         setSavings("");
         setRetirement("");
         setLoanBalance("");

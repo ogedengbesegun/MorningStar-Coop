@@ -4,6 +4,7 @@ type User = {
   name: string;
   oracle: string;
   password: string;
+  
   // Add other user fields if needed
 };
 

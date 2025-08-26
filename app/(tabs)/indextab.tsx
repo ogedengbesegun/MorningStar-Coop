@@ -33,6 +33,8 @@ export default function indextabs() {
   const refText = useRef<Text>(null);
   const [last_deduct, setLast_deduct] = useState<any | null>(null);
   const [this_deduct, setThis_deduct] = useState<any | null>(null);
+  const [last_Bankdeduct, setLast_Bankdeduct] = useState<any | null>(null);
+  const [this_Bankdeduct, setThis_Bankdeduct] = useState<any | null>(null);
   /////////
   const [userName, setUserName] = useState<string | null>(null);
   const [userOracle, setUserOracle] = useState<string | null>(null);
@@ -53,46 +55,6 @@ export default function indextabs() {
   const nav = useNavigation<any>();
   const router = useRouter();
   //////////////////////////////
-
-  // useEffect(() => {
-  //   const getUserName = async () => {
-  //     if (user?.name && user?.oracle) {
-  //       await AsyncStorage.setItem("name", user?.name);
-  //       await AsyncStorage.setItem("oracle", user?.oracle);
-  //       await AsyncStorage.setItem("lastDeduct", last_deduct);
-  //       await AsyncStorage.setItem("thisDeduct", this_deduct);
-  //       await AsyncStorage.setItem("saving", savingStored);
-  //       await AsyncStorage.setItem("retirement", retirement);
-  //       await AsyncStorage.setItem("loanBalance", loanBalance);
-  //       await AsyncStorage.setItem("softloanBalance", softloanBalance);
-  //       await AsyncStorage.setItem("interestBalance", interestBalance);
-
-  //       setUserName(user?.name);
-  //       setUserOracle(user?.oracle);
-  //     } else {
-  //       const storedName = await AsyncStorage.getItem("name");
-  //       const storedOracle = await AsyncStorage.getItem("oracle");
-  //       const storedLast = await AsyncStorage.getItem("lastDeduct");
-  //       const storedThis = await AsyncStorage.getItem("thisDeduct");
-  //       const storedSaving = await AsyncStorage.getItem("saving");
-  //       const storedRetirement = await AsyncStorage.getItem("retirement");
-  //       const storedloan = await AsyncStorage.getItem("loanBalance");
-  //       const storedSoft = await AsyncStorage.getItem("softloanBalance");
-  //       const storedInterest = await AsyncStorage.getItem("interestBalance");
-
-  //       setUserName(storedName || "Guest");
-  //       setUserOracle(storedOracle || "Guest Oracle");
-  //       setLast_deduct(storedLast);
-  //       setLast_deduct(storedThis);
-  //       setSaving(storedSaving);
-  //       setRetirement(storedRetirement);
-  //       setLoanBalance(storedloan);
-  //       setSoftloanBalance(storedSoft);
-  //       setInterestBalance(storedInterest);
-  //     }
-  //   };
-  //   getUserName();
-  // }, [user?.name, user?.oracle]);
 
   useEffect(() => {
     if (user && user.oracle && lastMonth && thisMonth) {
@@ -189,19 +151,43 @@ export default function indextabs() {
             <Text style={{ fontSize: 23, color: "grey", fontWeight: "bold" }}>
               {user?.oracle}
             </Text>
-            <Card style={[]}>
-              <Text style={{ fontSize: 17, color: "black" }}>
+
+            <Card style={{ backgroundColor: "#e6fff2" }}>
+              <Text style={{ fontSize: 17, color: "darkblack" }}>
                 Oracle Deduction as at: {lastMonth.toLocaleUpperCase()},{" "}
                 {c_year}
                 {":"} {last_deduct}
               </Text>
-              <Text style={{ fontSize: 17, color: "green", paddingTop: 5 }}>
+              <Text style={{ fontSize: 17, color: "darkgreen", paddingTop: 5 }}>
                 Oracle Deduction as at: {thisMonth.toLocaleUpperCase()},{" "}
                 {c_year}
                 {":"} {this_deduct}
               </Text>
             </Card>
-
+            {/* bank self Payment */}
+            <Card style={{ backgroundColor: "#e6e6ff" }}>
+              <Text
+                style={{
+                  textAlign: "center",
+                  fontWeight: "bold",
+                  fontSize: 17,
+                  color: "#52a504f8",
+                  borderColor: "black",
+                }}
+              >
+                Bank Transactions
+              </Text>
+              <Text style={{ fontSize: 15, color: "dark" }}>
+                Bank(Self_Payment) as at: {lastMonth.toLocaleUpperCase()},{" "}
+                {c_year}
+                {":"} {last_Bankdeduct}
+              </Text>
+              <Text style={{ fontSize: 15, color: "green", paddingTop: 5 }}>
+                Bank(Self_Payment) as at: {thisMonth.toLocaleUpperCase()},{" "}
+                {c_year}
+                {":"} {this_Bankdeduct}
+              </Text>
+            </Card>
             {/* modal */}
             <Modal
               visible={menuModal}
@@ -554,15 +540,15 @@ export default function indextabs() {
                 >
                   Note:{" "}
                   <Text style={{ marginTop: 0, color: "grey" }}>
-                    This Page can only display Records NOT older than two Months.
-                    Please, click on
+                    This Page can only display Records NOT older than two
+                    Months. Please, click on
                     <Text style={{ color: "green" }}> Finance Icon</Text>
                     <MaterialCommunityIcons
                       name="finance"
                       size={30}
                       color={"green"}
-                    />
-                    {" "}to see all Previous Records Older than two(2) months Thanks.{" "}
+                    />{" "}
+                    to see all Previous Records Older than two(2) months Thanks.{" "}
                   </Text>
                 </Text>
               </Card>
@@ -592,6 +578,7 @@ export default function indextabs() {
           newOracle: user?.oracle, // Ensure user.oracle is defined
           lastMonth: lastMonth,
           thisMonth: thisMonth,
+          yr: c_year.toString(), //for the current working year
         }),
       });
       const response = await financialData.json();
@@ -601,6 +588,12 @@ export default function indextabs() {
       const newDeduct = response?.acct2.deduction
         ? response.acct2.deduction
         : response.acct2 ?? "0";
+
+      const lastBank = response?.acct.bank ?? "0";
+      const thisBank =
+        response?.acct2.bank > "0"
+          ? response?.acct.bank
+          : response?.acct2.bank ?? "0";
 
       const savings =
         response?.acct2.savings > "0"
@@ -619,9 +612,6 @@ export default function indextabs() {
           ? response?.acct2.loan_balance
           : response?.acct.loan_balance ?? "0";
       ///////////
-
-      // ? response?.acct2.soft_loanBal
-      // : response?.acct.soft_loanBal ?? "500";
 
       const interest_balance =
         response?.acct2.interest_bal > "0"
@@ -654,6 +644,19 @@ export default function indextabs() {
           })
         );
         ////////////
+        setLast_Bankdeduct(
+          Number(lastBank).toLocaleString("en-NG", {
+            style: "currency",
+            currency: "NGN",
+          })
+        );
+        //////
+        setThis_Bankdeduct(
+          Number(thisBank).toLocaleString("en-NG", {
+            style: "currency",
+            currency: "NGN",
+          })
+        );
         ////////
         setSaving(
           Number(savings).toLocaleString("en-NG", {

@@ -186,14 +186,6 @@ export default function dashboard() {
           padding: 5,
         }}
       >
-        {/* <Card 
-        style={{
-              alignSelf: "center",
-              backgroundColor: "#000",
-              marginTop: 10,
-
-            }}
-        > */}
         {dashBtn.map((title, index) => (
           <TouchableOpacity
             key={index}
@@ -202,7 +194,7 @@ export default function dashboard() {
               padding: 6,
               borderRadius: 5,
               width: 110,
-
+              height: 55,
               alignItems: "center",
               justifyContent: "center",
             }}
@@ -494,7 +486,7 @@ export default function dashboard() {
               <TouchableOpacity
                 disabled={disabled2}
                 onPress={() => Uploadcsv()}
-                style={[style.touchable, { width: "100%", marginTop: 5 ,}]}
+                style={[style.touchable, { width: "100%", marginTop: 5 }]}
               >
                 <Text
                   style={[
@@ -682,7 +674,7 @@ export default function dashboard() {
   );
   ///////
   async function Uploadcsv() {
-    setShowModal(true)
+    setShowModal(true);
     try {
       if (!csvText) {
         Alert.alert("No CSV data available to upload.");
@@ -728,7 +720,7 @@ export default function dashboard() {
       // console.error(err);
       Alert.alert("Error", "Failed to upload CSV");
     } finally {
-      setShowModal(false)
+      setShowModal(false);
     }
   }
 }

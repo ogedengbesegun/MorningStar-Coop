@@ -24,16 +24,20 @@ import Hr from "../../utilities/hr";
 import { LoanRequestHtml } from "../../utilities/html";
 // import {  } from "react-native-gesture-handler";
 import { c_day, c_month, c_year } from "@/utilities/mydate";
+import { useUser } from "../../context/UserContext";
 import "./cssStyle.css";
+
+/////////////////////////////
 export default function LoanRequestForm() {
   const API_URL =
     ENV_API_URL || "https://morningstar-coop-backend.onrender.com";
   // const setMax = document.querySelector(".dateInput")?.setAttribute("max", `${c_year}-${c_month}-${c_date}`);
-
+  const { user } = useUser();
+  //////
   const [form, setForm] = useState({
     picture: "",
-    name: "",
-    oracle: "",
+    name: user?.name ?? "",
+    oracle: user?.oracle ?? "",
     phone: "",
     dob: new Date(),
     amount: "",
@@ -291,6 +295,7 @@ export default function LoanRequestForm() {
             <TextInput
               placeholder="Enter oracle number"
               style={styles.input}
+              readOnly
               keyboardType="numeric"
               value={form.oracle}
               onChangeText={(text) => {
@@ -377,7 +382,7 @@ export default function LoanRequestForm() {
               )
             )}
             <Text style={styles.label}>
-              Total Savings (₦) <Text>{form.oracle}</Text>{" "}
+              Total Savings (₦) <Text>{user?.name}</Text>{" "}
             </Text>
             <Text style={styles.label}>
               Loan Balance (₦) <Text>{form.oracle}</Text>
