@@ -2,7 +2,6 @@
 
 
 
-import { c_month, c_year } from "../../utilities/mydate";
 
 import bcrypt from 'bcrypt';
 import cors from 'cors';
@@ -289,17 +288,40 @@ await client.connect().then(() => {
     })
   }
   )
-  /////
-  app.post('/api/uploadcsv', async (req, res) => {
-    const { data } = req.body;
-    const lookup = await msc_monthly_2025.findOne({ yr: '2025', month: 'july' })
-    // if(lookup){
-    if (!lookup) {
-      return res.status(400).json({ success: false, message: `Please Upload, ${data.month} ${data.yr} does not exist ` })
-    }
-    res.status(200).json({ success: true, message: `Records for ${lookup.yr} ${lookup.month} already exist` })
-  })
 
+  app.post('/api/uploadcsv', async (req, res) => {
+    try {
+      const { data, monthly, yearly } = req.body;
+
+      // check if record exists
+      const lookup = await msc_monthly_2025.findOne({ yr: yearly, month: monthly });
+      if (lookup) {
+        return res.status(400).json({
+          success: false,
+          message: `Records for ${lookup.yr} ${lookup.month} already exist`
+        });
+      } else {
+        // bulk insert at once (not in a loop)
+
+        await msc_monthly_2025.insertMany(data, { ordered: false });
+        return res.status(200).json({
+          success: true,
+          message: `Records for ${yearly} ${monthly} uploaded successfully`
+        });
+      }
+
+    }
+    catch (error) {
+      console.error("Error during CSV upload:", error);
+      return res.status(500).json({
+        success: false,
+        message: "Server error during CSV upload, please try again later."
+      });
+    }
+  });
+  /////
+
+  ///////////
   app.post('/api/submitjoinus', async (req, res) => {
     const { name, oracle, phone, dob, amount, picture } = req.body
     if (!name || !oracle || !phone || !dob || !amount || !picture) {

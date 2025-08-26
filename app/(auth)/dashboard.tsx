@@ -4,26 +4,13 @@ import Papa from "papaparse";
 ///////////////
 import Card from "@/utilities/card";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-// import {
-//   Appbar,
-//   BottomNavigation,
-//   Drawer,
-//   Modal,
-//   Portal,
-//   // Card,
-//   List,
-//   Menu,
-//   Dialog,
-//   DataTable,
-//   Banner,
-//   Snackbar,
-//   Tooltip,
-// } from "react-native-paper";
 import { Picker } from "@react-native-picker/picker";
 import * as DocumentPicker from "expo-document-picker";
 import React, { useRef, useState } from "react";
 import {
+  ActivityIndicator,
   Alert,
+  Modal,
   Platform,
   ScrollView,
   StyleSheet,
@@ -33,7 +20,6 @@ import {
 } from "react-native";
 import Hr from "../../utilities/hr";
 import "./cssStyle.css"; // This only works on we
-import { Link } from "expo-router";
 ///////////////////
 ///////
 export default function dashboard() {
@@ -48,7 +34,8 @@ export default function dashboard() {
   const [parseData, setParseData] = useState<any[]>([]);
   const [filename, setFilename] = useState<any | null>(null);
   const [disabled, setDisable] = useState(true);
-
+  const [disabled2, setDisable2] = useState(true);
+  const [showmodal, setShowModal] = useState(false);
   //////
   const [show, setShow] = useState({
     show1: true,
@@ -160,6 +147,34 @@ export default function dashboard() {
   ////////////////
   return (
     <>
+      {/* <PaperProvider>
+        <Portal>
+          <Modal
+            visible={showmodal}
+            onDismiss={() => setShowModal(false)}
+            contentContainerStyle={{
+              // height: "100%",
+              width: "100%",
+              backgroundColor: "green",
+              padding: 20,
+              margin: 20,
+              alignItems: "center",
+              justifyContent: "center",
+              borderRadius: 10,
+              borderColor: "lightgrey",
+            }}
+          >
+           
+            <ActivityIndicator
+              size="large"
+              color="green"
+              style={{ marginTop: 10, marginBottom: 10 }}
+            />
+
+            
+          </Modal>
+        </Portal>
+      </PaperProvider> */}
       <View
         style={{
           backgroundColor: "#fff",
@@ -242,6 +257,26 @@ export default function dashboard() {
       {/* header btn end */}
       <ScrollView ref={refView}>
         {/* scroll entire  */}
+        <Modal
+          transparent
+          visible={showmodal}
+          animationType="fade"
+          onDismiss={() => setShowModal(false)}
+        >
+          <View
+            style={{
+              backgroundColor: "rgba(248, 237, 237, 0.86)",
+              height: "100%",
+            }}
+          >
+            <View style={{ margin: "auto" }}>
+              <Text style={{ color: "green", fontSize: 20 }}>
+                Wait Loading...
+              </Text>
+              <ActivityIndicator size={"large"} color={"green"} />
+            </View>
+          </View>
+        </Modal>
         <View style={{ display: show.show1 ? "flex" : "none" }}>
           {/* */}
           <Card
@@ -261,7 +296,6 @@ export default function dashboard() {
                 marginTop: 1,
                 textAlign: "center",
               }}
-             
             >
               Upload csvMonthly Deductions
             </Text>
@@ -286,7 +320,6 @@ export default function dashboard() {
             </Text>
 
             <Hr />
-
             <View>
               <Text style={{ marginTop: 10 }}>
                 Maximum of 3 Years Reviewable
@@ -354,6 +387,7 @@ export default function dashboard() {
                 Total Document: {parseData.length} <Text>{}</Text>
               </Text>
               <Hr />
+
               <Text>{filename}</Text>
               <View style={{ flexDirection: "row", gap: 2 }}>
                 {Platform.OS === "web" ? (
@@ -386,7 +420,7 @@ export default function dashboard() {
                           },
                         ]}
                       >
-                        Fetch CSV
+                        Fetch csvDocs
                       </Text>
                     </TouchableOpacity>
                   </>
@@ -407,15 +441,20 @@ export default function dashboard() {
                         },
                       ]}
                     >
-                      Fetch CSV
+                      Fetch csvDocs
                     </Text>
                   </TouchableOpacity>
                 )}
 
                 <TouchableOpacity
                   style={style.touchable}
-                onPress={() => parseCSV('')}
-                  
+                  onPress={() => {
+                    parseCSV("");
+                    setDisable(true);
+                    setDisable2(true);
+                    // setFilename("");
+                    // setCsvText(null);
+                  }}
                 >
                   <Text
                     style={[
@@ -431,7 +470,14 @@ export default function dashboard() {
               </View>
               <TouchableOpacity
                 disabled={disabled}
-                onPress={() => parseCSV(csvText as string)}
+                onPress={() => {
+                  setShowModal(true);
+                  setTimeout(() => {
+                    setShowModal(false);
+                    parseCSV(csvText as string);
+                    setDisable2(false);
+                  }, 3000);
+                }}
                 style={[style.touchable, { width: "100%", marginTop: 5 }]}
               >
                 <Text
@@ -446,9 +492,9 @@ export default function dashboard() {
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
-                disabled={disabled}
+                disabled={disabled2}
                 onPress={() => Uploadcsv()}
-                style={[style.touchable, { width: "100%", marginTop: 5 }]}
+                style={[style.touchable, { width: "100%", marginTop: 5 ,}]}
               >
                 <Text
                   style={[
@@ -536,15 +582,24 @@ export default function dashboard() {
               View New Members
             </Text>
             <Hr color="grey" thickness={2} />
-            <TouchableOpacity style={{borderStyle: "solid", borderWidth: 1, padding: 5, borderColor: "grey", borderRadius: 5}}>
+            <TouchableOpacity
+              style={{
+                borderStyle: "solid",
+                borderWidth: 1,
+                padding: 5,
+                borderColor: "grey",
+                borderRadius: 5,
+              }}
+            >
               <Text
                 style={{
                   textAlign: "center",
                   color: "grey",
                 }}
-              >DownLoad List...</Text>
+              >
+                DownLoad List...
+              </Text>
             </TouchableOpacity>
-
           </Card>
         </View>
         <View style={{ display: show.show3 ? "flex" : "none" }}>
@@ -571,13 +626,23 @@ export default function dashboard() {
               Members' Loan Requests
             </Text>
             <Hr color="blue" thickness={2} />
-            <TouchableOpacity style={{borderStyle: "solid", borderWidth: 1, padding: 5, borderColor: "blue", borderRadius: 5}}>
+            <TouchableOpacity
+              style={{
+                borderStyle: "solid",
+                borderWidth: 1,
+                padding: 5,
+                borderColor: "blue",
+                borderRadius: 5,
+              }}
+            >
               <Text
                 style={{
                   textAlign: "center",
                   color: "blue",
                 }}
-              >DownLoad List...</Text>
+              >
+                DownLoad List...
+              </Text>
             </TouchableOpacity>
           </Card>
         </View>
@@ -594,24 +659,30 @@ export default function dashboard() {
           zIndex: 1000,
         }}
       >
-       <TouchableOpacity style={{backgroundColor: "lightgrey", padding: 5, 
-        borderRadius: 50, elevation: 5}}
-        onPress={()=>{
-          refView.current?.scrollTo({ y: 0, animated: true });
-        }}
+        <TouchableOpacity
+          style={{
+            backgroundColor: "lightgrey",
+            padding: 5,
+            borderRadius: 50,
+            elevation: 5,
+          }}
+          onPress={() => {
+            refView.current?.scrollTo({ y: 0, animated: true });
+          }}
         >
-         <MaterialCommunityIcons
-          name="arrow-up-bold"
-          //  refView.current?.scrollTo({ y: 0, animated: true })}};
-          size={40}
-          color={"grey"}
-        />
-       </TouchableOpacity>
+          <MaterialCommunityIcons
+            name="arrow-up-bold"
+            //  refView.current?.scrollTo({ y: 0, animated: true })}};
+            size={40}
+            color={"grey"}
+          />
+        </TouchableOpacity>
       </View>
     </>
   );
   ///////
   async function Uploadcsv() {
+    setShowModal(true)
     try {
       if (!csvText) {
         Alert.alert("No CSV data available to upload.");
@@ -621,7 +692,15 @@ export default function dashboard() {
       const results = Papa.parse(typeof csvText === "string" ? csvText : "", {
         header: true, // Converts to JSON using first row as keys
         skipEmptyLines: true,
+        complete: function (results) {
+          console.log("Parsed CSV data:", results.data); // Log the first row's name field
+        },
       });
+      ///////cause A delay
+
+      const delay = (m: any) =>
+        new Promise((resolve) => setTimeout(resolve, m));
+      await delay(3000);
 
       const response = await fetch(
         "https://morningstar-coop-backend.onrender.com/api/uploadcsv",
@@ -632,28 +711,24 @@ export default function dashboard() {
           },
           body: JSON.stringify({
             data: results.data,
-            // monthly,
-            // yearly,
+            monthly: parseData[1].month,
+            yearly: parseData[0].yr,
           }),
         }
       );
-      // Send to backend
-      // Uncomment and replace with your backend URL
-      // const response = await axios.post('https://your-backend/upload-csv', {
-      //   data: results.data,
-      // });
+
       const getRes = await response.json();
-      // alert(getRes);
-      // Alert.alert('Success', 'CSV uploaded successfully');
+
       if (getRes.success === true) {
         alert(getRes.message);
       } else {
         alert(getRes.message);
       }
     } catch (err) {
-      console.error(err);
-      // Alert.alert("Error", "Failed to upload CSV");
+      // console.error(err);
+      Alert.alert("Error", "Failed to upload CSV");
     } finally {
+      setShowModal(false)
     }
   }
 }
@@ -666,7 +741,7 @@ const style = StyleSheet.create({
     width: "50%",
     padding: 5,
     borderRadius: 8,
-    height: 40,
+    height: 45,
   },
   textStyle: {
     textAlign: "center",
