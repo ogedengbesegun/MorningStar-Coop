@@ -382,10 +382,10 @@ export default function LoanRequestForm() {
               )
             )}
             <Text style={styles.label}>
-              Total Savings (₦) <Text>{user?.name}</Text>{" "}
+              Total Savings (₦) <Text>{}</Text>{" "}
             </Text>
             <Text style={styles.label}>
-              Loan Balance (₦) <Text>{form.oracle}</Text>
+              Loan Balance (₦) <Text>{}</Text>
             </Text>
 
             <Text style={styles.label}>Loan Amount Requested (₦)</Text>

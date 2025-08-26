@@ -177,12 +177,12 @@ export default function indextabs() {
               >
                 Bank Transactions
               </Text>
-              <Text style={{ fontSize: 15, color: "dark" }}>
+              <Text style={{ fontSize: 17, color: "dark" }}>
                 Bank(Self_Payment) as at: {lastMonth.toLocaleUpperCase()},{" "}
                 {c_year}
                 {":"} {last_Bankdeduct}
               </Text>
-              <Text style={{ fontSize: 15, color: "green", paddingTop: 5 }}>
+              <Text style={{ fontSize: 17, color: "green", paddingTop: 5 }}>
                 Bank(Self_Payment) as at: {thisMonth.toLocaleUpperCase()},{" "}
                 {c_year}
                 {":"} {this_Bankdeduct}
