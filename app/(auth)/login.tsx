@@ -1,7 +1,7 @@
 import { API_URL as ENV_API_URL } from "@env";
 import { useNavigation } from "@react-navigation/native";
 import { Link, useRouter } from "expo-router"; // Ensure you have expo-router installed
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useUser } from "../../context/UserContext";
 // import CustomModal from "../../utilities/CustomModal";
 import { Ionicons } from "@expo/vector-icons";
@@ -95,7 +95,22 @@ export default function login() {
   const refServices = useRef(null);
 
   // ///////
+////useEffect
+useEffect(()=>{
+ ////Early Call on the backend url for quick response
+      backme();
+      async function backme() {
+        try {
+          await fetch(
+            "https://morningstar-coop-backend.onrender.com/api/login"
+          );
+        } catch (err) {
+          console.warn("Backend wake-up failed:", err);
+        }
+      }
 
+},[])
+///////////////////////
   return (
     <>
       {/* <ImageBackground

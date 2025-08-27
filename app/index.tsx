@@ -6,30 +6,21 @@ import React, { useEffect } from "react";
 import { Image, Text, View } from "react-native";
 import {
   GestureHandlerRootView,
-  TapGestureHandler,
   State,
+  TapGestureHandler,
 } from "react-native-gesture-handler";
 
 export default function index() {
   //for
   const myNavigation = useNavigation<any>();
   const router = useRouter();
-  ////Early Call on the backend url for quick response
-  backme();
-  async function backme() {
-    try {
-      await fetch("https://morningstar-coop-backend.onrender.com/api/login");
-    } catch (err) {
-      console.warn("Backend wake-up failed:", err);
-    }
-  }
+
   //////
   const effect = useEffect(() => {
-    const timer= setTimeout(() => {
+    const timer = setTimeout(() => {
       router.replace("/login");
     }, 4000);
     return () => clearTimeout(timer); // cleanup if component unmounts
-
   }, []);
 
   const onSingleTap = () => {
@@ -38,6 +29,17 @@ export default function index() {
       //can also say
       // myNavigation.navigate("(auth)");
       router.replace("/login");
+      ////Early Call on the backend url for quick response
+      backme();
+      async function backme() {
+        try {
+          await fetch(
+            "https://morningstar-coop-backend.onrender.com/api/login"
+          );
+        } catch (err) {
+          console.warn("Backend wake-up failed:", err);
+        }
+      }
     }, 400);
     return () => clearTimeout(timer); // cleanup if component unmounts
   };
@@ -98,14 +100,13 @@ export default function index() {
           </Text>
         </View>
 
-        <TapGestureHandler 
-        // onActivated={onSingleTap ?? effect}
-         onHandlerStateChange={({ nativeEvent }) => {
-    if (nativeEvent.state === State.ACTIVE) {
-      (onSingleTap ?? effect)?.();
-    }
-  }}
-        
+        <TapGestureHandler
+          // onActivated={onSingleTap ?? effect}
+          onHandlerStateChange={({ nativeEvent }) => {
+            if (nativeEvent.state === State.ACTIVE) {
+              (onSingleTap ?? effect)?.();
+            }
+          }}
         >
           {/* <Text >
           👆 Tap Me
