@@ -33,10 +33,12 @@ export default function LoanRequestForm() {
     ENV_API_URL || "https://morningstar-coop-backend.onrender.com";
   // const setMax = document.querySelector(".dateInput")?.setAttribute("max", `${c_year}-${c_month}-${c_date}`);
   const { user } = useUser();
+  const { user2 } = useUser();
   //////
+  /////////////////
   const [form, setForm] = useState({
     picture: "",
-    name: user?.name ?? "",
+    name: "",
     oracle: user?.oracle ?? "",
     phone: "",
     dob: new Date(),
@@ -46,6 +48,7 @@ export default function LoanRequestForm() {
     bankSort: "",
     bankNumber: "",
   });
+  /////////////////
   const [showDate, setShowDate] = useState(false);
   const refDate = useRef<HTMLInputElement | null>(null);
   const refButton = useRef<any>(null);
@@ -56,6 +59,11 @@ export default function LoanRequestForm() {
   const [isLetter2, setIsLetter2] = useState("");
   const [numValid, setNumValid] = useState("");
 
+  /////////////////
+  const [savings, setSavings] = useState(user2?.savings ?? "0");
+  const [loan, setLoan] = useState(user2?.loanBalance ?? "0");
+  const [softLoan, setSoftLoan] = useState(user2?.softloanBalance ?? "0");
+  ///////////////////
   const [isChecked, setIsChecked] = useState(false);
   const [imageUri, setImageUri] = useState(
     "https://media.istockphoto.com/id/1495088043/vector/user-profile-icon-avatar-or-person-icon-profile-picture-portrait-symbol-default-portrait.jpg?s=612x612&w=0&k=20&c=dhV2p1JwmloBTOaGAtaA3AW1KSnjsdMt7-U_3EZElZ0="
@@ -96,7 +104,7 @@ export default function LoanRequestForm() {
   };
 
   ///////////
-  const html = LoanRequestHtml(form, imageUri);
+  const html = LoanRequestHtml(form, imageUri, savings, loan, softLoan);
   ///////////////////////////////////////////////
   const handlePrint = async () => {
     if (
@@ -138,27 +146,27 @@ export default function LoanRequestForm() {
     }
   };
 
-  const handleSubmit = async () => {
-    if (
-      !form.name ||
-      !form.oracle ||
-      !form.phone ||
-      !form.amount ||
-      // isChecked === false ||
-      refButton.current === form.dob
-      // form.dob === new Date()
-      // !imageUri
-    ) {
-      return Platform.OS === "web"
-        ? alert("Please fill all required fields.")
-        : Alert.alert("Please fill all required fields.");
-    }
+  const sendWhatapp = async () => {
+    // if (
+    //   !form.name ||
+    //   !form.oracle ||
+    //   !form.phone ||
+    //   !form.amount ||
+    //   // isChecked === false ||
+    //   // refButton.current === form.dob
+    //   // form.dob === new Date()
+    //   !imageUri
+    // ) {
+    //   return Platform.OS === "web"
+    //     ? alert("Please fill all required fields.")
+    //     : Alert.alert("Please fill all required fields.");
+    // }
     // Alert.alert("Submitted", JSON.stringify(form, null, 2)) ??
     //   alert(`Submitted, ${JSON.stringify(form, null, 2)}`);
     // Submit to backend logic here
     Linking.openURL(
       `https://wa.me/2347036214834?text=${encodeURIComponent(
-        `please, Attached herewith is my Printed Membership Form`
+        `Attached herewith is my Printed Loan Application Form for speedy treatment`
         // JSON.stringify(form, null, 2)
       )}`
     );
@@ -310,9 +318,6 @@ export default function LoanRequestForm() {
                   handleChange("oracle", text);
                 }
               }}
-              onEndEditing={() => {
-                getSavingLoanBal();
-              }}
             />
 
             <Text style={styles.label}>Phone Number</Text>
@@ -382,12 +387,14 @@ export default function LoanRequestForm() {
               )
             )}
             <Text style={styles.label}>
-              Total Savings (₦) <Text>{}</Text>{" "}
+              Total Savings (₦) <Text>{user2?.savings}</Text>{" "}
             </Text>
             <Text style={styles.label}>
-              Loan Balance (₦) <Text>{}</Text>
+              Loan Balance (₦) <Text>{user2?.loanBalance}</Text>
             </Text>
-
+            <Text style={styles.label}>
+              Soft Loan Balance (₦) <Text>{user2?.softloanBalance}</Text>
+            </Text>
             <Text style={styles.label}>Loan Amount Requested (₦)</Text>
             <TextInput
               placeholder="Enter amount Required"
@@ -419,6 +426,7 @@ export default function LoanRequestForm() {
               }}
               onBlur={(e) => {
                 ///this  works for web dep
+
                 const entered = Number(e.nativeEvent.text);
                 if (!isNaN(entered) && entered < 50000) {
                   handleChange("amount", "");
@@ -557,12 +565,14 @@ export default function LoanRequestForm() {
                 style={{ backgroundColor: "grey", width: 150, padding: 7 }}
                 // title="Print"
                 onPress={() => {
-                  handlePrint();
-                  // if (Platform.OS === "web") {
-                  //   handlePrint();
-                  // } else {
-                  //   handlePrint();
-                  // }
+                  handlePrint()
+                    .then(() => {
+                      sendWhatapp();
+                    })
+                    .catch(() => {
+                      // Optionally handle error here
+                    });
+                  
                 }}
               >
                 <Text
@@ -580,8 +590,8 @@ export default function LoanRequestForm() {
               <TouchableOpacity
                 style={{ backgroundColor: "green", width: 150, padding: 7 }}
                 // disabled
-                onPress={() => {
-                  loanRequestform();
+                onPress={
+                  () => loanform()
                   // if (Platform.OS === "web") {
                   //   // print();
                   //   // await Print.printAsync()
@@ -589,7 +599,7 @@ export default function LoanRequestForm() {
                   // } else {
                   //   handleSubmit();
                   // }
-                }}
+                }
               >
                 <Text
                   style={{
@@ -638,58 +648,66 @@ export default function LoanRequestForm() {
     </>
   );
 
-  async function loanRequestform() {
+  async function loanform() {
     try {
-      const response = await fetch(`${API_URL}/api/submitLoanRequest`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: form.name,
-          oracle: form.oracle,
-          phone: form.phone,
-          dob: form.dob.toISOString().split("T")[0],
-          amount: form.amount,
-          bankName: form.bankName,
-          bankNumber: form.bankNumber,
-          bankSort: form.bankSort,
-          picture: imageUri,
-        }),
-      });
+      const API_URL2 = `http://localhost:10000`;
+      const response = await fetch(
+        `https://morningstar-coop-backend.onrender.com/api/submitLoanRequest`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: form.name,
+            oracle: form.oracle,
+            phone: form.phone,
+            doa: form.dob.toISOString().split("T")[0],
+            amount: form.amount,
+            bankName: form.bankName,
+            bankNumber: form.bankNumber,
+            bankSort: form.bankSort,
+            picture: imageUri,
+          }),
+        }
+      );
       const result = await response.json();
       if (result.success === true) {
-        Alert.alert(
-          "Success",
-          "Your membership form has been submitted successfully."
-        );
+        alert(result.message || `congratulations`);
+      } else {
+        alert(result.message || "sorry");
       }
     } catch (error) {
       // console.error("Error submitting form:", error);
-      Alert.alert(
-        "Error",
-        "There was an error submitting your form. Please try again later."
-      );
+      // Alert.alert(
+      //   "Error",
+      //   "There was an error submitting your form. Please try again later."
+      // ) ??
+      alert(`Error,
+        There was an error submitting your form. Please try again later.`);
     }
   }
   ////load  Total savings and loan balance///
-  async function getSavingLoanBal() {
-    const response = await fetch(`${API_URL}/api/savingLoanBal`, {
-      method: "POST",
-      headers: { "Content-Type": "aplication/json" },
-      body: JSON.stringify({
-        oracle: form.oracle.trim(),
-      }),
-    });
-    const result = await response.json();
-    if (result.success === true) {
-      alert(result.message);
-    } else {
-      setForm((prev) => ({ ...prev, oracle: "" }));
+  // async function getSavingLoanBal() {
+  //   const response = await fetch(`${API_URL}/api/savingLoanBal`, {
+  //     method: "POST",
+  //     headers: { "Content-Type": "aplication/json" },
+  //     body: JSON.stringify({
+  //       oracle: "180095",
+  //     }),
+  //   });
+  //   const result = await response.json();
+  //   if (result.success === true) {
+  //     setSavings(result.data.total_savings);
+  //     setLoan(result.data.total_loan_balance);
+  //     setSoftLoan(result.data.total_soft_loanBal);
+  //     alert(result.message);
+  //   } else {
+  //     setForm((prev) => ({ ...prev, oracle: "" }));
 
-      alert(result.message);
-    }
-  }
+  //     alert(result.message && form.oracle);
+  //   }
+  // }
 }
 
 ////////styling

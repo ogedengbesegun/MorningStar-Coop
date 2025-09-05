@@ -24,9 +24,12 @@ import {
 // import {  } from "react-native-gesture-handler";
 import { c_day, c_month, c_year } from "@/utilities/mydate";
 import "./cssStyle.css";
+// import { MaterialIcons } from "@expo/vector-icons";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+
 export default function MembershipForm() {
-   const API_URL =
-      ENV_API_URL || "https://morningstar-coop-backend.onrender.com";
+  const API_URL =
+    ENV_API_URL || "https://morningstar-coop-backend.onrender.com";
   // const setMax = document.querySelector(".dateInput")?.setAttribute("max", `${c_year}-${c_month}-${c_date}`);
 
   const [form, setForm] = useState({
@@ -131,9 +134,9 @@ export default function MembershipForm() {
       !form.phone ||
       !form.amount ||
       // isChecked === false ||
-      refButton.current === form.dob
+      refButton.current === form.dob ||
       // form.dob === new Date()
-      // !imageUri
+      !imageUri
     ) {
       return Platform.OS === "web"
         ? alert("Please fill all required fields.")
@@ -269,8 +272,17 @@ export default function MembershipForm() {
             placeholder="Enter phone number"
             style={styles.input}
             keyboardType="phone-pad"
+            maxLength={11}
             value={form.phone}
-            onChangeText={(text) => handleChange("phone", text)}
+            onChangeText={(text) => {
+              const OnlyNumber = /^[0-9]+$/;
+              const textTrue = OnlyNumber.test(text);
+              if (textTrue === true) {
+                handleChange("phone", text);
+              } else {
+                handleChange("phone", "");
+              }
+            }}
           />
 
           <Text style={styles.label}>Date of Birth</Text>
@@ -431,18 +443,30 @@ export default function MembershipForm() {
               style={{ backgroundColor: "green", width: 150, padding: 7 }}
               // disabled
               onPress={() => {
+                // joinusform();
+                // ///////
+                // setTimeout(() => {
+                //   handleSubmit();
+                // }, 2 * 1000);
                 joinusform()
-                // if (Platform.OS === "web") {
-                //   // print();
-                //   // await Print.printAsync()
-                //   handleSubmit();
-                // } else {
-                //   handleSubmit();
-                // }
+                  .then(() => {
+                    setTimeout(() => {
+                      handleSubmit();
+                    }, 2 * 1000);
+                  })
+                  .catch(() => {
+                    // Optionally handle error here
+                  });
               }}
             >
-              <Text style={{ textAlign: "center", 
-                color: "#fff" }}>Submit</Text>
+              <Text style={{ textAlign: "center", color: "#fff" }}>
+                Submit{" "}
+                <MaterialCommunityIcons
+                  name="whatsapp"
+                  size={20}
+                  color={"white"}
+                />
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -464,35 +488,41 @@ export default function MembershipForm() {
     </>
   );
 
-  async function joinusform(){
-    try{
-    const response=await fetch(`${API_URL}/api/submitjoinus`,
-     { method:"POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body:JSON.stringify({
-        name: form.name,
-        oracle: form.oracle,
-        phone: form.phone,
-        dob: form.dob.toISOString().split("T")[0],
-        amount: form.amount,
-        picture: imageUri,})
+  async function joinusform() {
+    try {
+      const response = await fetch(`${API_URL}/api/submitjoinus`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: form.name,
+          oracle: form.oracle,
+          phone: form.phone,
+          dob: form.dob.toISOString().split("T")[0],
+          amount: form.amount,
+          picture: imageUri,
+        }),
+      });
+      const result = await response.json();
+      if (result.success === true) {
+        alert(result.message);
+      } else {
+        alert(result.message);
       }
-    );
-    const result = await response.json();
-    if (result.success === true) {
-      Alert.alert("Success", "Your membership form has been submitted successfully.");
-    }
-    }catch (error) {
-    // console.error("Error submitting form:", error);
-    Alert.alert("Error", "There was an error submitting your form. Please try again later.");
+    } catch (error) {
+      alert(
+        `Error,
+        There was an error submitting your form. Please try again later.`
+      ) ??
+        // console.error("Error submitting form:", error);
+        Alert.alert(
+          "Error",
+          "There was an error submitting your form. Please try again later."
+        );
     }
   }
 }
-
-
-
 
 ////////styling
 const styles = StyleSheet.create({

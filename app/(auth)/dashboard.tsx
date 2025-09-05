@@ -2,6 +2,8 @@ import Papa from "papaparse";
 // import DocumentPicker from "react-native-document-picker";
 // import RNFS from "react-native-fs";
 ///////////////
+import { API_URL as ENV_API_URL } from "@env";
+
 import Card from "@/utilities/card";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { Picker } from "@react-native-picker/picker";
@@ -10,6 +12,7 @@ import React, { useRef, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
+  Image,
   Modal,
   Platform,
   ScrollView,
@@ -23,6 +26,8 @@ import "./cssStyle.css"; // This only works on we
 ///////////////////
 ///////
 export default function dashboard() {
+  const API_URL =
+    ENV_API_URL || "https://morningstar-coop-backend.onrender.com";
   const currentYear = new Date().getFullYear();
   ///////
   const inputRef = useRef(null);
@@ -36,6 +41,9 @@ export default function dashboard() {
   const [disabled, setDisable] = useState(true);
   const [disabled2, setDisable2] = useState(true);
   const [showmodal, setShowModal] = useState(false);
+  ////
+  const [newMD, setNewMD] = useState<any[]>([]);
+
   //////
   const [show, setShow] = useState({
     show1: true,
@@ -122,6 +130,7 @@ export default function dashboard() {
     { label: "Name", key: "name" },
     { label: "Oracle", key: "oracle" },
     { label: "Deduction", key: "deduction" },
+    { label: "Bank Deposit", key: "bank" },
     { label: "Savings", key: "savings" },
     { label: "Retirement", key: "retirement" },
     { label: "Loan Balance", key: "loan_balance" },
@@ -147,34 +156,6 @@ export default function dashboard() {
   ////////////////
   return (
     <>
-      {/* <PaperProvider>
-        <Portal>
-          <Modal
-            visible={showmodal}
-            onDismiss={() => setShowModal(false)}
-            contentContainerStyle={{
-              // height: "100%",
-              width: "100%",
-              backgroundColor: "green",
-              padding: 20,
-              margin: 20,
-              alignItems: "center",
-              justifyContent: "center",
-              borderRadius: 10,
-              borderColor: "lightgrey",
-            }}
-          >
-           
-            <ActivityIndicator
-              size="large"
-              color="green"
-              style={{ marginTop: 10, marginBottom: 10 }}
-            />
-
-            
-          </Modal>
-        </Portal>
-      </PaperProvider> */}
       <View
         style={{
           backgroundColor: "#fff",
@@ -581,17 +562,61 @@ export default function dashboard() {
                 padding: 5,
                 borderColor: "grey",
                 borderRadius: 5,
+                height: 45,
               }}
+              onPress={() => getNewMem()}
             >
               <Text
                 style={{
                   textAlign: "center",
                   color: "grey",
+                  marginTop: "auto",
+                  marginBottom: "auto",
+                  fontWeight: "bold",
                 }}
               >
                 DownLoad List...
               </Text>
             </TouchableOpacity>
+            {newMD.length > 0 ? (
+              [...newMD].reverse().map(
+                (
+                  Nmdata,
+                  index //rendering order reversed (last item shows first)
+                ) => (
+                  <Card
+                    key={index}
+                    style={{
+                      backgroundColor: "#ebebe0",
+                      padding: 10,
+                      marginVertical: 5,
+                    }}
+                  >
+                    <View
+                      style={{ flexDirection: "row", alignItems: "center" }}
+                    >
+                      <Image
+                        source={{ uri: Nmdata.picture }} // ✅ no `.data`
+                        resizeMode="cover"
+                        style={{ height: 50, width: 50, borderRadius: 25 }}
+                      />
+                      <View style={{ marginLeft: 15,}}>
+                        <Text>Name: {Nmdata.name}</Text>
+                        <Text>Oracle: {Nmdata.oracle}</Text>
+                        <Text>Phone: {Nmdata.phone}</Text>
+                        <Text>Monthly Contribution: {Nmdata.amount}</Text>
+                        <Text>Date: {Nmdata.createdAt}</Text>
+                      </View>
+                    </View>
+                    {/* <Text style={{ marginTop: 5 }}>Blessings</Text> */}
+                  </Card>
+                )
+              )
+            ) : (
+              <Text style={{ textAlign: "center", color: "red" }}>
+                No members Downloaded yet
+              </Text>
+            )}
           </Card>
         </View>
         <View style={{ display: show.show3 ? "flex" : "none" }}>
@@ -625,12 +650,16 @@ export default function dashboard() {
                 padding: 5,
                 borderColor: "blue",
                 borderRadius: 5,
+                height: 45,
               }}
             >
               <Text
                 style={{
                   textAlign: "center",
                   color: "blue",
+                  marginTop: "auto",
+                  marginBottom: "auto",
+                  fontWeight: "bold",
                 }}
               >
                 DownLoad List...
@@ -673,6 +702,12 @@ export default function dashboard() {
     </>
   );
   ///////
+
+  ///delay
+  async function delay(m: any) {
+    new Promise((resolve) => setTimeout(resolve, m));
+  }
+  //////////////////await to delay loading from server
   async function Uploadcsv() {
     setShowModal(true);
     try {
@@ -690,24 +725,21 @@ export default function dashboard() {
       });
       ///////cause A delay
 
-      const delay = (m: any) =>
-        new Promise((resolve) => setTimeout(resolve, m));
+      // const delay = (m: any) =>
+      //   new Promise((resolve) => setTimeout(resolve, m));
       await delay(3000);
 
-      const response = await fetch(
-        "https://morningstar-coop-backend.onrender.com/api/uploadcsv",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            data: results.data,
-            monthly: parseData[1].month,
-            yearly: parseData[0].yr,
-          }),
-        }
-      );
+      const response = await fetch(`${API_URL}/api/uploadcsv`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          data: results.data,
+          monthly: parseData[1].month,
+          yearly: parseData[0].yr,
+        }),
+      });
 
       const getRes = await response.json();
 
@@ -717,8 +749,66 @@ export default function dashboard() {
         alert(getRes.message);
       }
     } catch (err) {
+      if (Platform.OS === "web") {
+        alert("Error,Failed to upload CSV");
+      }
       // console.error(err);
-      Alert.alert("Error", "Failed to upload CSV");
+      else {
+        Alert.alert("Error", "Failed to upload CSV");
+      }
+    } finally {
+      setShowModal(false);
+    }
+  } //////////end od async
+  ////new members download
+  // async function getNewMem() {
+  //   try {
+  //     const getNmem = await fetch(
+  //       "https://morningstar-coop-backend.onrender.com/api/ViewNewMember",
+  //       {
+  //         method: "GET", // must match backend
+  //         headers: { "Content-Type": "application/json" },
+  //       }
+  //     );
+
+  //     const result = await getNmem.json();
+
+  //     if (result.success) {
+  //       setNewMD(result.data); // update state with members array
+  //     } else {
+  //       alert(result.message || "No members found");
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //     alert("Failed to fetch, please try again");
+  //   }
+  // }
+
+  async function getNewMem() {
+    setShowModal(true);
+
+    try {
+      const response = await fetch(`${API_URL}/api/ViewNewMember`);
+
+      // const delay = (ms: number) =>
+      //   new Promise((resolve) => setTimeout(resolve, ms));
+      await delay(2 * 1000);
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+
+      if (result.success && Array.isArray(result.data)) {
+        setNewMD(result.data); // update state with array of members
+        // alert(result.message);
+      } else {
+        alert(result.message);
+      }
+    } catch (error) {
+      console.error("Error fetching members:", error);
+      alert("Failed to fetch, please try again");
     } finally {
       setShowModal(false);
     }

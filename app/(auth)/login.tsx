@@ -794,6 +794,7 @@ useEffect(()=>{
             response.user.full_name.split(" ")[0],
           oracle: response.user.oracle,
           password: response.user.password, // Store the password securely if needed
+       
         });
 
         const timer = setTimeout(() => {

@@ -53,7 +53,7 @@ export const MembershipHtml = (form, imageUri) => {
 
 
 
-export const LoanRequestHtml = (form, imageUri) => {
+export const LoanRequestHtml = (form, imageUri, savings,loan,softLoan) => {
   return `
     <html>
       <body style="font-family: Arial; text-align: center; margin:20px;
@@ -75,9 +75,8 @@ export const LoanRequestHtml = (form, imageUri) => {
     }
 
             <h4 >Full Name:
-            <span style="color:black;
-            border-width: 1px; border-color: grey; border-style: solid;"
-            >${form.name}</span></h4>
+            <h3><span style="color:black; text-transform: capitalize;"
+            >${form.name}</span></h3></h4>
 
             <h4>Oracle Number: <span style="font-size:20px;">${form.oracle}</span></h4>
             <h4>Phone Number: <span style="font-size:20px;">${form.phone}</span></h4>
@@ -86,6 +85,10 @@ export const LoanRequestHtml = (form, imageUri) => {
       month: "long",
       day: "numeric",
     })}</span></h4>
+            <h4>Savings (₦): <span style="font-size:20px;">${savings}</span></h4>
+            <h4>Loan Balance (₦): <span style="font-size:20px;">${loan}</span></h4>
+            <h4>Soft Loan Balance(₦): <span style="font-size:20px;">${softLoan}</span></h4>
+
             <h4>Loan Amount Request (₦): <span style="font-size:20px;">${form.amount}</span></h4>
             <h4>Bank Name / Branch Name: <span style="font-size:20px;">${form.bankName}</span></h4>
             <h4>Bank Account Number: <span style="font-size:20px;">${form.bankNumber}</span></h4>

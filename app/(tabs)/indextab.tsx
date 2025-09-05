@@ -50,7 +50,8 @@ export default function indextabs() {
   ///////
   const [menuModal, setMenuModal] = useState(false);
   const [confirmModal, setConfirmModal] = useState(false);
-  const { user } = useUser();
+  const { user } = useUser(); ////using user
+  const { setUser2 } = useUser(); ///setUser Value for usage again
   /////
   const nav = useNavigation<any>();
   const router = useRouter();
@@ -584,44 +585,44 @@ export default function indextabs() {
       const response = await financialData.json();
       /////////////////////////////////////////////
 
-      const lastDeduct = response?.acct.deduction;
+      const lastDeduct = response?.acct.deduction ;
       const newDeduct = response?.acct2.deduction
-        ? response.acct2.deduction
+        ? response.acct2.deduction ?? "0"
         : response.acct2 ?? "0";
 
       const lastBank = response?.acct.bank ?? "0";
       const thisBank =
         response?.acct2.bank > "0"
-          ? response?.acct.bank
+          ? response?.acct.bank ?? "0"
           : response?.acct2.bank ?? "0";
 
       const savings =
         response?.acct2.savings > "0"
-          ? response?.acct2.savings
+          ? response?.acct2.savings ?? "0"
           : response?.acct.savings ?? "0";
 
       //////
       const retirement =
         response?.acct2.retirement > "0"
-          ? response?.acct2.retirement
+          ? response?.acct2.retirement ?? "0"
           : response?.acct.retirement ?? "0";
 
       //////
       const loan_balance =
         response?.acct2.loan_balance > "0"
-          ? response?.acct2.loan_balance
+          ? response?.acct2.loan_balance ?? "0"
           : response?.acct.loan_balance ?? "0";
       ///////////
 
       const interest_balance =
         response?.acct2.interest_bal > "0"
-          ? response?.acct2.interest_bal
-          : response?.acct.interest_bal;
+          ? response?.acct2.interest_bal ?? "0"
+          : response?.acct.interest_bal ?? "0";
 
       const soft_loan =
         response?.acct2.soft_loanBal > "0"
-          ? response?.acct2.soft_loanBal
-          : response?.acct.soft_loanBal;
+          ? response?.acct2.soft_loanBal ?? "0"
+          : response?.acct.soft_loanBal ?? "0";
 
       // console.log(soft_loan);
 
@@ -635,7 +636,6 @@ export default function indextabs() {
             currency: "NGN",
           })
         );
-
         ///////
         setThis_deduct(
           Number(newDeduct).toLocaleString("en-NG", {
@@ -664,11 +664,12 @@ export default function indextabs() {
             currency: "NGN",
           })
         );
+
         setRetirement(
           Number(retirement).toLocaleString("en-NG", {
             style: "currency",
             currency: "NGN",
-          })
+          }) 
         );
         setLoanBalance(
           Number(loan_balance).toLocaleString("en-NG", {
@@ -690,8 +691,18 @@ export default function indextabs() {
           Number(interest_balance).toLocaleString("en-NG", {
             style: "currency",
             currency: "NGN",
-          })
+          }) 
         );
+
+        //////////////////
+        setUser2({
+          savings: savings,
+          loanBalance: loan_balance,
+          softloanBalance: soft_loan
+        }); // savings
+        // setUser2(softloanBalance); ///for usage
+        // setUser2(loanBalance); // loan_balance
+        /////////////////////////////////////
       } else {
         const Tonum = Number("0").toLocaleString("en-NG", {
           style: "currency",

@@ -2,13 +2,14 @@
 
 
 
+// import mongoose from "mongoose";
 
 import bcrypt from 'bcrypt';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import express from 'express';
 import { MongoClient } from 'mongodb';
-
+// import joinus from '../models/joinus';
 dotenv.config();
 
 const app = express();
@@ -25,6 +26,8 @@ await client.connect().then(() => {
 
   const db = client.db(process.env.DB_MsCoop);
   const userslog = db.collection('userslog');
+  // const joinus = db.collection('joinus');
+
   // const msc_2024 = db.collection('msc_2024');
   // const msc_2025 = db.collection('msc_2025');
   // const msc_2026 = db.collection('msc_2026');
@@ -37,9 +40,35 @@ await client.connect().then(() => {
   const msc_monthly_2026 = db.collection('msc_monthly_2026');
   const msc_monthly_2027 = db.collection('msc_monthly_2027');
 
+  const ddate = new Date();
+  const c_year = ddate.getFullYear();
+  const month = ddate.getMonth() + 1;
+  const monthArray = [
+    "january", "february", "march", "april",
+    "may", "june", "july", "august",
+    "september", "october", "november", "december"
+  ];
 
+  let c_month;
 
-
+  // match numeric month to month name
+  for (let i = 0; i < monthArray.length; i++) {
+    if (i + 1 === month) {
+      c_month = monthArray[i - 1]; ///this will show a month less 1
+      break;
+    }
+  }
+  ///////////mongoose
+  // const joinusSchema = new mongoose.Schema(
+  //   {
+  //     name: { type: String, required: true },
+  //     oracle: { type: String, required: true },
+  //     phone: { type: String, required: true },
+  //     amount: { type: String, required: true },
+  //     picture: { type: String, required: true },
+  //   },
+  //   { timestamps: true }
+  // );
   /////////////////////////
   app.post('/api/signup', async (req, res) => {
     const { fullname, oracleNum, pword, cpword } = req.body;
@@ -251,6 +280,14 @@ await client.connect().then(() => {
       })
 
     };
+    // const  dataquery= {
+    //   oracle: oracle,
+    //   month:month,
+    //   yr:yr,
+    // }
+    // oracle 
+    // month
+    // year
 
     res.status(200).json({
       success: true, message: "Password is Successfully Changed"
@@ -321,48 +358,183 @@ await client.connect().then(() => {
   /////
 
   ///////////
+
   app.post('/api/submitjoinus', async (req, res) => {
-    const { name, oracle, phone, dob, amount, picture } = req.body
-    if (!name || !oracle || !phone || !dob || !amount || !picture) {
-      return res.status(400).json({ success: false, message: "Please fill in all fields" });
-    }
-    const joinus = await db.collection('joinus').insertOne({
-      name: capitalized(name.trim()),
-      oracle: oracle.trim(),
-      phone: phone.trim(),
-      dob: dob.trim(),
-      amount: amount.trim(),
-      picture: picture.trim(),
-      status: 'pending',
-      createdAt: new Date(),
-    });
-    res.json({
-      success: true,
-      message: `Thank you ${name?.split(' ')[0]}, Your request is being processed. We will get back to you soon.`,
-      id: joinus.insertedId
-    })
-  });
-  ////////
-  app.post('/api/savingLoanBal', async (req, res) => {
-    const { oracle } = req.body;
-    // if(!oracle || oracle.length<5){
-    //   return res.status(400).json({success:false,message:"Valid Oracle Number is required"})
-    // }
-    const findOracle = await msc_monthly_2025.findOne({ oracle: oracle, month: c_month, yr: c_year })
-    if (!findOracle) {
-      return res.status(404).json({ success: false, message: "No record found for this Oracle Number" })
-    }
-    res.status(200).json({
-      success: true,
-      message: `Record fetched Successfully for Oracle Number ${oracle}`,
-      data: {
-        total_savings: findOracle.savings ?? '0',
-        total_loan_balance: findOracle.loan_balance ?? '0',
-        total_soft_loanBal: findOracle.soft_loanBal ?? '0',
-        total_interest_bal: findOracle.interest_bal ?? '0',
+    try {
+      const { name, oracle, phone, dob, amount, picture } = req.body;
+
+      // 1. Validate required fields
+      if (!name || !oracle || !phone || !dob || !amount || !picture) {
+        return res.status(400).json({
+          success: false,
+          message: "Please fill in all fields"
+        });
       }
-    })
-  })
+
+      // 2. Check if already in userslog (official member)
+      const aMember = await db.collection("userslog").findOne({ oracle: oracle.trim() });
+      if (aMember) {
+        return res.status(400).json({
+          success: false,
+          message: "Sorry, You are already a Member of this Cooperative Society"
+        });
+      }
+
+      // 3. Check if request already submitted
+      const alreadyMem = await db.collection("joinus").findOne({ oracle: oracle.trim() });
+      if (alreadyMem) {
+        return res.status(400).json({
+          success: false,
+          message: `Thanks ${alreadyMem.name}, you already sent in your membership request. We will get back to you soon`
+        });
+      }
+
+      // 4. Insert new request
+      const newjoinus = await db.collection("joinus").insertOne({
+        name: capitalized(name.trim()),
+        oracle: oracle.trim(),
+        phone: phone.trim(),
+        dob: dob.trim(),
+        amount: amount.trim(),
+        picture: picture.trim(),
+        status: "pending",
+        createdAt: new Date(),
+      });
+
+      // 5. Success response
+      res.status(201).json({
+        success: true,
+        message: `Thank you ${name?.split(" ")[0]}, Your request is being processed. We will get back to you soon.`,
+        id: newjoinus.insertedId
+      });
+    } catch (error) {
+      console.error("Error in /api/submitjoinus:", error);
+      res.status(500).json({
+        success: false,
+        message: "Server error",
+        error: error.message
+      });
+    }
+  });
+
+  ////////
+  app.get('/api/ViewNewMember', async (req, res) => {
+    try {
+      // use db.collection directly instead of mongoose
+      const members = await db.collection("joinus").find({}).toArray();
+
+      if (!members || members.length === 0) {
+        return res.status(404).json({
+          success: false,
+          message: "No members found"
+        });
+      }
+
+      res.status(200).json({
+        success: true,
+        data: members,  // send full array of documents
+        message: "Members fetched successfully"
+      });
+
+    } catch (error) {
+      console.error("Error fetching members:", error);
+      res.status(500).json({
+        success: false,
+        message: "Server error",
+        error: error.message,
+      });
+    }
+  });
+
+  //////////loan request
+  app.post('/api/submitLoanRequest', async (req, res) => {
+    try {
+      const { name, oracle, phone, doa, amount,
+        picture, bankName, bankNumber, bankSort } = req.body;
+
+      // 1. Validate required fields
+      if (!name || !oracle || !phone || !doa || !amount || !picture
+        || !bankName || !bankNumber || !bankSort
+      ) {
+        return res.status(400).json({
+          success: false,
+          message: "Please fill in all fields"
+        });
+      }
+
+      // 2. Check if already in loanRequest (official member)
+      const aMember = await db.collection("loanRequest").findOne({ oracle: oracle.trim() });
+      if (aMember) {
+        return res.status(400).json({
+          success: false,
+          message: "Sorry, You have already requested for a loan"
+        });
+      }
+
+      // // 3. Check if request already submitted
+      // const alreadyMem = await db.collection("joinus").findOne({ oracle: oracle.trim() });
+      // if (alreadyMem) {
+      //   return res.status(400).json({
+      //     success: false,
+      //     message: `Thanks ${alreadyMem.name}, you already sent in your membership request. We will get back to you soon`
+      //   });
+      // }
+
+      // 4. Insert new request
+      const newloanRequest = await db.collection("loanRequest").insertOne({
+        name: capitalized(name.trim()),
+        oracle: oracle.trim(),
+        phone: phone.trim(),
+        application_date: doa.trim(),
+        bankName: bankName.trim(),
+        bankNumber: bankNumber.trim(),
+        bankSort: bankSort.trim(),
+        amount: amount.trim(),
+        picture: picture.trim(),
+        status: "pending",
+        createdAt: new Date(),
+      });
+
+      // 5. Success response
+      res.status(201).json({
+        success: true,
+        message: `Thank you ${name?.split(" ")[0]}, Your loan request is being processed. We will get back to you soon.`,
+        id: newloanRequest.insertedId
+      });
+    } catch (error) {
+      console.error("Error in /api/loanRequest:", error);
+      res.status(500).json({
+        success: false,
+        message: "Server error",
+        error: error.message
+      });
+    }
+  });
+
+  ////////
+  // app.post('/api/savingLoanBal', async (req, res) => {
+  //   const { oracle } = req.body;
+  //   // if(!oracle || oracle.length<5){
+  //   //   return res.status(400).json({success:false,message:"Valid Oracle Number is required"})
+  //   // }
+  //   const findOracle = await msc_monthly_2025.findOne({
+  //     oracle: oracle,
+  //     month: c_month.toString(), yr: c_year.toString()
+  //   })
+  //   if (!findOracle) {
+  //     return res.status(404).json({ success: false, message: `record for ${c_month}, ${c_year} NOT found for this Oracle Number ${oracle} ` })
+  //   }
+  //   res.status(200).json({
+  //     success: true,
+  //     message: `Record fetched Successfully for Oracle Number ${oracle}`,
+  //     data: {
+  //       total_savings: findOracle.savings ?? '0',
+  //       total_loan_balance: findOracle.loan_balance ?? '0',
+  //       total_soft_loanBal: findOracle.soft_loanBal ?? '0',
+  //       total_interest_bal: findOracle.interest_bal ?? '0',
+  //     }
+  //   })
+  // })
 
   app.listen(PORT, () => {
     console.log(`🚀 Server running at ${PORT}`);
