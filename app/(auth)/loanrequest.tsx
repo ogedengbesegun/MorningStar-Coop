@@ -567,12 +567,16 @@ export default function LoanRequestForm() {
                 onPress={() => {
                   handlePrint()
                     .then(() => {
-                      sendWhatapp();
+                  
+                    setTimeout(() => {
+                        sendWhatapp();
+                      }, 5000);
+                    
+                      
                     })
                     .catch(() => {
                       // Optionally handle error here
                     });
-                  
                 }}
               >
                 <Text

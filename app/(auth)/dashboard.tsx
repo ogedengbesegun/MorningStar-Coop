@@ -42,8 +42,11 @@ export default function dashboard() {
   const [disabled2, setDisable2] = useState(true);
   const [showmodal, setShowModal] = useState(false);
   ////
+  ////for New Members
   const [newMD, setNewMD] = useState<any[]>([]);
-
+  const [newMemMsg, setNewMemMsg] = useState("");
+  //////for Members Loan Requesst
+  const [memLoan, setMemLoan] = useState<any[]>([]);
   //////
   const [show, setShow] = useState({
     show1: true,
@@ -578,6 +581,11 @@ export default function dashboard() {
                 DownLoad List...
               </Text>
             </TouchableOpacity>
+            {/* to display feadback message from the server */}
+            <Text style={{ textAlign: "center", color: "green" }}>
+              {newMemMsg}
+            </Text>
+
             {newMD.length > 0 ? (
               [...newMD].reverse().map(
                 (
@@ -592,6 +600,7 @@ export default function dashboard() {
                       marginVertical: 5,
                     }}
                   >
+                    {/* <Text>{Nmdata.status}</Text> */}
                     <View
                       style={{ flexDirection: "row", alignItems: "center" }}
                     >
@@ -600,12 +609,22 @@ export default function dashboard() {
                         resizeMode="cover"
                         style={{ height: 50, width: 50, borderRadius: 25 }}
                       />
-                      <View style={{ marginLeft: 15,}}>
-                        <Text>Name: {Nmdata.name}</Text>
+                      <View style={{ marginLeft: 15 }}>
+                        <Text style={{ textAlign: "left", width: 200 }}>
+                          Name: {Nmdata.name}
+                        </Text>
                         <Text>Oracle: {Nmdata.oracle}</Text>
                         <Text>Phone: {Nmdata.phone}</Text>
-                        <Text>Monthly Contribution: {Nmdata.amount}</Text>
-                        <Text>Date: {Nmdata.createdAt}</Text>
+                        <Text style={{ textAlign: "left", width: 200 }}>
+                          Monthly Contribution:{" "}
+                          {Number(Nmdata.amount).toLocaleString("en", {
+                            style: "currency",
+                            currency: "NGN",
+                          })}
+                        </Text>
+                        <Text style={{ color: "#292902ff" }}>
+                          Date: {Nmdata.createdAt}
+                        </Text>
                       </View>
                     </View>
                     {/* <Text style={{ marginTop: 5 }}>Blessings</Text> */}
@@ -652,6 +671,7 @@ export default function dashboard() {
                 borderRadius: 5,
                 height: 45,
               }}
+              onPress={() => getMemLoan()}
             >
               <Text
                 style={{
@@ -662,9 +682,64 @@ export default function dashboard() {
                   fontWeight: "bold",
                 }}
               >
-                DownLoad List...
+                DownLoad Loan List...
               </Text>
             </TouchableOpacity>
+            {memLoan.length > 0 ? (
+              [...memLoan].reverse().map(
+                (
+                  MemLdata,
+                  index //rendering order reversed (last item shows first)
+                ) => (
+                  <Card
+                    key={index}
+                    style={{
+                      backgroundColor: "#b3e0ff",
+                      padding: 10,
+                      marginVertical: 5,
+                    }}
+                  >
+                    <View
+                      style={{ flexDirection: "row", alignItems: "center" }}
+                    >
+                      <Image
+                        source={{ uri: MemLdata.picture }} // ✅ no `.data`
+                        resizeMode="cover"
+                        style={{ height: 50, width: 50, borderRadius: 25 }}
+                      />
+                      <View style={{ marginLeft: 15 }}>
+                        <Text style={{ textAlign: "justify", width: 200 }}>
+                          Name: {MemLdata.name}
+                        </Text>
+                        <Text>Oracle: {MemLdata.oracle}</Text>
+                        <Text>Phone: {MemLdata.phone}</Text>
+                        <Text style={{ textAlign: "justify", width: 200 }}>
+                          Bank Name: {MemLdata.bankName}
+                        </Text>
+                        <Text>Bank Account: {MemLdata.bankNumber}</Text>
+                        <Text>Bank Sort Code: {MemLdata.bankSort}</Text>
+                        <Text>
+                          Loan Request:{" "}
+                          {Number(MemLdata.amount).toLocaleString("en", {
+                            style: "currency",
+                            currency: "NGN",
+                          })}
+                        </Text>
+                        <Text style={{ color: "blue", textAlign: "justify" }}>
+                          Application Date: {MemLdata.application_date}
+                        </Text>
+                        <Text>Date: {MemLdata.createdAt}</Text>
+                      </View>
+                    </View>
+                    {/* <Text style={{ marginTop: 5 }}>Blessings</Text> */}
+                  </Card>
+                )
+              )
+            ) : (
+              <Text style={{ textAlign: "center", color: "red" }}>
+                No members' Loan Request Downloaded yet
+              </Text>
+            )}
           </Card>
         </View>
       </ScrollView>
@@ -788,6 +863,8 @@ export default function dashboard() {
     setShowModal(true);
 
     try {
+      // const API_URL2 = "http://localhost:10000";///localtesting
+
       const response = await fetch(`${API_URL}/api/ViewNewMember`);
 
       // const delay = (ms: number) =>
@@ -803,12 +880,46 @@ export default function dashboard() {
       if (result.success && Array.isArray(result.data)) {
         setNewMD(result.data); // update state with array of members
         // alert(result.message);
+        setNewMemMsg(result.message);
       } else {
+        setNewMemMsg(result.message);
         alert(result.message);
       }
     } catch (error) {
       console.error("Error fetching members:", error);
       alert("Failed to fetch, please try again");
+    } finally {
+      setShowModal(false);
+    }
+  }
+  //////for membersLoan function
+  async function getMemLoan() {
+    setShowModal(true);
+
+    try {
+      // const API_URL2 = "http://localhost:10000";//local testing
+
+      const response = await fetch(`${API_URL}/api/getMemberLoan`);
+
+      // const delay = (ms: number) =>s
+      //   new Promise((resolve) => setTimeout(resolve, ms));
+      await delay(2 * 1000);
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+
+      if (result.success && Array.isArray(result.data)) {
+        setMemLoan(result.data); // update state with array of members
+        // alert(result.message);
+      } else {
+        alert(result.message);
+      }
+    } catch (error) {
+      console.error("Error fetching members:", error);
+      alert(`Failed to fetch, please try again: ${error}`);
     } finally {
       setShowModal(false);
     }
