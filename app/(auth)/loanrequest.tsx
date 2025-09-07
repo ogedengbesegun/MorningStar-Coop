@@ -24,6 +24,7 @@ import Hr from "../../utilities/hr";
 import { LoanRequestHtml } from "../../utilities/html";
 // import {  } from "react-native-gesture-handler";
 import { c_day, c_month, c_year } from "@/utilities/mydate";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { useUser } from "../../context/UserContext";
 import "./cssStyle.css";
 
@@ -147,20 +148,21 @@ export default function LoanRequestForm() {
   };
 
   const sendWhatapp = async () => {
-    // if (
-    //   !form.name ||
-    //   !form.oracle ||
-    //   !form.phone ||
-    //   !form.amount ||
-    //   // isChecked === false ||
-    //   // refButton.current === form.dob
-    //   // form.dob === new Date()
-    //   !imageUri
-    // ) {
-    //   return Platform.OS === "web"
-    //     ? alert("Please fill all required fields.")
-    //     : Alert.alert("Please fill all required fields.");
-    // }
+    if (
+      !form.name ||
+      !form.oracle ||
+      !form.phone ||
+      !form.amount ||
+      !form.bankName ||
+      !form.bankNumber ||
+      !form.bankSort ||
+      isChecked === false ||
+      !imageUri
+    ) {
+      return Platform.OS === "web"
+        ? alert("Please fill all required fields.")
+        : Alert.alert("Please fill all required fields.");
+    }
     // Alert.alert("Submitted", JSON.stringify(form, null, 2)) ??
     //   alert(`Submitted, ${JSON.stringify(form, null, 2)}`);
     // Submit to backend logic here
@@ -567,12 +569,9 @@ export default function LoanRequestForm() {
                 onPress={() => {
                   handlePrint()
                     .then(() => {
-                  
-                    setTimeout(() => {
+                      setTimeout(() => {
                         sendWhatapp();
                       }, 5000);
-                    
-                      
                     })
                     .catch(() => {
                       // Optionally handle error here
@@ -594,16 +593,17 @@ export default function LoanRequestForm() {
               <TouchableOpacity
                 style={{ backgroundColor: "green", width: 150, padding: 7 }}
                 // disabled
-                onPress={
-                  () => loanform()
-                  // if (Platform.OS === "web") {
-                  //   // print();
-                  //   // await Print.printAsync()
-                  //   handleSubmit();
-                  // } else {
-                  //   handleSubmit();
-                  // }
-                }
+                onPress={() => {
+                  loanform()
+                    .then(() => {
+                      setTimeout(() => {
+                        sendWhatapp();
+                      }, 3000);
+                    })
+                    .catch(() => {
+                      // Optionally handle error here
+                    });
+                }}
               >
                 <Text
                   style={{
@@ -613,7 +613,12 @@ export default function LoanRequestForm() {
                     marginBottom: "auto",
                   }}
                 >
-                  Submit Application Form
+                  Submit Application Form{" "}
+                  <MaterialCommunityIcons
+                    name="whatsapp"
+                    size={20}
+                    color={"white"}
+                  />
                 </Text>
               </TouchableOpacity>
             </View>
@@ -624,12 +629,12 @@ export default function LoanRequestForm() {
                 color: "grey",
                 fontStyle: "italic",
                 margin: 5,
-                fontSize: 12,
+                fontSize: 14,
               }}
             >
-              Click Print to have a copy on your device and Send the pdf copy to
-              the whatsapp number of the Executive in-charge of Loans for speedy
-              treatment.{" "}
+              Click Print to have a copy on your device and Click Submit then,
+              attach the pdf copy to the whatsapp number of the Executive
+              in-charge of Loans for speedy treatment.{" "}
             </Text>
           </View>
         </ScrollView>
@@ -677,9 +682,9 @@ export default function LoanRequestForm() {
       );
       const result = await response.json();
       if (result.success === true) {
-        alert(result.message || `congratulations`);
+        alert(result.message);
       } else {
-        alert(result.message || "sorry");
+        alert(result.message);
       }
     } catch (error) {
       // console.error("Error submitting form:", error);
