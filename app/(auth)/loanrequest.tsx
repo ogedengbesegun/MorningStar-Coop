@@ -567,15 +567,7 @@ export default function LoanRequestForm() {
                 style={{ backgroundColor: "grey", width: 150, padding: 7 }}
                 // title="Print"
                 onPress={() => {
-                  handlePrint()
-                    .then(() => {
-                      setTimeout(() => {
-                        sendWhatapp();
-                      }, 5000);
-                    })
-                    .catch(() => {
-                      // Optionally handle error here
-                    });
+                  handlePrint();
                 }}
               >
                 <Text
@@ -594,15 +586,7 @@ export default function LoanRequestForm() {
                 style={{ backgroundColor: "green", width: 150, padding: 7 }}
                 // disabled
                 onPress={() => {
-                  loanform()
-                    .then(() => {
-                      setTimeout(() => {
-                        sendWhatapp();
-                      }, 3000);
-                    })
-                    .catch(() => {
-                      // Optionally handle error here
-                    });
+                  loanform();
                 }}
               >
                 <Text
@@ -683,6 +667,8 @@ export default function LoanRequestForm() {
       const result = await response.json();
       if (result.success === true) {
         alert(result.message);
+        ///if the result is true send whatsapp msg
+        sendWhatapp();
       } else {
         alert(result.message);
       }
