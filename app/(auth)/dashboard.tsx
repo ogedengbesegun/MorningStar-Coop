@@ -718,17 +718,57 @@ export default function dashboard() {
                         </Text>
                         <Text>Bank Account: {MemLdata.bankNumber}</Text>
                         <Text>Bank Sort Code: {MemLdata.bankSort}</Text>
-                        <Text>
+                        <Text style={{ textAlign: "left", width: 200 }}>
                           Loan Request:{" "}
                           {Number(MemLdata.amount).toLocaleString("en", {
                             style: "currency",
                             currency: "NGN",
                           })}
                         </Text>
+                        <Text style={{ textAlign: "left", width: 200 }}>
+                          Home Address: {MemLdata.homeAdd}
+                        </Text>
+                        <Text style={{ textAlign: "left", width: 200 }}>
+                          Office Address: {MemLdata.officeAdd}
+                        </Text>
+                        <Text style={{ textAlign: "left", width: 200 }}>
+                          1st Guarantor's Name: {MemLdata.guarantor1_Name}
+                        </Text>
+                        <Text style={{ textAlign: "left", width: 200 }}>
+                          1st Guarantor's Address: {MemLdata.guarantor1_Add}
+                        </Text>
+                        <Text style={{ textAlign: "left", width: 200 }}>
+                          2nd Guarantor's Name: {MemLdata.guarantor2_Name}
+                        </Text>
+                        <Text style={{ textAlign: "left", width: 200 }}>
+                          2nd Guarantor's Address: {MemLdata.guarantor2_Add}
+                        </Text>
                         <Text style={{ color: "blue", textAlign: "justify" }}>
                           Application Date: {MemLdata.application_date}
                         </Text>
                         <Text>Date: {MemLdata.createdAt}</Text>
+                        <TouchableOpacity
+                          style={{
+                            marginTop:10,
+                            backgroundColor: "#48cbcfff",
+                            height: 30,
+                            width:100,
+                            alignSelf: "center",
+                            borderRadius: 5,
+                          }}
+                        >
+                          <Text
+                            style={{
+                              color: "white",
+                              marginTop: "auto",
+                              marginBottom: "auto",
+                              textAlign:"center",
+                            }}
+                          >
+                            Approved
+                          </Text>
+                        </TouchableOpacity>
+                        <Text style={{ textAlign:"center",}}>Loan Status: {MemLdata.status.toUpperCase()}</Text>
                       </View>
                     </View>
                     {/* <Text style={{ marginTop: 5 }}>Blessings</Text> */}

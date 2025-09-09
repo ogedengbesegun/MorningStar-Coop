@@ -256,11 +256,16 @@ await client.connect().then(() => {
     }
 
     ///look fot oraclededuct
-
+    // Get last month safely, wrap around to December if needed
+    // const last2Month = monthArray[(month - 2 + 12) % 12];
     const findoraclededuct = await msc_monthly_2025.findOne({
       oracle: oraclededuct.split(',')[0],
       month: lastMonth, deduction: oraclededuct.split(',')[1]
     })
+    //  const findoraclededuct2 = await msc_monthly_2025.findOne({
+    //   oracle: oraclededuct.split(',')[0],
+    //   month: last2Month, deduction: oraclededuct.split(',')[1]
+    // })
     if (!findoraclededuct) {
       return res.status(404).json({ success: false, message: "Please, Check your input and try again" })
     };
@@ -450,11 +455,24 @@ await client.connect().then(() => {
   app.post('/api/submitLoanRequest', async (req, res) => {
     try {
       const { name, oracle, phone, doa, amount,
-        picture, bankName, bankNumber, bankSort } = req.body;
+        picture, bankName, bankNumber, bankSort,
+        homeAdd,
+        officeAdd,
+        guarantor1_Add,
+        guarantor1_Name,
+        guarantor2_Add,
+        guarantor2_Name,
+      } = req.body;
 
       // 1. Validate required fields
       if (!name || !oracle || !phone || !doa || !amount || !picture
-        || !bankName || !bankNumber || !bankSort
+        || !bankName || !bankNumber || !bankSort ||
+        !homeAdd ||
+        !officeAdd ||
+        !guarantor1_Add ||
+        !guarantor1_Name ||
+        !guarantor2_Add ||
+        !guarantor2_Name
       ) {
         return res.status(400).json({
           success: false,
@@ -470,7 +488,7 @@ await client.connect().then(() => {
           message: "Sorry, You have already requested for a loan"
         });
       }
-     
+
       // // 3. Check if request already submitted
       // const alreadyMem = await db.collection("joinus").findOne({ oracle: oracle.trim() });
       // if (alreadyMem) {
@@ -491,6 +509,12 @@ await client.connect().then(() => {
         bankSort: bankSort.trim(),
         amount: amount.trim(),
         picture: picture.trim(),
+        homeAdd: homeAdd.trim(),
+        officeAdd: officeAdd.trim(),
+        guarantor1_Add: guarantor1_Add.trim(),
+        guarantor1_Name: guarantor1_Name.trim(),
+        guarantor2_Add: guarantor2_Add.trim(),
+        guarantor2_Name: guarantor2_Name.trim(),
         status: "pending",
         createdAt: new Date(),
       });
@@ -510,36 +534,41 @@ await client.connect().then(() => {
       });
     }
   });
-
+  /////loanstatusIndicator
+  app.post('api/loanStatus', async (req, res) => {
+    const { oracle } = req.body;
+    const loanstatus = await db.collection("loanRequest").findOne({ oracle: oracle });
+    res.status(200).json({ success: true, messsage: loanstatus.status });
+  })
   ////////
-   //////////to get membersLoan for Admin Viewig
-      app.get('/api/getMemberLoan', async (req, res) => {
-        try {
-          // use db.collection directly instead of mongoose
-          const memLoan = await db.collection("loanRequest").find({}).toArray();
+  //////////to get membersLoan for Admin Viewig
+  app.get('/api/getMemberLoan', async (req, res) => {
+    try {
+      // use db.collection directly instead of mongoose
+      const memLoan = await db.collection("loanRequest").find({}).toArray();
 
-          if (!memLoan || memLoan.length === 0) {
-            return res.status(404).json({
-              success: false,
-              message: "No members' Loan Request found"
-            });
-          }
+      if (!memLoan || memLoan.length === 0) {
+        return res.status(404).json({
+          success: false,
+          message: "No members' Loan Request found"
+        });
+      }
 
-          res.status(200).json({
-            success: true,
-            data: memLoan,  // send full array of documents
-            message: "Members' Loan Requests fetched successfully"
-          });
-
-        } catch (error) {
-          console.error("Error fetching members' Loan Requests:", error);
-          res.status(500).json({
-            success: false,
-            message: "Server error",
-            error: error.message,
-          });
-        }
+      res.status(200).json({
+        success: true,
+        data: memLoan,  // send full array of documents
+        message: "Members' Loan Requests fetched successfully"
       });
+
+    } catch (error) {
+      console.error("Error fetching members' Loan Requests:", error);
+      res.status(500).json({
+        success: false,
+        message: "Server error",
+        error: error.message,
+      });
+    }
+  });
   // app.post('/api/savingLoanBal', async (req, res) => {
   //   const { oracle } = req.body;
   //   // if(!oracle || oracle.length<5){

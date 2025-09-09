@@ -11,6 +11,7 @@ import Card from "../../utilities/card";
 import LoginExt from "../../utilities/loginExt"; // Adjust the path as necessary
 import { lastMonth } from "../../utilities/mydate";
 // import Constants from 'expo-constants';
+import { Picker } from "@react-native-picker/picker";
 //
 // import * as SecureStore from "expo-secure-store";
 // import Constants from "expo-constants";
@@ -80,6 +81,8 @@ export default function login() {
   const menuIcon2 = <Ionicons name="close" size={35} color="red" />;
   const [menuDialog, setMenuDialog] = useState(false);
   const toggleMenuIcon = () => setMenuDialog(!menuDialog);
+    const [monthly, setMonthly] = useState("Select Month");
+  
   ////////////
   ///for Navigation btw screens
   const nav = useNavigation<any>(); // Ensure you have the correct type for navigation
@@ -95,22 +98,19 @@ export default function login() {
   const refServices = useRef(null);
 
   // ///////
-////useEffect
-useEffect(()=>{
- ////Early Call on the backend url for quick response
-      backme();
-      async function backme() {
-        try {
-          await fetch(
-            "https://morningstar-coop-backend.onrender.com/api/login"
-          );
-        } catch (err) {
-          console.warn("Backend wake-up failed:", err);
-        }
+  ////useEffect
+  useEffect(() => {
+    ////Early Call on the backend url for quick response
+    backme();
+    async function backme() {
+      try {
+        await fetch("https://morningstar-coop-backend.onrender.com/api/login");
+      } catch (err) {
+        console.warn("Backend wake-up failed:", err);
       }
-
-},[])
-///////////////////////
+    }
+  }, []);
+  ///////////////////////
   return (
     <>
       {/* <ImageBackground
@@ -387,7 +387,7 @@ useEffect(()=>{
                           fontSize: 20,
                           textAlign: "center",
                           color: "green",
-                          textDecorationLine: "underline",
+                          textDecorationLine: "underline",marginTop:18,
                         }}
                       >
                         Change your Password Instructions?
@@ -403,11 +403,46 @@ useEffect(()=>{
                           padding: 10,
                         }}
                       >
-                        Enter Oracle Number with last Month Deduction without
+                        Enter Oracle Number with specified Month Deduction without
                         space e.g 141516,200000 Oracle Number e.g 141516 and
                         last Month Deduction e.g 200000 {"\n"}Note: No space
                         fullstop is allowed but put comma as separator.
                       </Text>
+                      <Picker
+                        selectedValue={monthly}
+                        onValueChange={(itemValue) => setMonthly(itemValue)}
+                
+                        // console.log(itemValue, itemIndex)
+
+                        style={{
+                          height: 53,
+                          width: "100%",
+                          textAlignVertical:"center",
+                          alignSelf: "flex-end",
+                          // borderRadius: 6,
+                          // borderStyle: "solid",
+                          borderWidth:0,
+                          borderColor: "#999",
+                          // backgroundColor: "#D3D3D3",
+                        }}
+                      >
+                        <Picker.Item
+                          label="Select Month"
+                          // value="Select Month"
+                        />
+                        <Picker.Item label="January" value="January" />
+                        <Picker.Item label="February" value="February" />
+                        <Picker.Item label="March" value="March" />
+                        <Picker.Item label="April" value="April" />
+                        <Picker.Item label="May" value="May" />
+                        <Picker.Item label="June" value="June" />
+                        <Picker.Item label="July" value="July" />
+                        <Picker.Item label="August" value="August" />
+                        <Picker.Item label="September" value="September" />
+                        <Picker.Item label="October" value="October" />
+                        <Picker.Item label="November" value="November" />
+                        <Picker.Item label="December" value="December" />
+                      </Picker>
                       {/* reuseableModal */}
                       <ReusableModal
                         visible={modalChangeVisible}
@@ -534,10 +569,16 @@ useEffect(()=>{
                         }}
                         style={[
                           {
+                            position:"absolute",
+                            top:0,
+                            right:0,
                             padding: 13,
-                            backgroundColor: "lightblue",
-                            borderRadius: 5,
-                            marginTop: 5,
+                            backgroundColor: "lightgrey",
+                            borderRadius: 2,
+                            // marginTop: 5,
+                            width:70,
+                            // height:30,
+                            // zIndex:-3,
                             // width: 100,
                             // marginRight: "auto",
                             // marginLeft: "auto",
@@ -546,9 +587,12 @@ useEffect(()=>{
                       >
                         <Text
                           style={{
+                            // fontSize:20,
                             color: "red",
                             textAlign: "center",
-                            fontWeight: "600",
+                            // textAlignVertical:"center",
+                            fontWeight: "bold",
+                            // marginTop:"auto",marginBottom:"auto"
                           }}
                         >
                           Close
@@ -794,7 +838,6 @@ useEffect(()=>{
             response.user.full_name.split(" ")[0],
           oracle: response.user.oracle,
           password: response.user.password, // Store the password securely if needed
-       
         });
 
         const timer = setTimeout(() => {
@@ -833,7 +876,7 @@ useEffect(()=>{
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          lastMonth: lastMonth,
+          lastMonth: monthly.toLowerCase(),
           oraclededuct: oraclededuct,
           pwordn: pwordn,
         }),

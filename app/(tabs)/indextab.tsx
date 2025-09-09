@@ -50,6 +50,9 @@ export default function indextabs() {
   ///////
   const [menuModal, setMenuModal] = useState(false);
   const [confirmModal, setConfirmModal] = useState(false);
+  const [loanstatusTxt, setLoanstatusTxt] = useState("No Request Yet");
+  const [loanstatusDate, setLoanstatusDate] = useState("XXX");
+
   const { user } = useUser(); ////using user
   const { setUser2 } = useUser(); ///setUser Value for usage again
   /////
@@ -61,6 +64,7 @@ export default function indextabs() {
     if (user && user.oracle && lastMonth && thisMonth) {
       const timer = setTimeout(async () => {
         msc_index_finance();
+        loanStatus();
       }, 100); // slight delay
 
       return () => clearTimeout(timer);
@@ -511,14 +515,46 @@ export default function indextabs() {
               </Text>
             </Card>
 
-            <Card style={[]}>
+            <Card style={{ backgoundColor: "green" }}>
               <Text style={{ marginTop: 20 }}>
                 {c_year} Dividends:
                 <Text style={{ color: "red", fontSize: 15 }}> XXX</Text>
               </Text>
             </Card>
+            <Card style={{ backgroundColor: "#8df0d2ff" }}>
+              <Text
+                style={{
+                  textAlign: "center",
+                  fontWeight: "bold",
+                  fontSize: 15,
+                }}
+              >
+                Loan Request Indicator:
+              </Text>
+              <Text style={{ marginTop: 10 }}>
+                Date of Request:
+                <Text style={{ color: "black", fontSize: 15 }}>
+                  {" "}
+                  {loanstatusDate}
+                </Text>
+              </Text>
+              <Text>
+                Loan Request Status:
+                <Text
+                  style={{
+                    color: "black",
+                    fontSize: 15,
+                    fontStyle: "italic",
+                    fontWeight: "condensedBold",
+                  }}
+                >
+                  {" "}
+                  {loanstatusTxt}
+                </Text>
+              </Text>
+            </Card>
 
-            <Text style={{ fontStyle: "italic", color: "grey", marginTop: 15 }}>
+            <Text style={{ fontStyle: "italic", color: "grey", marginTop: 10 }}>
               These Financial Records are Carefully calculated for each member
               in accordance to remittances from the Oracle. However, if you have
               concerns about the figures displayed, please contact the Financial
@@ -585,7 +621,7 @@ export default function indextabs() {
       const response = await financialData.json();
       /////////////////////////////////////////////
 
-      const lastDeduct = response?.acct.deduction ;
+      const lastDeduct = response?.acct.deduction;
       const newDeduct = response?.acct2.deduction
         ? response.acct2.deduction ?? "0"
         : response.acct2 ?? "0";
@@ -669,7 +705,7 @@ export default function indextabs() {
           Number(retirement).toLocaleString("en-NG", {
             style: "currency",
             currency: "NGN",
-          }) 
+          })
         );
         setLoanBalance(
           Number(loan_balance).toLocaleString("en-NG", {
@@ -691,14 +727,14 @@ export default function indextabs() {
           Number(interest_balance).toLocaleString("en-NG", {
             style: "currency",
             currency: "NGN",
-          }) 
+          })
         );
 
         //////////////////
         setUser2({
           savings: savings,
           loanBalance: loan_balance,
-          softloanBalance: soft_loan
+          softloanBalance: soft_loan,
         }); // savings
         // setUser2(softloanBalance); ///for usage
         // setUser2(loanBalance); // loan_balance
@@ -722,6 +758,26 @@ export default function indextabs() {
       // setmodalChangeText("Error fetching financial data: ");
       // alert("Error fetching financial data: ");
     }
+  }
+  ///////
+  //useEffect for the loan Status
+  async function loanStatus() {
+    try {
+      //`${API_URL}/api/loanStatus`
+      //http://localhost:10000/api/loanStatus
+      const response = await fetch(`${API_URL}/api/loanStatus`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          oracle: user?.oracle,
+        }),
+      });
+      const result = await response.json();
+      if (result.success === true) {
+        setLoanstatusTxt(result.status);
+        setLoanstatusDate(result.date);
+      }
+    } catch (error) {}
   }
 }
 

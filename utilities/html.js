@@ -1,4 +1,8 @@
+import "../app/(auth)/cssStyle.css";
 import { c_day, c_month, c_year } from "../utilities/mydate";
+
+
+///////
 export const MembershipHtml = (form, imageUri) => {
   return `
     <html>
@@ -53,14 +57,14 @@ export const MembershipHtml = (form, imageUri) => {
 
 
 
-export const LoanRequestHtml = (form, imageUri, savings,loan,softLoan) => {
+export const LoanRequestHtml = (form, imageUri, savings, loan, softLoan) => {
   return `
     <html>
       <body style="font-family: Arial; text-align: center; margin:20px;
                    border:1px solid green; padding:10px; border-radius:15px;" >
-        <div id="print-area">
+        <div id="print-areaLoan">
         <div style=" background-image: url("../assets/images/d_img/loanFormbg.png"); background-size: 20%; background-position: center;">
-        <h1 style="color:green;font-size:20px;text-decoration:underline;">
+         <h1 style="color:green;font-size:20px;text-decoration:underline;">
             Morning Star Cooperative & Thrift Society
           </h1>
           <h3 style="font-size:15px">Address: GIRLS HIGH SCHOOL AGEGE</h3>
@@ -93,6 +97,16 @@ export const LoanRequestHtml = (form, imageUri, savings,loan,softLoan) => {
             <h4>Bank Name / Branch Name: <span style="font-size:20px;">${form.bankName}</span></h4>
             <h4>Bank Account Number: <span style="font-size:20px;">${form.bankNumber}</span></h4>
             <h4>Bank Sort Code: <span style="font-size:20px;">${form.bankSort}</span></h4>
+            <h4>Home Address: <span style="font-size:20px;">${form.homeAdd}</span></h4>
+            <h4>Office Address: <span style="font-size:20px;">${form.officeAdd}</span></h4>
+            
+            <h2 style="margin-top:5px">1st Guarantor's details</h2>
+            <h4>Guarantor's Name: <span style="font-size:20px;">${form.guarantor1_Name}</span></h4>
+            <h4>Guarantor's Office: <span style="font-size:20px;">${form.guarantor1_Add}</span></h4>
+            <h2 style="margin-top:5px">2nd Guarantor's Details</h2>
+            <h4>Guarantor's Name: <span style="font-size:20px;">${form.guarantor2_Name}</span></h4>
+            <h4>Guarantor's Office: <span style="font-size:20px;">${form.guarantor2_Add}</span></h4>
+            
             <p style="font-size:15px;margin-top:15px;color:grey;font-style:italic;">
              I ${form.name}, hereby "e-signed" this Loan Application Form.
             </p>

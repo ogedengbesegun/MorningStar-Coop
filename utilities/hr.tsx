@@ -7,12 +7,14 @@ type HrProps = {
   thickness?: number;
   marginVertical?: number;
   width?: number;
+  marginTop?:number;
 };
 
 export default function Hr({
   color = "#ccc",
   thickness = 1,
   marginVertical = 10,
+  marginTop=2,
 }: HrProps) {
   return (
     <View
@@ -20,6 +22,7 @@ export default function Hr({
         borderBottomColor: color,
         borderBottomWidth: thickness,
         marginVertical,
+        marginTop,
       }}
     />
   );

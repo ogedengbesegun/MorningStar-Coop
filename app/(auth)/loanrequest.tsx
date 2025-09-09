@@ -48,6 +48,12 @@ export default function LoanRequestForm() {
     bankBranch: "",
     bankSort: "",
     bankNumber: "",
+    homeAdd: "",
+    officeAdd: "",
+    guarantor1_Name: "",
+    guarantor1_Add: "",
+    guarantor2_Name: "",
+    guarantor2_Add: "",
   });
   /////////////////
   const [showDate, setShowDate] = useState(false);
@@ -56,7 +62,11 @@ export default function LoanRequestForm() {
   const refAgree = useRef<any>(null);
 
   const [isAmount, setIsAmount] = useState("");
-  const [isLetter, setIsLetter] = useState("");
+  const [isLetter, setIsLetter] = useState({
+    one: "",
+    two: "",
+    three: "",
+  });
   const [isLetter2, setIsLetter2] = useState("");
   const [numValid, setNumValid] = useState("");
 
@@ -80,8 +90,26 @@ export default function LoanRequestForm() {
   const handleChange = (field: string, value: any) => {
     setForm((prev) => ({ ...prev, [field]: value }));
   };
-  ///////////
-
+  const handleIsLetter = (field: string, value: any) => {
+    setIsLetter((prev) => ({ ...prev, [field]: value }));
+  };
+  ///////////utilities
+  function capitalized(str: string) {
+    return str
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(" ");
+  }
+  //////////
+  function money(str: string) {
+    Number(str).toLocaleString("en", {
+      style: "currency",
+      currency: "NGN",
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    });
+  }
+  /////////////
   const pickImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -117,8 +145,15 @@ export default function LoanRequestForm() {
       !form.bankNumber ||
       !form.bankSort ||
       isChecked === false ||
+      !form.homeAdd ||
+      !form.officeAdd ||
+      !form.guarantor1_Name ||
+      !form.guarantor1_Add ||
+      !form.guarantor2_Name ||
+      !form.guarantor2_Add ||
       refButton.current === form.dob ||
-      !imageUri
+      imageUri ===
+        "https://media.istockphoto.com/id/1495088043/vector/user-profile-icon-avatar-or-person-icon-profile-picture-portrait-symbol-default-portrait.jpg?s=612x612&w=0&k=20&c=dhV2p1JwmloBTOaGAtaA3AW1KSnjsdMt7-U_3EZElZ0="
     ) {
       return Platform.OS === "web"
         ? alert("Please fill all required fields.")
@@ -278,7 +313,7 @@ export default function LoanRequestForm() {
               Full Name
               <Text style={{ color: "red", fontSize: 12, fontStyle: "italic" }}>
                 {" "}
-                {isLetter}
+                {isLetter.one}
               </Text>
             </Text>
             <TextInput
@@ -288,15 +323,21 @@ export default function LoanRequestForm() {
               onChangeText={(text) => {
                 const onlyLetters = text.replace(/[^A-Za-z ]/g, "");
                 if (onlyLetters !== text) {
-                  setIsLetter("Alphabets Only");
+                  // setIsLetter((prev)=>{{...prev},{one: "Alphabets Only"}});
+                  handleIsLetter("one", "Alphabets Only");
                   handleChange("name", "");
                 } else {
-                  setIsLetter("");
+                  handleIsLetter("one", "");
                   handleChange("name", text);
                 }
               }}
               onEndEditing={(e) => {
                 handleChange("name", e.nativeEvent.text.trim());
+              }}
+              onBlur={(e) => {
+                if (Platform.OS === "web") {
+                  handleChange("name", e.nativeEvent.text.trim());
+                }
               }}
             />
 
@@ -326,9 +367,25 @@ export default function LoanRequestForm() {
             <TextInput
               placeholder="Enter phone number"
               style={styles.input}
+              maxLength={11}
               keyboardType="phone-pad"
               value={form.phone}
-              onChangeText={(text) => handleChange("phone", text)}
+              onChangeText={(text) => {
+                const onlyNumber = text.replace(/[^0-9]/g, "");
+                if (!onlyNumber) {
+                  handleChange("phone", "");
+                } else {
+                  handleChange("phone", text);
+                }
+              }}
+              onEndEditing={(e) => {
+                handleChange("phone", e.nativeEvent.text.trim());
+              }}
+              onBlur={(e) => {
+                if (Platform.OS === "web") {
+                  handleChange("phone", e.nativeEvent.text.trim());
+                }
+              }}
             />
 
             <Text style={styles.label}>Date of Application</Text>
@@ -339,17 +396,16 @@ export default function LoanRequestForm() {
                 month: "long",
                 day: "numeric",
               })}
-              onPress={() => {
-                if (Platform.OS === "web" && refDate.current) {
-                  // const inputClick = document.querySelector(".dateInput");
-                  // inputClick.style.color = "green";
-                  refDate.current.click();
-                } else {
-                  setShowDate(true);
-                }
-              }}
-              color={"lightgreen"}
-              disabled
+              // onPress={() => {
+              //   if (Platform.OS === "web" && refDate.current) {
+
+              //     refDate.current.click();
+              //   } else {
+              //     setShowDate(true);
+              //   }
+              // }}
+              color={"grey"}
+              // disabled
             />
 
             {Platform.OS === "web" ? (
@@ -388,7 +444,12 @@ export default function LoanRequestForm() {
                 />
               )
             )}
-            <Text style={styles.label}>
+            <Text
+              style={[
+                styles.label,
+                Platform.OS === "web" ? { marginTop: -20 } : { marginTop: 15 },
+              ]}
+            >
               Total Savings (₦) <Text>{user2?.savings}</Text>{" "}
             </Text>
             <Text style={styles.label}>
@@ -397,7 +458,13 @@ export default function LoanRequestForm() {
             <Text style={styles.label}>
               Soft Loan Balance (₦) <Text>{user2?.softloanBalance}</Text>
             </Text>
-            <Text style={styles.label}>Loan Amount Requested (₦)</Text>
+            <Text style={styles.label}>
+              Loan Amount Requested (₦)
+              {Number(form.amount).toLocaleString("en", {
+                style: "currency",
+                currency: "NGN",
+              })}
+            </Text>
             <TextInput
               placeholder="Enter amount Required"
               style={styles.input}
@@ -423,12 +490,11 @@ export default function LoanRequestForm() {
                 ///this is perfect for andr ios
                 const entered = Number(text.nativeEvent.text);
                 if (!isNaN(entered) && entered < 50000) {
-                  handleChange("amount", ""); // Clear input if less than 15000
+                  handleChange("amount", ""); // Clear input if less than 50000
                 }
               }}
               onBlur={(e) => {
                 ///this  works for web dep
-
                 const entered = Number(e.nativeEvent.text);
                 if (!isNaN(entered) && entered < 50000) {
                   handleChange("amount", "");
@@ -456,6 +522,18 @@ export default function LoanRequestForm() {
                 } else {
                   setIsLetter2("");
                   handleChange("bankName", text);
+                }
+              }}
+              onEndEditing={(e) => {
+                if (Platform.OS === "web") {
+                  handleChange("bankName", e.nativeEvent.text.trim());
+                }
+                handleChange("bankName", e.nativeEvent.text.trim());
+              }}
+              onBlur={(e) => {
+                ////web deploy
+                if (Platform.OS === "web") {
+                  handleChange("bankName", e.nativeEvent.text.trim());
                 }
               }}
             />
@@ -521,6 +599,155 @@ export default function LoanRequestForm() {
                   : entered;
               }}
             />
+            <View>
+              <Text style={styles.label}>Home Address</Text>
+              <TextInput
+                placeholder="Enter Home Address"
+                keyboardType="default"
+                value={form.homeAdd}
+                style={styles.input}
+                onChangeText={(text) => {
+                  handleChange("homeAdd", text);
+                }}
+                onEndEditing={(e) => {
+                  handleChange("homeAdd", e.nativeEvent.text.trim());
+                }}
+                onBlur={(e) => {
+                  ////web deploy
+                  if (Platform.OS === "web") {
+                    handleChange("homeAdd", e.nativeEvent.text.trim());
+                  }
+                }}
+              ></TextInput>
+              <Text style={styles.label}>Office Address</Text>
+              <TextInput
+                placeholder="Enter Office Address"
+                keyboardType="default"
+                value={form.officeAdd}
+                style={styles.input}
+                onChangeText={(text) => {
+                  handleChange("officeAdd", text);
+                }}
+                onEndEditing={(e) => {
+                  handleChange("officeAdd", e.nativeEvent.text.trim());
+                }}
+                onBlur={(e) => {
+                  ////web deploy
+                  if (Platform.OS === "web") {
+                    handleChange("officeAdd", e.nativeEvent.text.trim());
+                  }
+                }}
+              ></TextInput>
+
+              {/* guarantors Levels */}
+              <Text style={styles.label}>Guarantors</Text>
+              <Hr color={"green"} thickness={3} marginTop={-1} />
+              <Text style={styles.label}>
+                {" "}
+                1st Guarantor's Details
+                <Text
+                  style={{ color: "red", fontSize: 12, fontStyle: "italic" }}
+                >
+                  {" "}
+                  {isLetter.two}
+                </Text>
+              </Text>
+              <TextInput
+                placeholder="Enter Guarantor's Name"
+                keyboardType="default"
+                value={form.guarantor1_Name}
+                style={styles.input}
+                // ////
+                onChangeText={(text) => {
+                  const onlyLetters = text.replace(/[^A-Za-z ]/g, "");
+                  if (onlyLetters !== text) {
+                    handleIsLetter("two", "Alphabets Only");
+                    handleChange("guarantor1_Name", "");
+                  } else {
+                    const cap = capitalized(text);
+                    handleIsLetter("two", "");
+                    handleChange("guarantor1_Name", cap);
+                  }
+                }}
+                onEndEditing={(e) => {
+                  const cap = capitalized(e.nativeEvent.text.trim());
+                  handleChange("guarantor1_Name", cap);
+                }}
+                onBlur={(e) => {
+                  ///web prod
+                  if (Platform.OS === "web") {
+                    handleChange("guarantor1_Name", e.nativeEvent.text.trim());
+                  }
+                }}
+              />
+              <TextInput
+                placeholder="Enter Guarantor's Office Address"
+                keyboardType="default"
+                value={form.guarantor1_Add}
+                style={[styles.input, { marginTop: 5 }]}
+                onChangeText={(text) => {
+                  handleChange("guarantor1_Add", text);
+                }}
+                onBlur={(e) => {
+                  if (Platform.OS === "web") {
+                    handleChange("guarantor1_Add", e.nativeEvent.text.trim());
+                  }
+                }}
+              />
+
+              {/* 2nd guarantor details */}
+              <Text style={styles.label}>
+                2nd Guarantor's Details
+                <Text
+                  style={{ color: "red", fontSize: 12, fontStyle: "italic" }}
+                >
+                  {" "}
+                  {isLetter.three}
+                </Text>
+              </Text>
+              <TextInput
+                placeholder="Enter Guarantor's Name"
+                keyboardType="default"
+                autoCapitalize="words"
+                value={form.guarantor2_Name}
+                style={styles.input}
+                ///////
+                onChangeText={(text) => {
+                  const onlyLetters = text.replace(/[^A-Za-z ]/g, "");
+                  if (onlyLetters !== text) {
+                    handleIsLetter("three", "Alphabets Only");
+                    handleChange("guarantor2_Name", "");
+                  } else {
+                    const cap = capitalized(text);
+                    handleIsLetter("three", "");
+                    handleChange("guarantor2_Name", cap);
+                  }
+                }}
+                onEndEditing={(e) => {
+                  handleChange("guarantor2_Name", e.nativeEvent.text.trim());
+                }}
+                onBlur={(e) => {
+                  if (Platform.OS === "web") {
+                    handleChange("guarantor2_Name", e.nativeEvent.text.trim());
+                  }
+                }}
+              />
+
+              <TextInput
+                placeholder="Enter Guarantor's Office Address"
+                keyboardType="default"
+                value={form.guarantor2_Add}
+                style={[styles.input, { marginTop: 5 }]}
+                onChangeText={(text) => {
+                  handleChange("guarantor2_Add", text);
+                }}
+                onBlur={(e) => {
+                  if (Platform.OS === "web") {
+                    handleChange("guarantor2_Add", e.nativeEvent.text.trim());
+                  }
+                }}
+              />
+            </View>
             <View
               style={{
                 marginBottom: 5,
@@ -661,6 +888,12 @@ export default function LoanRequestForm() {
             bankNumber: form.bankNumber,
             bankSort: form.bankSort,
             picture: imageUri,
+            homeAdd: form.homeAdd,
+            officeAdd: form.officeAdd,
+            guarantor1_Add: form.guarantor1_Add,
+            guarantor1_Name: form.guarantor1_Name,
+            guarantor2_Add: form.guarantor2_Add,
+            guarantor2_Name: form.guarantor2_Name,
           }),
         }
       );
