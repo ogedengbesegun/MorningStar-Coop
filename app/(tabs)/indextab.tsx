@@ -61,14 +61,16 @@ export default function indextabs() {
   //////////////////////////////
 
   useEffect(() => {
+    loanStatus();
+
     if (user && user.oracle && lastMonth && thisMonth) {
       const timer = setTimeout(async () => {
         msc_index_finance();
-        loanStatus();
       }, 100); // slight delay
 
       return () => clearTimeout(timer);
     }
+
     // console.log("New Month:", nMonth);
     // console.log(user?.oracle, "User Oracle");
   }),
@@ -765,6 +767,7 @@ export default function indextabs() {
     try {
       //`${API_URL}/api/loanStatus`
       //http://localhost:10000/api/loanStatus
+      //
       const response = await fetch(`${API_URL}/api/loanStatus`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -774,12 +777,17 @@ export default function indextabs() {
       });
       const result = await response.json();
       if (result.success === true) {
-        setLoanstatusTxt(result.status);
-        setLoanstatusDate(result.date);
+        setLoanstatusTxt(result.status ?? "");
+        setLoanstatusDate(result.date ?? "");
+      } else {
+        setLoanstatusTxt(result.message);
+        // setLoanstatusDate("No date displayed");
       }
-    } catch (error) {}
+    } catch (error) {
+      alert("Error Fetching Loan Status");
+    }
   }
-}
+} ///end calib
 
 /////
 const styles2 = StyleSheet.create({
