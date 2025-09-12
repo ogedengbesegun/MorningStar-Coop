@@ -9,7 +9,6 @@ import ReusableModal from "../../utilities/ReusableModal";
 // import Card from "react-native-paper";
 import Card from "../../utilities/card";
 import LoginExt from "../../utilities/loginExt"; // Adjust the path as necessary
-import { lastMonth } from "../../utilities/mydate";
 // import Constants from 'expo-constants';
 import { Picker } from "@react-native-picker/picker";
 //
@@ -30,7 +29,9 @@ import {
 } from "react-native";
 import styles from "../../styles/dstyles"; // Adjust the path as necessary
 import ModalContent from "../../utilities/menuModal";
-
+import MyModal from "../../utilities/modal";
+////////
+///////////////////
 export default function login() {
   const API_URL =
     ENV_API_URL || "https://morningstar-coop-backend.onrender.com";
@@ -81,8 +82,8 @@ export default function login() {
   const menuIcon2 = <Ionicons name="close" size={35} color="red" />;
   const [menuDialog, setMenuDialog] = useState(false);
   const toggleMenuIcon = () => setMenuDialog(!menuDialog);
-    const [monthly, setMonthly] = useState("Select Month");
-  
+  const [monthly, setMonthly] = useState("Select Month");
+
   ////////////
   ///for Navigation btw screens
   const nav = useNavigation<any>(); // Ensure you have the correct type for navigation
@@ -98,6 +99,9 @@ export default function login() {
   const refServices = useRef(null);
 
   // ///////
+  ///////import for modal display
+  const [showmodal, setShowModal] = useState(false);
+
   ////useEffect
   useEffect(() => {
     ////Early Call on the backend url for quick response
@@ -222,6 +226,13 @@ export default function login() {
           </Modal>
         </View>
         <ScrollView ref={scrollRef}>
+          <MyModal
+            backgroundColor={"rgba(238, 238, 238, 0.76)"}
+            visible={showmodal}
+            message="Wait Processing..."
+            color="green"
+            onDismiss={() => setShowModal(false)}
+          />
           <View
             // Img Src={require("../assets/images/react-logo.png")}
             style={{
@@ -387,7 +398,8 @@ export default function login() {
                           fontSize: 20,
                           textAlign: "center",
                           color: "green",
-                          textDecorationLine: "underline",marginTop:18,
+                          textDecorationLine: "underline",
+                          marginTop: 18,
                         }}
                       >
                         Change your Password Instructions?
@@ -403,25 +415,24 @@ export default function login() {
                           padding: 10,
                         }}
                       >
-                        Enter Oracle Number with specified Month Deduction without
-                        space e.g 141516,200000 Oracle Number e.g 141516 and
-                        last Month Deduction e.g 200000 {"\n"}Note: No space
+                        Enter Oracle Number with specified Month Deduction
+                        without space e.g 141516,200000 Oracle Number e.g 141516
+                        and last Month Deduction e.g 200000 {"\n"}Note: No space
                         fullstop is allowed but put comma as separator.
                       </Text>
                       <Picker
                         selectedValue={monthly}
                         onValueChange={(itemValue) => setMonthly(itemValue)}
-                
                         // console.log(itemValue, itemIndex)
 
                         style={{
                           height: 53,
                           width: "100%",
-                          textAlignVertical:"center",
+                          textAlignVertical: "center",
                           alignSelf: "flex-end",
                           // borderRadius: 6,
                           // borderStyle: "solid",
-                          borderWidth:0,
+                          borderWidth: 0,
                           borderColor: "#999",
                           // backgroundColor: "#D3D3D3",
                         }}
@@ -569,14 +580,14 @@ export default function login() {
                         }}
                         style={[
                           {
-                            position:"absolute",
-                            top:0,
-                            right:0,
+                            position: "absolute",
+                            top: 0,
+                            right: 0,
                             padding: 13,
                             backgroundColor: "lightgrey",
                             borderRadius: 2,
                             // marginTop: 5,
-                            width:70,
+                            width: 70,
                             // height:30,
                             // zIndex:-3,
                             // width: 100,
@@ -814,6 +825,10 @@ export default function login() {
 
   /////////////////
   async function loginUser() {
+    setShowModal(true);
+    const delay = (m: any) => new Promise((resolve) => setTimeout(resolve, m));
+    await delay(3000);
+
     try {
       // console.log(`${API_URL}/api/login`);
 
@@ -864,6 +879,7 @@ export default function login() {
       setmodalText(`${error} Server NOT responding, try again later`);
       // alert(`${error} Server NOT responding, try again later`);
     } finally {
+      setShowModal(false);
       // setModalVisible(false);
     }
   }
