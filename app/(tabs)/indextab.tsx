@@ -36,8 +36,8 @@ export default function indextabs() {
   const [last_Bankdeduct, setLast_Bankdeduct] = useState<any | null>(null);
   const [this_Bankdeduct, setThis_Bankdeduct] = useState<any | null>(null);
   /////////
-  const [userName, setUserName] = useState<string | null>(null);
-  const [userOracle, setUserOracle] = useState<string | null>(null);
+  const [prevMonth, setPrevMonth] = useState<string | null>("");
+  const [presMonth, setPresMonth] = useState<string | null>("");
   ////////////
   const [saving, setSaving] = useState<any | null>(null);
   const [savingStored, setSavingStored] = useState<any | null>(null);
@@ -161,13 +161,11 @@ export default function indextabs() {
 
             <Card style={{ backgroundColor: "#e6fff2" }}>
               <Text style={{ fontSize: 17, color: "darkblack" }}>
-                Oracle Deduction as at: {lastMonth.toLocaleUpperCase()},{" "}
-                {c_year}
+                Oracle Deduction as at: {prevMonth?.toUpperCase()}, {c_year}
                 {":"} {last_deduct}
               </Text>
               <Text style={{ fontSize: 17, color: "darkgreen", paddingTop: 5 }}>
-                Oracle Deduction as at: {thisMonth.toLocaleUpperCase()},{" "}
-                {c_year}
+                Oracle Deduction as at: {thisMonth.toUpperCase()}, {c_year}
                 {":"} {this_deduct}
               </Text>
             </Card>
@@ -185,13 +183,11 @@ export default function indextabs() {
                 Bank Transactions
               </Text>
               <Text style={{ fontSize: 17, color: "dark" }}>
-                Bank(Self_Payment) as at: {lastMonth.toLocaleUpperCase()},{" "}
-                {c_year}
+                Bank(Self_Payment) as at: {prevMonth?.toUpperCase()}, {c_year}
                 {":"} {last_Bankdeduct}
               </Text>
               <Text style={{ fontSize: 17, color: "green", paddingTop: 5 }}>
-                Bank(Self_Payment) as at: {thisMonth.toLocaleUpperCase()},{" "}
-                {c_year}
+                Bank(Self_Payment) as at: {thisMonth.toUpperCase()}, {c_year}
                 {":"} {this_Bankdeduct}
               </Text>
             </Card>
@@ -471,14 +467,15 @@ export default function indextabs() {
             >
               Balances as at: {c_year}/{c_month}/{c_day}
             </Text>
-            <Card style={[]}>
+            <Card style={{ backgroundColor: "#e6fff5ff" }}>
               <Text style={{ fontSize: 15, color: "green" }}>
                 Savings:
-                <Text style={{ fontSize: 20, color: "green" }}> {saving}</Text>
+                <Text style={{ fontSize: 20, color: "green" }}> {saving}{" "}</Text>
+               
               </Text>
             </Card>
 
-            <Card style={[]}>
+            <Card style={{ backgroundColor: "#c5f7a3ff" }}>
               <Text style={{ fontSize: 15, color: "green" }}>
                 Retirement:
                 <Text style={{ fontSize: 20, color: "green" }}>
@@ -488,17 +485,18 @@ export default function indextabs() {
               </Text>
             </Card>
 
-            <Card style={[]}>
+            <Card style={{ backgroundColor: "#f3d2c8ff" }}>
               <Text style={{ fontSize: 15, color: "green" }}>
                 Loan Balance:
                 <Text style={{ fontSize: 20, color: "green" }}>
                   {" "}
                   {loanBalance}
                 </Text>
+
               </Text>
             </Card>
 
-            <Card style={[]}>
+            <Card style={{ backgroundColor: "#ffe6faff" }}>
               <Text style={{ fontSize: 15, color: "green" }}>
                 Soft Loan Balance:{" "}
                 <Text style={{ fontSize: 20, color: "green" }}>
@@ -508,7 +506,7 @@ export default function indextabs() {
               </Text>
             </Card>
 
-            <Card style={[]}>
+            <Card style={{ backgroundColor: "#f7e9f4ff" }}>
               <Text style={{ fontSize: 15, color: "green" }}>
                 Interest Balance:{" "}
                 <Text style={{ fontSize: 20, color: "red" }}>
@@ -517,7 +515,7 @@ export default function indextabs() {
               </Text>
             </Card>
 
-            <Card style={{ backgoundColor: "green" }}>
+            <Card style={{ backgroundColor: "#8df0aeff" }}>
               <Text style={{ marginTop: 20 }}>
                 {c_year} Dividends:
                 <Text style={{ color: "red", fontSize: 15 }}> XXX</Text>
@@ -579,7 +577,7 @@ export default function indextabs() {
                 >
                   Note:{" "}
                   <Text style={{ marginTop: 0, color: "grey" }}>
-                    This Page can only display Records NOT older than two
+                    This Page can only display most recently updated Records NOT older or more than two
                     Months. Please, click on
                     <Text style={{ color: "green" }}> Finance Icon</Text>
                     <MaterialCommunityIcons
@@ -607,6 +605,25 @@ export default function indextabs() {
     // Fetch financial data from the API
     // console.log(Oracle);
     // console.log(thisMonth);
+    const ddate = new Date();
+    const c_year = ddate.getFullYear();
+    const month = ddate.getMonth() + 1;
+    const monthArray = [
+      "january",
+      "february",
+      "march",
+      "april",
+      "may",
+      "june",
+      "july",
+      "august",
+      "september",
+      "october",
+      "november",
+      "december",
+    ];
+    const month3 = monthArray[(month - 3 + 12) % 12];
+    const month4 = monthArray[(month - 4 + 12) % 12];
     try {
       const financialData = await fetch(`${API_URL}/api/msc_monthly_2025`, {
         method: "POST",
@@ -617,54 +634,60 @@ export default function indextabs() {
           newOracle: user?.oracle, // Ensure user.oracle is defined
           lastMonth: lastMonth,
           thisMonth: thisMonth,
+          lastMonth3: month3, //for two months back
+          lastMonth4: month4, //for three months back
           yr: c_year.toString(), //for the current working year
         }),
       });
       const response = await financialData.json();
       /////////////////////////////////////////////
 
-      const lastDeduct = response?.acct.deduction;
-      const newDeduct = response?.acct2.deduction
-        ? response.acct2.deduction ?? "0"
+      const lastDeduct = response?.acctprev.deduction;
+      const newDeduct = response?.acctnow.deduction
+        ? response.acctnow.deduction ?? "0"
         : response.acct2 ?? "0";
 
-      const lastBank = response?.acct.bank ?? "0";
+      const lastBank = response?.acctprev.bank ?? "0";
       const thisBank =
-        response?.acct2.bank > "0"
-          ? response?.acct.bank ?? "0"
-          : response?.acct2.bank ?? "0";
+        response?.acctnow.bank > "0"
+          ? response?.acctprev.bank ?? "0"
+          : response?.acctnow.bank ?? "0";
 
       const savings =
-        response?.acct2.savings > "0"
-          ? response?.acct2.savings ?? "0"
-          : response?.acct.savings ?? "0";
+        response?.acctnow.savings > "0"
+          ? response?.acctnow.savings ?? "0"
+          : response?.acctprev.savings ?? "0";
 
       //////
       const retirement =
-        response?.acct2.retirement > "0"
-          ? response?.acct2.retirement ?? "0"
-          : response?.acct.retirement ?? "0";
+        response?.acctnow.retirement > "0"
+          ? response?.acctnow.retirement ?? "0"
+          : response?.acctprev.retirement ?? "0";
 
       //////
       const loan_balance =
-        response?.acct2.loan_balance > "0"
-          ? response?.acct2.loan_balance ?? "0"
-          : response?.acct.loan_balance ?? "0";
+        response?.acctnow.loan_balance > "0"
+          ? response?.acctnow.loan_balance ?? "0"
+          : response?.acctprev.loan_balance ?? "0";
       ///////////
 
       const interest_balance =
-        response?.acct2.interest_bal > "0"
-          ? response?.acct2.interest_bal ?? "0"
-          : response?.acct.interest_bal ?? "0";
+        response?.acctnow.interest_bal > "0"
+          ? response?.acctnow.interest_bal ?? "0"
+          : response?.acctprev.interest_bal ?? "0";
 
       const soft_loan =
-        response?.acct2.soft_loanBal > "0"
-          ? response?.acct2.soft_loanBal ?? "0"
-          : response?.acct.soft_loanBal ?? "0";
+        response?.acctnow.soft_loanBal > "0"
+          ? response?.acctnow.soft_loanBal ?? "0"
+          : response?.acctprev.soft_loanBal ?? "0";
 
       // console.log(soft_loan);
 
       if (response.success === true) {
+        /////setlastmonth/////////
+        setPrevMonth(response.acctprev.month);
+        setPresMonth(response.acctnow.month);
+
         ///////////
 
         ////////
@@ -784,7 +807,8 @@ export default function indextabs() {
         // setLoanstatusDate("No date displayed");
       }
     } catch (error) {
-      alert("Error Fetching Loan Status");
+      console.log("Error Fetching Loan Status");
+      // alert("Error Fetching Loan Status");
     }
   }
 } ///end calib

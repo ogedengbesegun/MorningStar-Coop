@@ -48,7 +48,9 @@ await client.connect().then(() => {
     "may", "june", "july", "august",
     "september", "october", "november", "december"
   ];
-
+  const month3 = monthArray[(month - 3 + 12) % 12];
+  const month4 = monthArray[(month - 4 + 12) % 12];
+  console.log([month3, month4]);
   let c_month;
 
   // match numeric month to month name
@@ -161,23 +163,34 @@ await client.connect().then(() => {
 
 
   app.post('/api/msc_monthly_2025', async (req, res) => {
-    const { lastMonth, thisMonth, yr, newOracle } = req.body;
+    const { lastMonth, lastMonth3, lastMonth4, thisMonth, yr, newOracle, } = req.body;
 
     try {
-      const checkOracle = await msc_monthly_2025.findOne({
+      const checkOracle2 = await msc_monthly_2025.findOne({ //2nd months back
         oracle: newOracle,
         month: lastMonth,
         yr: yr,
       });
 
-      const checkOracle2 = await msc_monthly_2025.findOne({
+      const checkOracle1 = await msc_monthly_2025.findOne({ //current  month
         oracle: newOracle,
         month: thisMonth,
         yr: yr,
       });
+      const checkOracle3 = await msc_monthly_2025.findOne({ //3 months back
+        oracle: newOracle,
+        month: lastMonth3,
+        yr: yr,
+      });
+      const checkOracle4 = await msc_monthly_2025.findOne({//4 months back
+        oracle: newOracle,
+        month: lastMonth4,
+        yr: yr,
+      });
 
-      // If both are missing
-      if (!checkOracle && !checkOracle2) {
+
+      // If all months are missing
+      if (!checkOracle2 && !checkOracle1 && !checkOracle3 && !checkOracle4) {
         return res.status(404).json({
           success: false,
           message: `No records found for you. Please check back.`,
@@ -187,48 +200,51 @@ await client.connect().then(() => {
       }
 
       // If current month only is missing
-      if (!checkOracle2) {
-
+      if (!checkOracle1) {
+        const fallback = checkOracle2 || checkOracle3 || checkOracle4;
         return res.status(200).json({
           success: true,
-          message: 'Current month record not available. Returning previous month only.',
-          acct: checkOracle
+          message: 'Current month record not available. Returning previous month(s) only.',
+          acctprev: fallback
             ? {
-              deduction: checkOracle.deduction ?? "0",
-              savings: checkOracle.savings ?? "0",
-              loan_balance: checkOracle.loan_balance ?? "0",
-              retirement: checkOracle.retirement ?? "0",
-              soft_loanBal: checkOracle.soft_loanBal ?? "0",
-              interest_bal: checkOracle.interest_bal ?? "0",
-              bank: checkOracle.bank ?? "0"
+              deduction: fallback.deduction ?? "0",
+              savings: fallback.savings ?? "0",
+              loan_balance: fallback.loan_balance ?? "0",
+              retirement: fallback.retirement ?? "0",
+              soft_loanBal: fallback.soft_loanBal ?? "0",
+              interest_bal: fallback.interest_bal ?? "0",
+              bank: fallback.bank ?? "0",
+              month: fallback.month ?? "N/A",
             }
             : null,
-          acct2: '0',
+          acctnow: '0',
         });
       }
 
       // If both exist
       return res.status(200).json({
         success: true,
-        acct: checkOracle
+        acctprev: checkOracle2
           ? {
-            deduction: checkOracle.deduction ?? "0",
-            savings: checkOracle.savings ?? "0",
-            loan_balance: checkOracle.loan_balance ?? "0",
-            retirement: checkOracle.retirement ?? "0",
-            soft_loanBal: checkOracle.soft_loanBal ?? "0",
-            interest_bal: checkOracle.interest_bal ?? "0",
-            bank: checkOracle.bank ?? "0",
+            deduction: checkOracle2.deduction ?? "0",
+            savings: checkOracle2.savings ?? "0",
+            loan_balance: checkOracle2.loan_balance ?? "0",
+            retirement: checkOracle2.retirement ?? "0",
+            soft_loanBal: checkOracle2.soft_loanBal ?? "0",
+            interest_bal: checkOracle2.interest_bal ?? "0",
+            bank: checkOracle2.bank ?? "0",
+            month: checkOracle2.month ?? "N/A",
           }
           : null,
-        acct2: {
-          deduction: checkOracle2.deduction ?? "0",
-          savings: checkOracle2.savings ?? "0",
-          loan_balance: checkOracle2.loan_balance ?? "0",
-          retirement: checkOracle2.retirement ?? "0",
-          soft_loanBal: checkOracle2.soft_loanBal ?? "0",
-          interest_bal: checkOracle2.interest_bal ?? "0",
-          bank: checkOracle2.bank ?? "0",
+        acctnow: {
+          deduction: checkOracle1.deduction ?? "0",
+          savings: checkOracle1.savings ?? "0",
+          loan_balance: checkOracle1.loan_balance ?? "0",
+          retirement: checkOracle1.retirement ?? "0",
+          soft_loanBal: checkOracle1.soft_loanBal ?? "0",
+          interest_bal: checkOracle1.interest_bal ?? "0",
+          bank: checkOracle1.bank ?? "0",
+          month:checkOracle1.month ?? "N/A"
         },
       });
     } catch (error) {
@@ -533,7 +549,7 @@ await client.connect().then(() => {
         return res.status(400).json({ success: false, message: "Valid Oracle Number is required" })
       }
       const loanstatus = await db.collection("loanRequest").findOne({ oracle: oracle });
-     if (!loanstatus) {
+      if (!loanstatus) {
         return res.status(404).json({ success: false, message: "No loan request found" });
       }
       res.status(200).json({
@@ -548,10 +564,39 @@ await client.connect().then(() => {
       });
     }
 
-    // res.status(200).json({ success: true, messsage: loanstatus.status });
   })
   ////////
+  app.post('/api/approveLoan', async (req, res) => {
+    try {
+      const { approve_loan, oracle } = req.body;
+      if (!approve_loan && !oracle) {
+        return res.status(400).json({ success: false, message: "Valid ID is required" })
+      }
+      const changeStatus = await db.collection("loanRequest").updateOne(
+        { oracle: oracle },
+        { $set: { status: approve_loan } }
+      );
+      if (changeStatus.modifiedCount === 0) {
+        return res.status(500).json({
+          success: false,
+          message: "Loan status not updated",
+        });
+      }
+      res.status(200).json({
+        success: true,
+        message: `${approve_loan}`,
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: "Server error",
+        error: error.message
+      });
+    }
+  });
   //////////to get membersLoan for Admin Viewig
+
+
   app.get('/api/getMemberLoan', async (req, res) => {
     try {
       // use db.collection directly instead of mongoose

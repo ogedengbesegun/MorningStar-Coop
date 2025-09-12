@@ -749,26 +749,29 @@ export default function dashboard() {
                         <Text>Date: {MemLdata.createdAt}</Text>
                         <TouchableOpacity
                           style={{
-                            marginTop:10,
+                            marginTop: 10,
                             backgroundColor: "#48cbcfff",
                             height: 30,
-                            width:100,
+                            width: 100,
                             alignSelf: "center",
                             borderRadius: 5,
                           }}
+                          onPress={() => approveLoan(MemLdata.oracle)}
                         >
                           <Text
                             style={{
-                              color: "white",
+                              color: "black",
                               marginTop: "auto",
                               marginBottom: "auto",
-                              textAlign:"center",
+                              textAlign: "center",
                             }}
                           >
-                            Approved
+                            Approve Loan
                           </Text>
                         </TouchableOpacity>
-                        <Text style={{ textAlign:"center",}}>Loan Status: {MemLdata.status.toUpperCase()}</Text>
+                        <Text style={{ textAlign: "center" }}>
+                          Loan Status: {MemLdata.status.toUpperCase()}
+                        </Text>
                       </View>
                     </View>
                     {/* <Text style={{ marginTop: 5 }}>Blessings</Text> */}
@@ -964,7 +967,30 @@ export default function dashboard() {
       setShowModal(false);
     }
   }
-}
+  //////
+  async function approveLoan(oracle: string) {
+    try {
+      const response = await fetch(`${API_URL}/api/approveLoan`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          // data to send to the server
+          approve_loan: "Loan is Appoved",
+          oracle: oracle,
+        }),
+      });
+      const result = await response.json();
+      if (result.success) {
+        alert(result.message);
+      } else {
+        alert(result.message);
+      }
+    } catch (error) {}
+    // Placeholder function for approving a loan
+  }
+} ///end calib
 
 const style = StyleSheet.create({
   touchable: {
